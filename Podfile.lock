@@ -1,0 +1,20 @@
+PODS:
+  - Cards (1.4.0):
+    - Player (= 0.13.0)
+  - Player (0.13.0)
+
+DEPENDENCIES:
+  - Cards
+
+SPEC REPOS:
+  trunk:
+    - Cards
+    - Player
+
+SPEC CHECKSUMS:
+  Cards: 45ae6bd0eca7b5e8016d3b6cb30b60b04753f68f
+  Player: 968d8d07d923bcdd6f7e4091c9e306eb44a5f7a4
+
+PODFILE CHECKSUM: 4f952ea0770c281b385065cb43109c77c4dfd7ce
+
+COCOAPODS: 1.10.0

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FifthVCForTabBar.swift
 //  Subly
 //
 //  Created by Илья Кузнецов on 27.01.2021.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class FifthVCForTabBar: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        view.backgroundColor = .blue
+        title = "Настройки"
     }
 
-
 }
-
