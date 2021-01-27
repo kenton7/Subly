@@ -99,20 +99,6 @@ class FirstVCForTabBar: UIViewController {
         }
     }
     
-    func setupTabBar() {
-        let tabBarVC = UITabBarController()
-        let vc1 = FirstVCForTabBar()
-        let vc2 = SecondVCForTabBar()
-        let vc3 = ThirdVCForTabBar()
-        let vc4 = FourthVCForTabBar()
-        let vc5 = FifthVCForTabBar()
-        
-        tabBarVC.setViewControllers([vc1, vc2, vc3, vc4, vc5], animated: false)
-        tabBarVC.modalPresentationStyle = .fullScreen
-        present(tabBarVC, animated: true, completion: nil)
-        print("showed")
-    }
-    
     func setupGradient() {
         view.layer.addSublayer(gradientLayer)
         gradientLayer.colors = [UIColor.purple.cgColor, UIColor.link.cgColor]
