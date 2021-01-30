@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10,
                                                                          weight: .semibold)]
         appearance.setTitleTextAttributes(attributes as [NSAttributedString.Key : Any], for: .normal)
-        
         return true
     }
 

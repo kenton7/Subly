@@ -75,9 +75,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Поиск" id="aY0-dU-Fto">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="addCell" rowHeight="65" id="JVS-0c-phC" customClass="AddCell" customModule="Subly" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="65"/>
+                                        <rect key="frame" x="0.0" y="72" width="414" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JVS-0c-phC" id="EKb-XH-oia">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="65"/>
@@ -143,8 +148,9 @@
                         <viewLayoutGuide key="safeArea" id="fcn-Yj-7l3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Добавить подписку" id="G5S-h7-MLG"/>
+                    <navigationItem key="navigationItem" title="Добавить подписку" id="Psw-pO-xK8"/>
                     <connections>
+                        <outlet property="searchOutlet" destination="aY0-dU-Fto" id="SaZ-Cm-1uL"/>
                         <outlet property="tableView" destination="tmY-Z3-8xy" id="Dyz-Ee-lcO"/>
                     </connections>
                 </viewController>
@@ -282,10 +288,10 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ME8-9m-VHN">
-                                                    <rect key="frame" x="200" y="0.0" width="214" height="43.5"/>
+                                                    <rect key="frame" x="200" y="0.0" width="207" height="43.5"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Введите цену" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mfu-zw-2Ya">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="207" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                         </textField>
@@ -294,7 +300,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="fWk-dN-naX" secondAttribute="bottom" id="4Y9-Na-Dds"/>
-                                                <constraint firstAttribute="trailing" secondItem="ME8-9m-VHN" secondAttribute="trailing" id="5jB-Hn-ygQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="ME8-9m-VHN" secondAttribute="trailing" constant="7" id="5jB-Hn-ygQ"/>
                                                 <constraint firstItem="fWk-dN-naX" firstAttribute="top" secondItem="zet-Ns-g0h" secondAttribute="top" id="D8x-lS-Ubm"/>
                                                 <constraint firstItem="ME8-9m-VHN" firstAttribute="leading" secondItem="fWk-dN-naX" secondAttribute="trailing" id="Fqf-60-hnc"/>
                                                 <constraint firstItem="fWk-dN-naX" firstAttribute="leading" secondItem="zet-Ns-g0h" secondAttribute="leading" constant="20" symbolic="YES" id="iva-X7-Db0"/>
@@ -315,24 +321,24 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rCn-pY-Tqc">
-                                                    <rect key="frame" x="20" y="0.0" width="166" height="43.5"/>
+                                                    <rect key="frame" x="20" y="0.0" width="180" height="43.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Валюта" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDO-9k-9ol">
-                                                            <rect key="frame" x="0.0" y="0.0" width="166" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="180" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="166" id="3ZY-Sg-gPT"/>
+                                                        <constraint firstAttribute="width" constant="180" id="3ZY-Sg-gPT"/>
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cMZ-mA-rri">
-                                                    <rect key="frame" x="200" y="0.0" width="228" height="43.5"/>
+                                                    <rect key="frame" x="228.5" y="0.0" width="178.5" height="43.5"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Выберите валюту" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SR9-ev-OvY">
-                                                            <rect key="frame" x="0.0" y="0.0" width="228" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="178.5" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
@@ -340,8 +346,7 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="cMZ-mA-rri" firstAttribute="leading" secondItem="rCn-pY-Tqc" secondAttribute="trailing" constant="14" id="6gD-pr-ckH"/>
-                                                <constraint firstAttribute="trailing" secondItem="cMZ-mA-rri" secondAttribute="trailing" constant="-14" id="PdW-Fb-3lV"/>
+                                                <constraint firstAttribute="trailing" secondItem="cMZ-mA-rri" secondAttribute="trailing" constant="7" id="PdW-Fb-3lV"/>
                                                 <constraint firstAttribute="bottom" secondItem="cMZ-mA-rri" secondAttribute="bottom" id="Rs0-2s-Rkd"/>
                                                 <constraint firstItem="rCn-pY-Tqc" firstAttribute="top" secondItem="a3w-YQ-84t" secondAttribute="top" id="Ys2-Fc-LgH"/>
                                                 <constraint firstItem="rCn-pY-Tqc" firstAttribute="leading" secondItem="a3w-YQ-84t" secondAttribute="leading" constant="20" symbolic="YES" id="boq-6O-S5F"/>
@@ -376,10 +381,10 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Z7-Zh-8u1">
-                                                    <rect key="frame" x="200" y="0.0" width="214" height="43.5"/>
+                                                    <rect key="frame" x="200" y="0.0" width="207" height="43.5"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Способ оплаты" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7DS-FH-tXr">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="207" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
@@ -392,8 +397,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="k8B-Jw-tcH" secondAttribute="bottom" id="65r-8o-LAn"/>
                                                 <constraint firstItem="0Z7-Zh-8u1" firstAttribute="leading" secondItem="k8B-Jw-tcH" secondAttribute="trailing" id="6du-45-25A"/>
                                                 <constraint firstItem="k8B-Jw-tcH" firstAttribute="leading" secondItem="z2I-rW-A5W" secondAttribute="leading" constant="20" symbolic="YES" id="93D-Bt-I7u"/>
-                                                <constraint firstAttribute="trailing" secondItem="0Z7-Zh-8u1" secondAttribute="trailing" id="Clx-xk-dl6"/>
-                                                <constraint firstAttribute="trailing" secondItem="0Z7-Zh-8u1" secondAttribute="trailing" id="Ps7-U0-LwM"/>
+                                                <constraint firstAttribute="trailing" secondItem="0Z7-Zh-8u1" secondAttribute="trailing" constant="7" id="Clx-xk-dl6"/>
                                                 <constraint firstAttribute="bottom" secondItem="0Z7-Zh-8u1" secondAttribute="bottom" id="anq-x6-yl4"/>
                                                 <constraint firstAttribute="bottom" secondItem="0Z7-Zh-8u1" secondAttribute="bottom" id="aww-eO-DhY"/>
                                                 <constraint firstAttribute="bottom" secondItem="k8B-Jw-tcH" secondAttribute="bottom" id="cHt-5s-L8z"/>
@@ -428,10 +432,10 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gK-kX-6eZ">
-                                                    <rect key="frame" x="200" y="0.0" width="214" height="43.5"/>
+                                                    <rect key="frame" x="200" y="0.0" width="207" height="43.5"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Выберите дату" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1GN-dC-03M">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="207" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
@@ -441,7 +445,7 @@
                                             <constraints>
                                                 <constraint firstItem="OTw-NM-ZWd" firstAttribute="leading" secondItem="eHj-wN-0yQ" secondAttribute="leading" constant="20" symbolic="YES" id="9nE-bR-L2H"/>
                                                 <constraint firstAttribute="bottom" secondItem="OTw-NM-ZWd" secondAttribute="bottom" id="J0W-k3-3CK"/>
-                                                <constraint firstAttribute="trailing" secondItem="7gK-kX-6eZ" secondAttribute="trailing" id="Mma-UM-r3B"/>
+                                                <constraint firstAttribute="trailing" secondItem="7gK-kX-6eZ" secondAttribute="trailing" constant="7" id="Mma-UM-r3B"/>
                                                 <constraint firstItem="7gK-kX-6eZ" firstAttribute="top" secondItem="eHj-wN-0yQ" secondAttribute="top" id="Tws-M4-Tad"/>
                                                 <constraint firstAttribute="bottom" secondItem="7gK-kX-6eZ" secondAttribute="bottom" id="VEO-8z-Ugi"/>
                                                 <constraint firstItem="OTw-NM-ZWd" firstAttribute="top" secondItem="eHj-wN-0yQ" secondAttribute="top" id="jUB-6n-2t2"/>
@@ -475,10 +479,10 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5o9-EE-Gr4">
-                                                    <rect key="frame" x="200" y="0.0" width="214" height="43.5"/>
+                                                    <rect key="frame" x="200" y="0.0" width="207" height="43.5"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Выберите цикл" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j2K-hX-pHl">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="207" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
@@ -486,7 +490,7 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="5o9-EE-Gr4" secondAttribute="trailing" id="4VU-Ft-IwL"/>
+                                                <constraint firstAttribute="trailing" secondItem="5o9-EE-Gr4" secondAttribute="trailing" constant="7" id="4VU-Ft-IwL"/>
                                                 <constraint firstItem="DSJ-Za-Hjm" firstAttribute="leading" secondItem="IOr-of-twn" secondAttribute="leading" constant="20" symbolic="YES" id="GIh-p3-ewk"/>
                                                 <constraint firstItem="DSJ-Za-Hjm" firstAttribute="top" secondItem="IOr-of-twn" secondAttribute="top" id="M6Z-GR-8tl"/>
                                                 <constraint firstAttribute="bottom" secondItem="DSJ-Za-Hjm" secondAttribute="bottom" id="Tqk-9M-3LD"/>
@@ -522,10 +526,10 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qkj-ma-tfo">
-                                                    <rect key="frame" x="200" y="0.0" width="214" height="43.5"/>
+                                                    <rect key="frame" x="200" y="0.0" width="207" height="43.5"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" placeholder="Период" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="juL-l3-ky2">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="207" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
@@ -536,7 +540,7 @@
                                                 <constraint firstItem="xzJ-ZF-vaw" firstAttribute="top" secondItem="qUS-2b-QHh" secondAttribute="top" id="2cV-gx-mhj"/>
                                                 <constraint firstAttribute="bottom" secondItem="Qkj-ma-tfo" secondAttribute="bottom" id="2o1-5c-Dhg"/>
                                                 <constraint firstItem="xzJ-ZF-vaw" firstAttribute="leading" secondItem="qUS-2b-QHh" secondAttribute="leading" constant="20" symbolic="YES" id="FYP-dh-gBs"/>
-                                                <constraint firstAttribute="trailing" secondItem="Qkj-ma-tfo" secondAttribute="trailing" id="I3o-K1-q4L"/>
+                                                <constraint firstAttribute="trailing" secondItem="Qkj-ma-tfo" secondAttribute="trailing" constant="7" id="I3o-K1-q4L"/>
                                                 <constraint firstItem="Qkj-ma-tfo" firstAttribute="leading" secondItem="xzJ-ZF-vaw" secondAttribute="trailing" id="Iwl-P7-q5r"/>
                                                 <constraint firstItem="Qkj-ma-tfo" firstAttribute="top" secondItem="qUS-2b-QHh" secondAttribute="top" id="SAg-84-D4C"/>
                                                 <constraint firstAttribute="bottom" secondItem="xzJ-ZF-vaw" secondAttribute="bottom" id="wzw-gc-8rp"/>
@@ -569,10 +573,10 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jjz-iq-VtT">
-                                                    <rect key="frame" x="200" y="0.0" width="214" height="43.5"/>
+                                                    <rect key="frame" x="200" y="0.0" width="207" height="43.5"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zDM-TB-sey">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="207" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <state key="normal" title="Да">
                                                                 <color key="titleColor" systemColor="labelColor"/>
@@ -586,7 +590,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="qVq-ti-fYI" firstAttribute="leading" secondItem="SDV-Pe-JKv" secondAttribute="leading" constant="20" symbolic="YES" id="2uR-Lh-8ww"/>
-                                                <constraint firstAttribute="trailing" secondItem="Jjz-iq-VtT" secondAttribute="trailing" id="L7D-Vo-HgR"/>
+                                                <constraint firstAttribute="trailing" secondItem="Jjz-iq-VtT" secondAttribute="trailing" constant="7" id="L7D-Vo-HgR"/>
                                                 <constraint firstAttribute="bottom" secondItem="qVq-ti-fYI" secondAttribute="bottom" id="V1D-PN-MTf"/>
                                                 <constraint firstItem="Jjz-iq-VtT" firstAttribute="leading" secondItem="qVq-ti-fYI" secondAttribute="trailing" id="XBR-v5-qTa"/>
                                                 <constraint firstItem="qVq-ti-fYI" firstAttribute="top" secondItem="SDV-Pe-JKv" secondAttribute="top" id="aG9-dA-nHy"/>
@@ -621,10 +625,10 @@
                                                     </constraints>
                                                 </stackView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zsb-mF-5ek">
-                                                    <rect key="frame" x="200" y="0.0" width="214" height="43.5"/>
+                                                    <rect key="frame" x="200" y="0.0" width="207" height="43.5"/>
                                                     <subviews>
-                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Индивидульная" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1cr-Ci-izE">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="43.5"/>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Индивидульная" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1cr-Ci-izE">
+                                                            <rect key="frame" x="0.0" y="0.0" width="207" height="43.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
@@ -636,7 +640,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="zsb-mF-5ek" secondAttribute="bottom" id="9CH-nh-aLe"/>
                                                 <constraint firstItem="zsb-mF-5ek" firstAttribute="leading" secondItem="CW7-ee-8zN" secondAttribute="trailing" id="BPi-mS-I2M"/>
                                                 <constraint firstItem="CW7-ee-8zN" firstAttribute="top" secondItem="9vg-iq-JJE" secondAttribute="top" id="Zq7-sN-m3q"/>
-                                                <constraint firstAttribute="trailing" secondItem="zsb-mF-5ek" secondAttribute="trailing" id="gmD-Bh-cRG"/>
+                                                <constraint firstAttribute="trailing" secondItem="zsb-mF-5ek" secondAttribute="trailing" constant="7" id="gmD-Bh-cRG"/>
                                                 <constraint firstItem="zsb-mF-5ek" firstAttribute="top" secondItem="9vg-iq-JJE" secondAttribute="top" id="wU4-O7-9nm"/>
                                                 <constraint firstAttribute="bottom" secondItem="CW7-ee-8zN" secondAttribute="bottom" id="zKt-RL-1vC"/>
                                             </constraints>

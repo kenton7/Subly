@@ -41,36 +41,12 @@ extension NewSubVC: UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let view:UIView = UIView.init(frame:
-//                                        CGRect.init(x: 0,
-//                                                    y: 0,
-//                                                    width: self.view.bounds.size.width,
-//                                                    height: 10))
-//        view.backgroundColor = .clear
-//        return view
-//    }
-//    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 5
-//    }
-//    
-//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 5.0
-//    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewSubCell.identifier) as! NewSubCell
         cell.titleLabel?.text = cell.arrayOfFields[indexPath.section]
         cell.titleLabel.font = .systemFont(ofSize: 21, weight: .semibold)
         return cell
     }
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let headerView = UIView()
-//        headerView.backgroundColor = UIColor.clear
-//        return headerView
-//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {

@@ -10,18 +10,32 @@ import UIKit
 class AddViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchOutlet: UISearchBar!
+    
     let model = [ContentModel]()
     let data = Items()
     let addCell = AddCell()
     var kek = ""
+    var filteredData: [String] = []
+    var searchController: UISearchController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //tabBarController?.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
         tableView.frame = self.view.bounds
         tableView.tableFooterView = UIView()
+        searchOutlet.delegate = self
+        filteredData = data.arrayOfItemTitles
+        print(filteredData)
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        // 4
+        navigationItem.searchController = searchController
+        // 5
+        definesPresentationContext = true
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -51,14 +65,14 @@ class AddViewController: UIViewController {
             }
         }
     }
-    
 }
 
 // MARK: - UITableViewDelegate
 extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return data.arrayOfItemTitles.count
+        return filteredData.count ?? 1
+        //return data.arrayOfItemTitles.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -85,7 +99,8 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AddCell.identifier) as! AddCell
-        cell.labelOutlet.text = cell.arrayOfItemTitles.sorted(by: <)[indexPath.section]
+        cell.labelOutlet.text = filteredData.sorted(by: <)[indexPath.section]
+        //cell.labelOutlet.text = cell.arrayOfItemTitles.sorted(by: <)[indexPath.section]
         cell.labelOutlet?.font = .systemFont(ofSize: 19, weight: .semibold)
         cell.configureImageView()
         //cell.textLabel?.text = self.items.arrayOfItemTitles[indexPath.row]
@@ -105,7 +120,46 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        self.searchOutlet.searchTextField.endEditing(true)
     }
+    
+//    // This method updates filteredData based on the text in the Search Box
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        // When there is no text, filteredData is the same as the original data
+//        // When user has entered text into the search box
+//        // Use the filter method to iterate over all items in the data array
+//        // For each item, return true if the item should be included and false if the
+//        // item should NOT be included
+//        filteredData = searchText.isEmpty ? data.arrayOfItemTitles : data.arrayOfItemTitles.filter({(dataString: String) -> Bool in
+//            // If dataItem matches the searchText, return true to include it
+//            return dataString.range(of: searchText, options: .caseInsensitive) != nil
+//        })
+//
+//        tableView.reloadData()
+//    }
+}
+
+// MARK: - UITabBarControllerDelegate
+//extension AddViewController: UITabBarControllerDelegate {
+//
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        let tabBarIndex = tabBarController.selectedIndex
+//        print(tabBarIndex)
+//        if tabBarIndex == 1 {
+//            self.tableView.setContentOffset(.init(x: 0, y: (-tableView.contentInset.top) - 50), animated: true)
+//        }
+//    }
+//}
+
+extension AddViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            filteredData = searchText.isEmpty ? data.arrayOfItemTitles : data.arrayOfItemTitles.filter({(dataString: String) -> Bool in
+                return dataString.range(of: searchText, options: .caseInsensitive) != nil
+                })
+                tableView.reloadData()
+            }
+    }
+    
     
 }
