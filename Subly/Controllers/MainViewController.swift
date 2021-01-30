@@ -27,7 +27,7 @@ class MainViewController: UIViewController {
 //    }()
     
     private var data = [ContentModel]()
-    private let imagesForTabBar = ["house.fill", "plus.circle.fill", "person.fill.questionmark", "gearshape.fill"]
+    private let imagesForTabBar = ["house.fill", "plus.circle.fill", "gearshape.fill"]
     
 //    private let tableView: UITableView = {
 //       let table = UITableView()
@@ -92,14 +92,11 @@ class MainViewController: UIViewController {
         let vc3 = UINavigationController(rootViewController: ThirdVCForTabBar())
         vc3.title = "Добавить"
         vc3.navigationBar.prefersLargeTitles = true
-        let vc4 = UINavigationController(rootViewController: FourthVCForTabBar())
-        vc4.title = "Помощь"
-        vc4.navigationBar.prefersLargeTitles = true
         let vc5 = UINavigationController(rootViewController: FifthVCForTabBar())
         vc5.title = "Настройки"
         vc5.navigationBar.prefersLargeTitles = true
         
-        tabBarVC.setViewControllers([vc1, vc3, vc4, vc5], animated: false)
+        tabBarVC.setViewControllers([vc1, vc3, vc5], animated: false)
         guard let items = tabBarVC.tabBar.items else { return }
         for x in 0..<items.count {
             items[x].image = UIImage(systemName: imagesForTabBar[x])

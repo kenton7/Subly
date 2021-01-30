@@ -10,26 +10,24 @@ import Cards
 
 class FirstVCForTabBar: UIViewController {
     
+    private var data = [ContentModel]()
+    
     private let card: CardHighlight = {
         let card = CardHighlight(frame: .zero)
         //configure
-        let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.purple.cgColor, UIColor.link.cgColor]
-        gradient.frame = card.frame
         card.backgroundColor = .link
         card.icon = UIImage(systemName: "pencil")
-        card.title = "Test"
-        card.itemTitle = "Apple Music"
-        card.itemSubtitle = "Some Text"
+        //card.title = "Test"
+        //card.itemTitle = dataForCards.itemTitle
+        //card.itemSubtitle = "Some Text"
         card.shadowBlur = 20
-        card.buttonText = "GET"
+        //card.buttonText = "GET"
         card.titleSize = 32
         card.textColor = .white
         card.itemTitleSize = 18
         return card
     }()
     
-    private var data = [ContentModel]()
     private let gradientLayer = CAGradientLayer()
     
     
@@ -57,6 +55,7 @@ class FirstVCForTabBar: UIViewController {
         setupGradient()
         view.addSubview(card)
         view.addSubview(noSubsLabel)
+        tableView.delegate = self
         //setupTabBar()
         //setupTableView()
         startListeningForNewSubs()
@@ -69,6 +68,7 @@ class FirstVCForTabBar: UIViewController {
                                    y: (view.height - 100) / 2,
                                    width: view.width - 20,
                                    height: 100)
+        
         card.frame = CGRect(x: 0,
                             y: view.safeAreaInsets.top,
                             width: view.frame.size.width,
@@ -85,7 +85,7 @@ class FirstVCForTabBar: UIViewController {
     private func startListeningForNewSubs() {
         guard !data.isEmpty else {
             self.tableView.isHidden = true
-            self.card.isHidden = true
+            //self.card.isHidden = true
             self.noSubsLabel.isHidden = false
             return
         }
@@ -99,9 +99,23 @@ class FirstVCForTabBar: UIViewController {
         }
     }
     
-    func setupGradient() {
+    private func setupGradient() {
         view.layer.addSublayer(gradientLayer)
         gradientLayer.colors = [UIColor.purple.cgColor, UIColor.link.cgColor]
+    }
+    
+    private func configureCards(with model: ContentModel) {
+        
+        card.backgroundColor = .link
+        card.icon = UIImage(systemName: "plus")
+        card.title = model.title
+        card.itemTitle = model.itemTitle
+        card.itemSubtitle = model.itemSubtitle
+        card.shadowBlur = 20
+        card.buttonText = model.buttonText
+        card.titleSize = 32
+        card.textColor = .green
+        card.itemTitleSize = 18
     }
 }
 
@@ -109,15 +123,17 @@ extension FirstVCForTabBar: CardDelegate {
     
 }
 
+// MARK: - TableView Delegate
+
 extension FirstVCForTabBar: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = data[indexPath.row]
+        //let model = data[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as! MainTableViewCell
-        cell.configure(with: model)
+        //cell.configure(with: model)
         return cell
     }
 }

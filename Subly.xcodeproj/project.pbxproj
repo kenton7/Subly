@@ -7,18 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		095F3A3425C1E26C00497BC2 /* CardContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A3325C1E26C00497BC2 /* CardContentController.swift */; };
-		095F3A3825C1E41600497BC2 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A3725C1E41600497BC2 /* MainTableViewCell.swift */; };
 		095F3A3D25C1E54700497BC2 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A3C25C1E54700497BC2 /* ContentModel.swift */; };
 		095F3A4225C1E81800497BC2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A4125C1E81800497BC2 /* Extensions.swift */; };
-		095F3A4725C1ED2200497BC2 /* SecondVCForTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A4625C1ED2200497BC2 /* SecondVCForTabBar.swift */; };
-		095F3A4A25C1ED4900497BC2 /* ThirdVCForTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A4925C1ED4900497BC2 /* ThirdVCForTabBar.swift */; };
-		095F3A4D25C1ED6F00497BC2 /* FourthVCForTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A4C25C1ED6F00497BC2 /* FourthVCForTabBar.swift */; };
-		095F3A5025C1ED8800497BC2 /* FifthVCForTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A4F25C1ED8800497BC2 /* FifthVCForTabBar.swift */; };
-		095F3A5325C1EDF500497BC2 /* FirstVCForTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A5225C1EDF500497BC2 /* FirstVCForTabBar.swift */; };
+		095F3A7825C31BCA00497BC2 /* MainCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A7725C31BCA00497BC2 /* MainCollectionView.swift */; };
+		095F3A7F25C31CA000497BC2 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A7E25C31CA000497BC2 /* TableViewCell.swift */; };
+		095F3A8325C567FA00497BC2 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A8225C567FA00497BC2 /* AddViewController.swift */; };
+		095F3A8625C56A9C00497BC2 /* AddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A8525C56A9C00497BC2 /* AddCell.swift */; };
+		095F3A8925C5848700497BC2 /* NewSubVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A8825C5848700497BC2 /* NewSubVC.swift */; };
+		095F3A8C25C5894700497BC2 /* NewSubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A8B25C5894700497BC2 /* NewSubCell.swift */; };
+		095F3A9025C58D1D00497BC2 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A8F25C58D1D00497BC2 /* TitleCell.swift */; };
+		0960156F25C59309002FCD94 /* AddNewSubTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960156E25C59309002FCD94 /* AddNewSubTableView.swift */; };
+		0960157325C5D3D5002FCD94 /* AddNewTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960157225C5D3D5002FCD94 /* AddNewTVC.swift */; };
 		09B8151E25C1DECA00AC9D58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B8151D25C1DECA00AC9D58 /* AppDelegate.swift */; };
 		09B8152025C1DECA00AC9D58 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B8151F25C1DECA00AC9D58 /* SceneDelegate.swift */; };
-		09B8152225C1DECA00AC9D58 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B8152125C1DECA00AC9D58 /* MainViewController.swift */; };
 		09B8152525C1DECA00AC9D58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09B8152325C1DECA00AC9D58 /* Main.storyboard */; };
 		09B8152825C1DECA00AC9D58 /* Subly.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 09B8152625C1DECA00AC9D58 /* Subly.xcdatamodeld */; };
 		09B8152A25C1DECB00AC9D58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09B8152925C1DECB00AC9D58 /* Assets.xcassets */; };
@@ -27,19 +28,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		095F3A3325C1E26C00497BC2 /* CardContentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardContentController.swift; sourceTree = "<group>"; };
-		095F3A3725C1E41600497BC2 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		095F3A3C25C1E54700497BC2 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 		095F3A4125C1E81800497BC2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		095F3A4625C1ED2200497BC2 /* SecondVCForTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVCForTabBar.swift; sourceTree = "<group>"; };
-		095F3A4925C1ED4900497BC2 /* ThirdVCForTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdVCForTabBar.swift; sourceTree = "<group>"; };
-		095F3A4C25C1ED6F00497BC2 /* FourthVCForTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourthVCForTabBar.swift; sourceTree = "<group>"; };
-		095F3A4F25C1ED8800497BC2 /* FifthVCForTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifthVCForTabBar.swift; sourceTree = "<group>"; };
-		095F3A5225C1EDF500497BC2 /* FirstVCForTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstVCForTabBar.swift; sourceTree = "<group>"; };
+		095F3A7725C31BCA00497BC2 /* MainCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionView.swift; sourceTree = "<group>"; };
+		095F3A7E25C31CA000497BC2 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		095F3A8225C567FA00497BC2 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
+		095F3A8525C56A9C00497BC2 /* AddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCell.swift; sourceTree = "<group>"; };
+		095F3A8825C5848700497BC2 /* NewSubVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSubVC.swift; sourceTree = "<group>"; };
+		095F3A8B25C5894700497BC2 /* NewSubCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSubCell.swift; sourceTree = "<group>"; };
+		095F3A8F25C58D1D00497BC2 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
+		0960156E25C59309002FCD94 /* AddNewSubTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewSubTableView.swift; sourceTree = "<group>"; };
+		0960157225C5D3D5002FCD94 /* AddNewTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTVC.swift; sourceTree = "<group>"; };
 		09B8151A25C1DECA00AC9D58 /* Subly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Subly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09B8151D25C1DECA00AC9D58 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09B8151F25C1DECA00AC9D58 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		09B8152125C1DECA00AC9D58 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		09B8152425C1DECA00AC9D58 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		09B8152725C1DECA00AC9D58 /* Subly.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Subly.xcdatamodel; sourceTree = "<group>"; };
 		09B8152925C1DECB00AC9D58 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -65,13 +67,11 @@
 		094B741325C1E04B00BD90EA /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				09B8152125C1DECA00AC9D58 /* MainViewController.swift */,
-				095F3A3325C1E26C00497BC2 /* CardContentController.swift */,
-				095F3A5225C1EDF500497BC2 /* FirstVCForTabBar.swift */,
-				095F3A4625C1ED2200497BC2 /* SecondVCForTabBar.swift */,
-				095F3A4925C1ED4900497BC2 /* ThirdVCForTabBar.swift */,
-				095F3A4C25C1ED6F00497BC2 /* FourthVCForTabBar.swift */,
-				095F3A4F25C1ED8800497BC2 /* FifthVCForTabBar.swift */,
+				095F3A7725C31BCA00497BC2 /* MainCollectionView.swift */,
+				095F3A8225C567FA00497BC2 /* AddViewController.swift */,
+				095F3A8825C5848700497BC2 /* NewSubVC.swift */,
+				0960156E25C59309002FCD94 /* AddNewSubTableView.swift */,
+				0960157225C5D3D5002FCD94 /* AddNewTVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -79,7 +79,10 @@
 		095F3A3625C1E40000497BC2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				095F3A3725C1E41600497BC2 /* MainTableViewCell.swift */,
+				095F3A7E25C31CA000497BC2 /* TableViewCell.swift */,
+				095F3A8525C56A9C00497BC2 /* AddCell.swift */,
+				095F3A8B25C5894700497BC2 /* NewSubCell.swift */,
+				095F3A8F25C58D1D00497BC2 /* TitleCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -267,19 +270,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09B8152225C1DECA00AC9D58 /* MainViewController.swift in Sources */,
-				095F3A4D25C1ED6F00497BC2 /* FourthVCForTabBar.swift in Sources */,
+				095F3A9025C58D1D00497BC2 /* TitleCell.swift in Sources */,
 				09B8152825C1DECA00AC9D58 /* Subly.xcdatamodeld in Sources */,
-				095F3A5325C1EDF500497BC2 /* FirstVCForTabBar.swift in Sources */,
 				09B8151E25C1DECA00AC9D58 /* AppDelegate.swift in Sources */,
+				095F3A8325C567FA00497BC2 /* AddViewController.swift in Sources */,
 				095F3A4225C1E81800497BC2 /* Extensions.swift in Sources */,
-				095F3A3425C1E26C00497BC2 /* CardContentController.swift in Sources */,
-				095F3A3825C1E41600497BC2 /* MainTableViewCell.swift in Sources */,
-				095F3A4A25C1ED4900497BC2 /* ThirdVCForTabBar.swift in Sources */,
-				095F3A4725C1ED2200497BC2 /* SecondVCForTabBar.swift in Sources */,
+				095F3A7F25C31CA000497BC2 /* TableViewCell.swift in Sources */,
+				095F3A7825C31BCA00497BC2 /* MainCollectionView.swift in Sources */,
+				095F3A8625C56A9C00497BC2 /* AddCell.swift in Sources */,
 				095F3A3D25C1E54700497BC2 /* ContentModel.swift in Sources */,
-				095F3A5025C1ED8800497BC2 /* FifthVCForTabBar.swift in Sources */,
+				095F3A8925C5848700497BC2 /* NewSubVC.swift in Sources */,
+				0960156F25C59309002FCD94 /* AddNewSubTableView.swift in Sources */,
 				09B8152025C1DECA00AC9D58 /* SceneDelegate.swift in Sources */,
+				0960157325C5D3D5002FCD94 /* AddNewTVC.swift in Sources */,
+				095F3A8C25C5894700497BC2 /* NewSubCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
