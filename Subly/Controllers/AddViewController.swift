@@ -33,7 +33,7 @@ class AddViewController: UIViewController {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         // 4
-        navigationItem.searchController = searchController
+        //navigationItem.searchController = searchController
         // 5
         definesPresentationContext = true
     }
@@ -58,8 +58,8 @@ class AddViewController: UIViewController {
         if segue.identifier == "newSub" {
             if let nav = segue.destination as? UINavigationController,
                let vc = nav.topViewController as? NewSubVC {
-                
-                let sortedArray = data.arrayOfItemTitles.sorted(by: <)
+                let sortedArray = filteredData.sorted(by: <)
+                //let sortedArray = data.arrayOfItemTitles.sorted(by: <)
                 let selectedRow = tableView.indexPathForSelectedRow!.section
                 vc.productName = sortedArray[selectedRow]
             }
@@ -71,7 +71,7 @@ class AddViewController: UIViewController {
 extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return filteredData.count ?? 1
+        return filteredData.count
         //return data.arrayOfItemTitles.count
     }
     
@@ -120,7 +120,7 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.searchOutlet.searchTextField.endEditing(true)
+        //self.searchOutlet.searchTextField.endEditing(true)
     }
     
 //    // This method updates filteredData based on the text in the Search Box
@@ -152,6 +152,21 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
 //}
 
 extension AddViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredData = []
+        if searchText == "" {
+            filteredData = data.arrayOfItemTitles
+        } else {
+            for name in data.arrayOfItemTitles {
+                if name.lowercased().contains(searchText.lowercased()) {
+                    filteredData.append(name)
+                }
+            }
+        }
+        self.tableView.reloadData()
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text {
             filteredData = searchText.isEmpty ? data.arrayOfItemTitles : data.arrayOfItemTitles.filter({(dataString: String) -> Bool in
@@ -160,6 +175,4 @@ extension AddViewController: UISearchResultsUpdating, UISearchBarDelegate {
                 tableView.reloadData()
             }
     }
-    
-    
 }
