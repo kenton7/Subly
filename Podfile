@@ -6,5 +6,6 @@ target 'Subly' do
   use_frameworks!
 
  pod 'Cards'
+pod 'RealmSwift'
 
 end

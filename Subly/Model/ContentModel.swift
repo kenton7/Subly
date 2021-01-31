@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct ContentModel {
     var subName: String
@@ -23,5 +24,30 @@ struct Items {
 
 struct AddNewSubFields {
     let arrayOfFields = ["Цена", "Валюта", "Способ оплаты", "Дата оплаты", "Цикл", "Уведомить за", "Пробный период", "Тип"]
+}
+
+class Content: Object {
+    @objc dynamic var amount = 0.0
+    @objc dynamic var currency: String?
+    @objc dynamic var paymentType: String?
+    @objc dynamic var paymentDate: Date?
+    @objc dynamic var cycle: String?
+    @objc dynamic var notifyMe: String?
+    @objc dynamic var trial: Data?
+    @objc dynamic var type: String?
+    
+    convenience init(amount: Double, currency: String, paymentType: String, paymentDate: Date, cycle: String, notifyMe: String, trial: Data, type: String) {
+        //инициализируем значения по умолчанию
+        self.init()
+        self.amount = amount
+        self.currency = currency
+        self.paymentType = paymentType
+        self.paymentDate = paymentDate
+        self.cycle = cycle
+        self.notifyMe = notifyMe
+        self.trial = trial
+        self.type = type
+    }
+    
 }
 

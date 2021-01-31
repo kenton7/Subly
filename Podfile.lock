@@ -2,19 +2,29 @@ PODS:
   - Cards (1.4.0):
     - Player (= 0.13.0)
   - Player (0.13.0)
+  - Realm (10.1.4):
+    - Realm/Headers (= 10.1.4)
+  - Realm/Headers (10.1.4)
+  - RealmSwift (10.1.4):
+    - Realm (= 10.1.4)
 
 DEPENDENCIES:
   - Cards
+  - RealmSwift
 
 SPEC REPOS:
   trunk:
     - Cards
     - Player
+    - Realm
+    - RealmSwift
 
 SPEC CHECKSUMS:
   Cards: 45ae6bd0eca7b5e8016d3b6cb30b60b04753f68f
   Player: 968d8d07d923bcdd6f7e4091c9e306eb44a5f7a4
+  Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
+  RealmSwift: 0e566ca714edb377bba8ea0811eafcea0b93734e
 
-PODFILE CHECKSUM: 4f952ea0770c281b385065cb43109c77c4dfd7ce
+PODFILE CHECKSUM: 6df1536dff0a8b16764e31269d270ebc3bc5cb12
 
 COCOAPODS: 1.10.0

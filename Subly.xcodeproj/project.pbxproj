@@ -18,6 +18,7 @@
 		095F3A9025C58D1D00497BC2 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F3A8F25C58D1D00497BC2 /* TitleCell.swift */; };
 		0960156F25C59309002FCD94 /* AddNewSubTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960156E25C59309002FCD94 /* AddNewSubTableView.swift */; };
 		0960157325C5D3D5002FCD94 /* AddNewTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960157225C5D3D5002FCD94 /* AddNewTVC.swift */; };
+		0960157C25C6FBD1002FCD94 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960157B25C6FBD1002FCD94 /* StorageManager.swift */; };
 		09B8151E25C1DECA00AC9D58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B8151D25C1DECA00AC9D58 /* AppDelegate.swift */; };
 		09B8152025C1DECA00AC9D58 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B8151F25C1DECA00AC9D58 /* SceneDelegate.swift */; };
 		09B8152525C1DECA00AC9D58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09B8152325C1DECA00AC9D58 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 		095F3A8F25C58D1D00497BC2 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		0960156E25C59309002FCD94 /* AddNewSubTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewSubTableView.swift; sourceTree = "<group>"; };
 		0960157225C5D3D5002FCD94 /* AddNewTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTVC.swift; sourceTree = "<group>"; };
+		0960157B25C6FBD1002FCD94 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		09B8151A25C1DECA00AC9D58 /* Subly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Subly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09B8151D25C1DECA00AC9D58 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09B8151F25C1DECA00AC9D58 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				095F3A3C25C1E54700497BC2 /* ContentModel.swift */,
+				0960157B25C6FBD1002FCD94 /* StorageManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				095F3A8925C5848700497BC2 /* NewSubVC.swift in Sources */,
 				0960156F25C59309002FCD94 /* AddNewSubTableView.swift in Sources */,
 				09B8152025C1DECA00AC9D58 /* SceneDelegate.swift in Sources */,
+				0960157C25C6FBD1002FCD94 /* StorageManager.swift in Sources */,
 				0960157325C5D3D5002FCD94 /* AddNewTVC.swift in Sources */,
 				095F3A8C25C5894700497BC2 /* NewSubCell.swift in Sources */,
 			);

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UIViewController {
     
@@ -16,13 +17,21 @@ class MainViewController: UIViewController {
     private let gradientLayer = CAGradientLayer()
     @IBInspectable private var startColor: UIColor?
     @IBInspectable private var endColor: UIColor?
+    @IBOutlet weak var subNameOutlet: UILabel!
+    @IBOutlet weak var daysLeftLabel: UILabel!
+    @IBOutlet weak var currencyLabel: UILabel!
+    @IBOutlet weak var amountLabel: UILabel!
+    
+    @IBOutlet weak var daysMonthLabel: UILabel!
+    
+    private var subs: Results<Content>!
     
     
     private let noDataLabel: UILabel = {
         let label = UILabel()
         label.text = "Вы не добавили подписок."
         label.textAlignment = .center
-        label.textColor = .systemBackground
+        label.textColor = .white
         label.font = .systemFont(ofSize: 21, weight: .medium)
         label.isHidden = true
         return label
@@ -30,6 +39,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        subs = realm.objects(Content.self)
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         startListeningForConversations()
@@ -44,7 +54,7 @@ class MainViewController: UIViewController {
     
     private func startListeningForConversations() {
     
-        guard !arrayOfSubs.isEmpty else {
+        guard !subs.isEmpty else {
             self.tableView.isHidden = false
             self.noDataLabel.isHidden = true
             view.addSubview(noDataLabel)
@@ -59,6 +69,23 @@ class MainViewController: UIViewController {
         }
     }
     
+    //принимаем данные обратно в первый сегвей
+    @IBAction func unwindSegueToMain(_ segue: UIStoryboardSegue) {
+        guard let addNewTVC = segue.source as? AddNewTVC else {
+            print("no")
+            return
+        }
+        addNewTVC.saveNewSub()
+        tableView.isHidden = false
+        noDataLabel.isHidden = true
+        //обновляем таблицу
+        tableView.reloadData()
+    }
+    
+    @IBAction func unwindSegue2(_ segue: UIStoryboardSegue) {
+        
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         noDataLabel.frame = CGRect(x: 10,
@@ -71,13 +98,18 @@ class MainViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return subs.count
         //return arrayOfSubs.count
-        return 1
+        //return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //let model = data[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as! TableViewCell
+        
+        let sub = subs[indexPath.row]
+        
         cell.layer.cornerRadius = 20
         cell.layer.shadowColor = UIColor.white.cgColor
         cell.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
@@ -86,6 +118,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.layer.addSublayer(gradientLayer)
         cell.viewOutlet.layer.cornerRadius = 20
         cell.layer.addSublayer(gradientLayer)
+        
+        cell.amountLabel.text = String(sub.amount)
+        cell.currencyLabel.text = sub.currency
+        cell.typeOfSub.text = sub.type
+        cell.subNameLabel.text = "sub"
+        cell.daysLeftLabel.text = "30"
+        
         gradientLayer.colors = [UIColor.purple.cgColor, UIColor.link.cgColor]
         return cell
     }
@@ -114,6 +153,18 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    //удаляем данные из таблицы
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        //выбираем объект для удаления
+        let sub = subs[indexPath.row]
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
+            StorageManager.deleteObject(sub)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.isHidden = true
+            self.noDataLabel.isHidden = false
+        }
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
 }
 
 

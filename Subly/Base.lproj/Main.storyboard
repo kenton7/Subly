@@ -240,11 +240,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="M57-cW-gbY">
-                        <barButtonItem key="leftBarButtonItem" title="Отменить" id="6eC-Ls-ecr">
+                        <barButtonItem key="rightBarButtonItem" title="Закрыть" id="lc3-4S-fVo">
                             <color key="tintColor" systemColor="labelColor"/>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Сохранить" id="lc3-4S-fVo">
-                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <segue destination="wDt-mU-CRs" kind="unwind" unwindAction="unwindSegue2:" id="n08-cU-nxN"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -252,6 +252,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8py-L6-40T" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="wDt-mU-CRs" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1728.985507246377" y="-619.41964285714278"/>
         </scene>
@@ -658,16 +659,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wo9-Du-oji">
-                                                    <rect key="frame" x="79.5" y="3" width="255" height="38"/>
+                                                    <rect key="frame" x="152.5" y="3" width="109" height="38"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fw-ky-z8a">
-                                                            <rect key="frame" x="0.0" y="0.0" width="255" height="38"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="109" height="38"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
-                                                            <state key="normal" title="Добавить свою подписку">
+                                                            <state key="normal" title="Сохранить">
                                                                 <color key="titleColor" systemColor="labelColor"/>
                                                             </state>
                                                             <connections>
-                                                                <action selector="customSubPressed:" destination="o3h-3P-e0k" eventType="touchUpInside" id="8p8-47-XdX"/>
+                                                                <segue destination="CYh-Vt-h7H" kind="unwind" unwindAction="unwindSegueToMain:" id="kVS-ma-LSA"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -681,6 +682,39 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="6vq-oP-oxx">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ojE-g0-5rh">
+                                        <rect key="frame" x="0.0" y="923.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ojE-g0-5rh" id="hjG-6e-z0Q">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k6q-MS-Xyi">
+                                                    <rect key="frame" x="79.5" y="3" width="255" height="38"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egK-DB-Fsb">
+                                                            <rect key="frame" x="0.0" y="0.0" width="255" height="38"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
+                                                            <state key="normal" title="Добавить свою подписку">
+                                                                <color key="titleColor" systemColor="labelColor"/>
+                                                            </state>
+                                                            <connections>
+                                                                <segue destination="CYh-Vt-h7H" kind="unwind" unwindAction="unwindSegueToMain:" id="MGq-br-Rq3"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="k6q-MS-Xyi" firstAttribute="centerX" secondItem="hjG-6e-z0Q" secondAttribute="centerX" id="fm7-YS-BTb"/>
+                                                <constraint firstItem="k6q-MS-Xyi" firstAttribute="centerY" secondItem="hjG-6e-z0Q" secondAttribute="centerY" id="geh-Ab-9lp"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="o3h-3P-e0k" id="TP9-Rx-SPh"/>
@@ -688,10 +722,19 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="trialButtonOutlet" destination="zDM-TB-sey" id="vq1-Ac-VX5"/>
+                        <outlet property="amountTextField" destination="mfu-zw-2Ya" id="t2O-lp-mrn"/>
+                        <outlet property="currencyTextField" destination="SR9-ev-OvY" id="NCO-My-7JE"/>
+                        <outlet property="customSubButtonOutlet" destination="egK-DB-Fsb" id="49l-QF-XDz"/>
+                        <outlet property="cycleOutlet" destination="j2K-hX-pHl" id="xwo-yV-lZI"/>
+                        <outlet property="notifyMeOutlet" destination="juL-l3-ky2" id="Igh-Je-VzR"/>
+                        <outlet property="paymentDateOutlet" destination="1GN-dC-03M" id="CRH-xE-k0d"/>
+                        <outlet property="paymentTypeOutlet" destination="7DS-FH-tXr" id="CRu-Os-Lgf"/>
+                        <outlet property="trialButtonOutlet" destination="zDM-TB-sey" id="QLo-mc-RFT"/>
+                        <outlet property="typeOfSubOutlet" destination="1cr-Ci-izE" id="bKJ-mq-8VH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JrI-iv-fqH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="CYh-Vt-h7H" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2498.5507246376815" y="-619.08482142857144"/>
         </scene>
@@ -811,10 +854,10 @@
                                 <connections>
                                     <outlet property="amountLabel" destination="MoA-hb-DlV" id="mrE-Yh-6tl"/>
                                     <outlet property="currencyLabel" destination="GCM-gv-2gJ" id="CaR-lK-82T"/>
-                                    <outlet property="daysLeftLabel" destination="e8K-NP-H1K" id="crl-uK-ueN"/>
+                                    <outlet property="daysLeftLabel" destination="e8K-NP-H1K" id="a0C-6w-9OE"/>
                                     <outlet property="imageOutlet" destination="Fno-ba-dNR" id="Qbi-RH-ubQ"/>
                                     <outlet property="subNameLabel" destination="ufB-6r-ZTw" id="8K3-Rn-2mF"/>
-                                    <outlet property="typeOfSub" destination="1yp-LB-3Js" id="PkN-Vg-RwO"/>
+                                    <outlet property="typeOfSub" destination="1yp-LB-3Js" id="vQU-nw-D1J"/>
                                     <outlet property="viewOutlet" destination="NQ1-S2-vDt" id="DhI-Fs-WIA"/>
                                 </connections>
                             </tableViewCell>

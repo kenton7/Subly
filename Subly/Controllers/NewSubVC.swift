@@ -17,6 +17,15 @@ class NewSubVC: UIViewController {
     var productName = ""
     var indexesNeedPicker: [IndexPath]?
     let cell = NewSubCell()
+    private var content: Content!
+    
+    public var amountToDouble: Double?
+    public var currency: String?
+    public var paymentType: String?
+    public var paymentDate: Date?
+    public var cycle: String?
+    public var notifyMe: String?
+    public var typeOfSub: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +38,53 @@ class NewSubVC: UIViewController {
         navigationController?.navigationBar.tintColor = .systemBackground
         navigationController?.navigationItem.rightBarButtonItem?.title = "Добавить"
     }
+    
+    func saveNewSub() {
+        
+        let table = AddNewTVC()
+        
+        print(table.amountToDoube)
+        
+        let newSub = Content(amount: table.amountToDoube ?? 0.0, currency: table.currency ?? "P", paymentType: table.paymentType ?? "card", paymentDate: table.dateFromStringToDate ?? Date(), cycle: table.cycle ?? "cycle", notifyMe: table.notifyMe ?? "1day" , trial: Data(), type: table.typeOfSub ?? "ind")
+
+        if content != nil {
+            try! realm.write {
+                content.amount = newSub.amount
+                content.currency = newSub.currency
+                content.paymentType = newSub.paymentType
+                content.paymentDate = newSub.paymentDate
+                content.cycle = newSub.cycle
+                content.notifyMe = newSub.notifyMe
+                content.trial = newSub.trial
+                content.type = newSub.type
+            }
+        } else {
+            //сохраняем в базу
+            StorageManager.saveObject(newSub)
+            print("ok")
+        }
+    }
+    
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+        guard let vc = segue.source as? AddNewTVC else {
+            print("no")
+            return
+        }
+        
+        vc.saveValues()
+        
+        let amountDouble = vc.amountTextField.text
+        amountToDouble = Double(amountDouble!)
+        print(amountToDouble)
+        currency = vc.currencyTextField.text
+        paymentType = vc.paymentTypeOutlet.text
+        paymentDate = vc.dateFromStringToDate
+        cycle = vc.cycleOutlet.text
+        notifyMe = vc.notifyMeOutlet.text
+        typeOfSub = vc.typeOfSubOutlet.text
+    }
+    
+    
 }
 
 extension NewSubVC: UITableViewDelegate, UITableViewDataSource {
@@ -63,4 +119,5 @@ extension NewSubVC: UITableViewDelegate, UITableViewDataSource {
         tableView.reloadData()
     }
 }
+
 

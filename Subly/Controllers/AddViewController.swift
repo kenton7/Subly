@@ -32,9 +32,6 @@ class AddViewController: UIViewController {
         print(filteredData)
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
-        // 4
-        //navigationItem.searchController = searchController
-        // 5
         definesPresentationContext = true
     }
     
