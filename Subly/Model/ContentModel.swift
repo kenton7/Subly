@@ -22,31 +22,45 @@ struct Items {
     var arrayOfItemTitles = ["Spotify", "Apple Music", "VK Music", "iCloud", "Okko", "MEGOGO", "More.TV", "PREMIER", "START", "Storytel", "Tele 2", "МТС", "Билайн", "Мегафон", "YOTA", "Zvooq", "ivi", "Амедиатека", "Кинопоиск HD", "Яндекс+", "Яндекс Диск", "1Password", "Adobe Creative Cloud", "Apple Arcade", "Apple TV+", "Apple Developer Program", "Apple News+", "Apple Fitness", "Apple One", "Deezer", "Disney+", "Dropbox", "Evernote", "Github", "Firebase", "Google Drive", "Google Фото", "Google Play Фильмы", "Google Play Музыка", "HBO", "LINE Music", "Medium", "Microsoft OneDrive", "Netflix", "PUBG Mobile Prime", "Parallels Desktop", "Parallels Access", "PlayStation Plus", "SoundCloud", "Tinder", "TunnelBear", "Twitch", "VSCO X", "Xbox Live", "YouTube", "YouTube Music", "YouTube Premium", "500px", "1Blocker", "AdGuard VPN", "Bookmate", "Codeacademy", "EA Access", "Figma", "Flickr", "GeForce Now", "HTML Academy", "JavaRush", "Jira", "Kaspersky", "Lightroom", "MGTS", "Ростелеком", "Nintendo Online", "Pocket", "Amazon Prime Video", "Puzzle English", "SkyEng", "Сбер", "Sketch", "TJournal Plus", "Vimeo", "Zoom"].sorted(by: <)
 }
 
-struct AddNewSubFields {
-    let arrayOfFields = ["Цена", "Валюта", "Способ оплаты", "Дата оплаты", "Цикл", "Уведомить за", "Пробный период", "Тип"]
+class ImagesAndNames {
+    let imageName: String
+    let name: String
+    
+    init(imageName: String, name: String) {
+        self.imageName = imageName
+        self.name = name
+    }
+}
+
+struct Currenices {
+    let currencies = ["RUB - ₽", "USD - $", "EUR - €", "UAH - ₴", "AUD - AU$", "BRL - ₽", "CAD - $", "CNY - ¥", "CZK - Kč", "DKK - Dč", "GBP - £", "ILS - ₪", "INR - ₹", "JPY - ¥", "KRW - ₩", "KZT - ₸", "PHP - ₱", "PLN - zł", "TRY - ₺", "VND - ₫"]
 }
 
 class Content: Object {
     @objc dynamic var amount = 0.0
     @objc dynamic var currency: String?
-    @objc dynamic var paymentType: String?
-    @objc dynamic var paymentDate: Date?
+    @objc dynamic var note: String?
+    @objc dynamic var paymentDate: String?
     @objc dynamic var cycle: String?
     @objc dynamic var notifyMe: String?
     @objc dynamic var trial: Data?
     @objc dynamic var type: String?
+    @objc dynamic var name: String?
+    @objc dynamic var imageName: String?
     
-    convenience init(amount: Double, currency: String, paymentType: String, paymentDate: Date, cycle: String, notifyMe: String, trial: Data, type: String) {
+    convenience init(name: String, amount: Double, currency: String, note: String, paymentDate: String, cycle: String, notifyMe: String, trial: Data, type: String, imageName: String) {
         //инициализируем значения по умолчанию
         self.init()
+        self.name = name
         self.amount = amount
         self.currency = currency
-        self.paymentType = paymentType
+        self.note = note
         self.paymentDate = paymentDate
         self.cycle = cycle
         self.notifyMe = notifyMe
         self.trial = trial
         self.type = type
+        self.imageName = imageName
     }
     
 }

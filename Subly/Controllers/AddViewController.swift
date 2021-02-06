@@ -15,9 +15,10 @@ class AddViewController: UIViewController {
     let model = [ContentModel]()
     let data = Items()
     let addCell = AddCell()
-    var kek = ""
     var filteredData: [String] = []
     var searchController: UISearchController!
+    var subsArray = [ImagesAndNames]()
+    var currentArray = [ImagesAndNames]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,10 +30,98 @@ class AddViewController: UIViewController {
         tableView.tableFooterView = UIView()
         searchOutlet.delegate = self
         filteredData = data.arrayOfItemTitles
+        setupContent()
         print(filteredData)
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
+    }
+    
+    private func setupContent() {
+        subsArray.append(ImagesAndNames(imageName: "1Blocker", name: "1Blocker"))
+        subsArray.append(ImagesAndNames(imageName: "onePassword", name: "1Password"))
+        subsArray.append(ImagesAndNames(imageName: "500px-logo", name: "500px"))
+        subsArray.append(ImagesAndNames(imageName: "adGuard", name: "AdGuard VPN"))
+        subsArray.append(ImagesAndNames(imageName: "adobeCreativeCloud", name: "Adobe Creative Cloud"))
+        subsArray.append(ImagesAndNames(imageName: "amazonPrimeVideo", name: "Amazon Prime Video"))
+        subsArray.append(ImagesAndNames(imageName: "appleArcade", name: "Apple Arcade"))
+        subsArray.append(ImagesAndNames(imageName: "AppleDeveloper", name: "Apple Developer Program"))
+        subsArray.append(ImagesAndNames(imageName: "AppleFitness", name: "Apple Fitness+"))
+        subsArray.append(ImagesAndNames(imageName: "appleMusic", name: "Apple Music"))
+        subsArray.append(ImagesAndNames(imageName: "AppleNews", name: "Apple News+"))
+        subsArray.append(ImagesAndNames(imageName: "AppleOne", name: "Apple One"))
+        subsArray.append(ImagesAndNames(imageName: "AppleTV", name: "Apple TV+"))
+        subsArray.append(ImagesAndNames(imageName: "bookmate", name: "Bookmate"))
+        subsArray.append(ImagesAndNames(imageName: "codeAcademy", name: "Code Academy"))
+        subsArray.append(ImagesAndNames(imageName: "deezer", name: "Deezer"))
+        subsArray.append(ImagesAndNames(imageName: "disneyPlus", name: "Disney+"))
+        subsArray.append(ImagesAndNames(imageName: "dropBox", name: "DropBox"))
+        subsArray.append(ImagesAndNames(imageName: "eaAccess", name: "EA Access"))
+        subsArray.append(ImagesAndNames(imageName: "evernote", name: "Evernote"))
+        subsArray.append(ImagesAndNames(imageName: "figma", name: "Figma"))
+        subsArray.append(ImagesAndNames(imageName: "firebase", name: "Flickr"))
+        subsArray.append(ImagesAndNames(imageName: "geForce", name: "GeForce Now"))
+        subsArray.append(ImagesAndNames(imageName: "gitHub", name: "GitHub"))
+        subsArray.append(ImagesAndNames(imageName: "googleDrive", name: "Google Drive"))
+        subsArray.append(ImagesAndNames(imageName: "googleMusic", name: "Google Музыка"))
+        subsArray.append(ImagesAndNames(imageName: "googleFilms", name: "Google Фильмы"))
+        subsArray.append(ImagesAndNames(imageName: "googlePhoto", name: "Google Фото"))
+        subsArray.append(ImagesAndNames(imageName: "hbo", name: "HBO"))
+        subsArray.append(ImagesAndNames(imageName: "htmlAcademy", name: "HTML Academy"))
+        subsArray.append(ImagesAndNames(imageName: "javaRush", name: "Java Rush"))
+        subsArray.append(ImagesAndNames(imageName: "jira", name: "Jira"))
+        subsArray.append(ImagesAndNames(imageName: "kaspersky", name: "Kaspersky"))
+        subsArray.append(ImagesAndNames(imageName: "lineMusic", name: "LINE Music"))
+        subsArray.append(ImagesAndNames(imageName: "lightroom", name: "Lightroom"))
+        subsArray.append(ImagesAndNames(imageName: "megogo", name: "MEGOGO"))
+        subsArray.append(ImagesAndNames(imageName: "medium", name: "Medium"))
+        subsArray.append(ImagesAndNames(imageName: "oneDrive", name: "One Drive"))
+        subsArray.append(ImagesAndNames(imageName: "moreTv", name: "More.TV"))
+        subsArray.append(ImagesAndNames(imageName: "netflix", name: "Netflix"))
+        subsArray.append(ImagesAndNames(imageName: "nintendo", name: "Nintendo"))
+        subsArray.append(ImagesAndNames(imageName: "okko", name: "OKKO"))
+        subsArray.append(ImagesAndNames(imageName: "premier", name: "ТНТ Премьер"))
+        subsArray.append(ImagesAndNames(imageName: "pubg", name: "PUBG Mobile"))
+        subsArray.append(ImagesAndNames(imageName: "parallelsAccess", name: "Parallels Access"))
+        subsArray.append(ImagesAndNames(imageName: "parallelsDesktop", name: "Parallels Desktop"))
+        subsArray.append(ImagesAndNames(imageName: "playstationPlus", name: "Playstation Plus"))
+        subsArray.append(ImagesAndNames(imageName: "pocket", name: "Pocket"))
+        subsArray.append(ImagesAndNames(imageName: "puzzleEng", name: "Puzzle English"))
+        subsArray.append(ImagesAndNames(imageName: "start", name: "START"))
+        subsArray.append(ImagesAndNames(imageName: "sketch", name: "Sketch"))
+        subsArray.append(ImagesAndNames(imageName: "skyEng", name: "Sky Eng"))
+        subsArray.append(ImagesAndNames(imageName: "soundcloud", name: "SoundCloud"))
+        subsArray.append(ImagesAndNames(imageName: "spotify", name: "Spotify"))
+        subsArray.append(ImagesAndNames(imageName: "storytel", name: "Storytel"))
+        subsArray.append(ImagesAndNames(imageName: "tj", name: "TJournal Plus"))
+        subsArray.append(ImagesAndNames(imageName: "teleTwo", name: "Теле 2"))
+        subsArray.append(ImagesAndNames(imageName: "tinder", name: "Tinder"))
+        subsArray.append(ImagesAndNames(imageName: "tunnelBear", name: "Tunnel Bear"))
+        subsArray.append(ImagesAndNames(imageName: "twitch", name: "Twitch"))
+        subsArray.append(ImagesAndNames(imageName: "vkMusic", name: "VK Музыка"))
+        subsArray.append(ImagesAndNames(imageName: "vsco", name: "VSCO"))
+        subsArray.append(ImagesAndNames(imageName: "vimeo", name: "Vimeo"))
+        subsArray.append(ImagesAndNames(imageName: "xboxLive", name: "Xbox Live"))
+        subsArray.append(ImagesAndNames(imageName: "yota", name: "YOTA"))
+        subsArray.append(ImagesAndNames(imageName: "youtube", name: "YouTube"))
+        subsArray.append(ImagesAndNames(imageName: "youtubePremium", name: "YouTube Premium"))
+        subsArray.append(ImagesAndNames(imageName: "youtubeMusic", name: "YouTube Music"))
+        subsArray.append(ImagesAndNames(imageName: "zoom", name: "Zoom"))
+        subsArray.append(ImagesAndNames(imageName: "zvooq", name: "Zvooq"))
+        subsArray.append(ImagesAndNames(imageName: "iCloud", name: "iCloud"))
+        subsArray.append(ImagesAndNames(imageName: "ivi", name: "ivi"))
+        subsArray.append(ImagesAndNames(imageName: "amediateka", name: "Амедиатека"))
+        subsArray.append(ImagesAndNames(imageName: "beeline", name: "Билайн"))
+        subsArray.append(ImagesAndNames(imageName: "kinopoiskHd", name: "Кинопоиск HD"))
+        subsArray.append(ImagesAndNames(imageName: "mgts", name: "МГТС"))
+        subsArray.append(ImagesAndNames(imageName: "mts", name: "МТС"))
+        subsArray.append(ImagesAndNames(imageName: "megafon", name: "Мегафон"))
+        subsArray.append(ImagesAndNames(imageName: "rostelekom", name: "Ростекелом"))
+        subsArray.append(ImagesAndNames(imageName: "sber", name: "Сбер"))
+        subsArray.append(ImagesAndNames(imageName: "yandexDisk", name: "Яндекс Диск"))
+        subsArray.append(ImagesAndNames(imageName: "yandexPlus", name: "Яндекс плюс"))
+        
+        currentArray = subsArray
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -51,16 +140,25 @@ class AddViewController: UIViewController {
       }
    }
     
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newSub" {
             if let nav = segue.destination as? UINavigationController,
                let vc = nav.topViewController as? NewSubVC {
-                let sortedArray = filteredData.sorted(by: <)
+                //let sortedArray = filteredData.sorted(by: <)
                 //let sortedArray = data.arrayOfItemTitles.sorted(by: <)
                 let selectedRow = tableView.indexPathForSelectedRow!.section
-                vc.productName = sortedArray[selectedRow]
+                vc.productName = currentArray[selectedRow].name
+                vc.imageName = currentArray[selectedRow].imageName
             }
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }
 
@@ -68,7 +166,7 @@ class AddViewController: UIViewController {
 extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return filteredData.count
+        return currentArray.count
         //return data.arrayOfItemTitles.count
     }
     
@@ -96,7 +194,9 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AddCell.identifier) as! AddCell
-        cell.labelOutlet.text = filteredData.sorted(by: <)[indexPath.section]
+        cell.labelOutlet.text = currentArray[indexPath.section].name
+        cell.imageViewOutlet.image = UIImage(named: currentArray[indexPath.section].imageName)
+        //cell.labelOutlet.text = filteredData.sorted(by: <)[indexPath.section]
         //cell.labelOutlet.text = cell.arrayOfItemTitles.sorted(by: <)[indexPath.section]
         cell.labelOutlet?.font = .systemFont(ofSize: 19, weight: .semibold)
         cell.configureImageView()
@@ -151,17 +251,16 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
 extension AddViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filteredData = []
-        if searchText == "" {
-            filteredData = data.arrayOfItemTitles
-        } else {
-            for name in data.arrayOfItemTitles {
-                if name.lowercased().contains(searchText.lowercased()) {
-                    filteredData.append(name)
-                }
-            }
+        
+        guard !searchText.isEmpty else { currentArray = subsArray
+            tableView.reloadData()
+            return
         }
-        self.tableView.reloadData()
+        currentArray = subsArray.filter({ (item) -> Bool in
+            guard let text = searchBar.text else { return false }
+            return item.name.lowercased().contains(text.lowercased())
+        })
+        tableView.reloadData()
     }
     
     func updateSearchResults(for searchController: UISearchController) {

@@ -11,20 +11,19 @@ import RealmSwift
 class MainViewController: UIViewController {
     
     @IBOutlet var tableView: UITableView!
-    
-    private var data = [ContentModel]()
-    public var arrayOfSubs = [String]()
-    private let gradientLayer = CAGradientLayer()
     @IBInspectable private var startColor: UIColor?
     @IBInspectable private var endColor: UIColor?
     @IBOutlet weak var subNameOutlet: UILabel!
     @IBOutlet weak var daysLeftLabel: UILabel!
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
-    
     @IBOutlet weak var daysMonthLabel: UILabel!
     
     private var subs: Results<Content>!
+    private var data = [ContentModel]()
+    public var arrayOfSubs = [String]()
+    private let gradientLayer = CAGradientLayer()
+    private var imageName = ""
     
     
     private let noDataLabel: UILabel = {
@@ -71,19 +70,13 @@ class MainViewController: UIViewController {
     
     //принимаем данные обратно в первый сегвей
     @IBAction func unwindSegueToMain(_ segue: UIStoryboardSegue) {
-        guard let addNewTVC = segue.source as? AddNewTVC else {
-            print("no")
-            return
-        }
+        guard let addNewTVC = segue.source as? AddNewTVC else { return }
         addNewTVC.saveNewSub()
+        imageName = addNewTVC.imageName
         tableView.isHidden = false
         noDataLabel.isHidden = true
         //обновляем таблицу
         tableView.reloadData()
-    }
-    
-    @IBAction func unwindSegue2(_ segue: UIStoryboardSegue) {
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -122,8 +115,10 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.amountLabel.text = String(sub.amount)
         cell.currencyLabel.text = sub.currency
         cell.typeOfSub.text = sub.type
-        cell.subNameLabel.text = "sub"
-        cell.daysLeftLabel.text = "30"
+        cell.subNameLabel.text = sub.name
+        cell.daysLeftLabel.text = sub.paymentDate
+        cell.imageOutlet.layer.cornerRadius = cell.imageOutlet.frame.size.width / 2
+        cell.imageOutlet.image = UIImage(named: sub.imageName!)
         
         gradientLayer.colors = [UIColor.purple.cgColor, UIColor.link.cgColor]
         return cell
@@ -156,12 +151,22 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     //удаляем данные из таблицы
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //выбираем объект для удаления
-        let sub = subs[indexPath.row]
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
+        let sub = subs[indexPath.section]
+        let delete = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (contextualAction, view, boolValue) in
             StorageManager.deleteObject(sub)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.isHidden = true
-            self.noDataLabel.isHidden = false
+            
+            if self!.subs.isEmpty {
+                DispatchQueue.main.async {
+                    self!.tableView.isHidden = true
+                    self!.noDataLabel.isHidden = false
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self!.tableView.isHidden = false
+                    self!.noDataLabel.isHidden = true
+                }
+            }
         }
         return UISwipeActionsConfiguration(actions: [delete])
     }
