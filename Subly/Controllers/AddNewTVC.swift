@@ -21,11 +21,19 @@ class AddNewTVC: UITableViewController {
     private let formatter = DateFormatter()
     private var content: Content!
     private let datePicker = UIDatePicker()
-    private let pickerView = UIPickerView()
+    private let currencyPickerView = UIPickerView()
+    private let cyclePicker = UIPickerView()
     private let currencies = Currenices()
+    private let cyclesArray = Cycle()
+    private let type = Type()
+    private let notifyModel = NotifyMe()
+    private var pickerView = UIPickerView()
+    private let notifyMePicker = UIPickerView()
     
     @IBOutlet weak var trialButtonOutlet: UIButton!
-    @IBOutlet weak var amountTextField: UITextField!
+    @IBOutlet weak var amountTextField: UITextField! {
+        didSet { amountTextField?.addDoneCancelToolbar() }
+    }
     @IBOutlet weak var currencyTextField: UITextField!
     @IBOutlet weak var noteTextField: UITextField!
     @IBOutlet weak var paymentDateOutlet: UITextField!
@@ -45,14 +53,10 @@ class AddNewTVC: UITableViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         imageViewOutlet.layer.cornerRadius = imageViewOutlet.frame.size.width / 2
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
+        
         imageViewOutlet.image = UIImage(named: imageName)
-        nameTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        amountTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        currencyTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        paymentDateOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        cycleOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        notifyMeOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-        typeOfSubOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         saveButtonOutlet.isEnabled = false
         saveButtonOutlet.setTitle("Вы заполнили не все данные", for: .normal)
         saveButtonOutlet.alpha = 0.5
@@ -61,10 +65,24 @@ class AddNewTVC: UITableViewController {
         customSubButtonOutlet.layer.cornerRadius = 20
         createDatePicker()
         createPickerViewWithCurrencies()
-
+        cyclePickerView()
+        notifyMePickerView()
+        
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.dismissKeybord(_:)))
+                tap.numberOfTapsRequired = 1
+                self.view.addGestureRecognizer(tap)
+        
         
         trialButtonOutlet.setTitle("Нет", for: .normal)
     }
+    
+    @objc private func updatePicker(){
+        self.pickerView.reloadAllComponents()
+    }
+    
+    @objc private func dismissKeybord(_ sender:UITapGestureRecognizer) {
+        self.view.endEditing(true)
+}
     
     func saveNewSub() {
         amountToDoube = Double(amountTextField.text!)
@@ -99,17 +117,44 @@ class AddNewTVC: UITableViewController {
         }
     }
     
-    private func createPickerViewWithCurrencies() {
+    private func notifyMePickerView() {
+        notifyMePicker.delegate = self
+        notifyMePicker.dataSource = self
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-        
-        pickerView.dataSource = self
-        pickerView.delegate = self
-        
-        let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(currencyPressed))
+        let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(notifyMePressed))
+        //let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(notifyMePressed))
+        toolbar.setItems([done], animated: true)
+        notifyMeOutlet.inputAccessoryView = toolbar
+        notifyMeOutlet.inputView = notifyMePicker
+    }
+    
+    @objc private func notifyMePressed() {
+        let notifyModel = NotifyMe()
+        notifyMeOutlet.text = notifyModel.days[notifyMePicker.selectedRow(inComponent: 0)]
+        self.view.endEditing(true)
+    }
+    
+    private func cyclePickerView() {
+        cyclePicker.delegate = self
+        cyclePicker.dataSource = self
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(cyclePressed))
+        toolbar.setItems([done], animated: true)
+        cycleOutlet.inputAccessoryView = toolbar
+        cycleOutlet.inputView = cyclePicker
+    }
+    
+    private func createPickerViewWithCurrencies() {
+        currencyPickerView.delegate = self
+        currencyPickerView.dataSource = self
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(currencyPressed))
         toolbar.setItems([done], animated: true)
         currencyTextField.inputAccessoryView = toolbar
-        currencyTextField.inputView = pickerView
+        currencyTextField.inputView = currencyPickerView
     }
     
     private func createDatePicker() {
@@ -123,8 +168,8 @@ class AddNewTVC: UITableViewController {
         datePicker.locale = loc
         
         //done button
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-        toolbar.setItems([doneButton], animated: true)
+        let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(donePressed))
+        toolbar.setItems([done], animated: true)
         
         paymentDateOutlet.inputAccessoryView = toolbar
         paymentDateOutlet.inputView = datePicker
@@ -140,7 +185,14 @@ class AddNewTVC: UITableViewController {
     }
     
     @objc private func currencyPressed() {
-        currencyTextField.text = currencies.currencies[pickerView.selectedRow(inComponent: 0)]
+        currencyTextField.text = currencies.currencies[currencyPickerView.selectedRow(inComponent: 0)]
+        self.view.endEditing(true)
+    }
+    
+    @objc private func cyclePressed() {
+        let type = Type()
+        cycleOutlet.text = cyclesArray.cycleDays[cyclePicker.selectedRow(inComponent: 0)] + " " + type.type[cyclePicker.selectedRow(inComponent: 1)]
+        self.view.endEditing(true)
     }
     
     @IBAction func customSubPressed(_ sender: UIButton) {
@@ -174,11 +226,6 @@ class AddNewTVC: UITableViewController {
                 self.saveButtonOutlet.alpha = 0.5
             }
         }
-    }
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
     }
     
     
@@ -223,16 +270,69 @@ class AddNewTVC: UITableViewController {
 // MARK: - UIPickerViewDelegate, UIPickerViewDataSource
 extension AddNewTVC: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return currencies.currencies.count
+        
+        if currencyTextField.isFirstResponder {
+            return currencies.currencies.count
+        } else if cycleOutlet.isFirstResponder {
+            return cyclesArray.cycleDays.count
+        } else if notifyMeOutlet.isFirstResponder {
+            return notifyModel.days.count
+        }
+        return 0
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
+        
+        if currencyTextField.isFirstResponder {
+            return 1
+        } else if cycleOutlet.isFirstResponder {
+            return 2
+        } else if notifyMeOutlet.isFirstResponder {
+            return 1
+        } else {
+            return 0
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return currencies.currencies[row]
+        
+        if currencyTextField.isFirstResponder {
+            return currencies.currencies[row]
+        } else if cycleOutlet.isFirstResponder {
+            if component == 0 {
+                return cyclesArray.cycleDays[row]
+            } else if component == 1 {
+                return (row < type.type.count ? type.type[row].description : nil)
+            }
+        } else if notifyMeOutlet.isFirstResponder {
+            return notifyModel.days[row]
+        }
+        return ""
     }
-    
 }
+
+// MARK: - UITextField
+extension UITextField {
+    func addDoneCancelToolbar(onDone: (target: Any, action: Selector)? = nil, onCancel: (target: Any, action: Selector)? = nil) {
+        let onCancel = onCancel ?? (target: self, action: #selector(cancelButtonTapped))
+        let onDone = onDone ?? (target: self, action: #selector(doneButtonTapped))
+
+        let toolbar: UIToolbar = UIToolbar()
+        toolbar.barStyle = .default
+        toolbar.items = [
+            UIBarButtonItem(title: "Отмена", style: .plain, target: onCancel.target, action: onCancel.action),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+            UIBarButtonItem(title: "Готово", style: .done, target: onDone.target, action: onDone.action)
+        ]
+        toolbar.sizeToFit()
+
+        self.inputAccessoryView = toolbar
+    }
+
+    // Default actions:
+    @objc func doneButtonTapped() { self.resignFirstResponder() }
+    @objc func cancelButtonTapped() { self.resignFirstResponder() }
+}
+
+
 
