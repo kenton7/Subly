@@ -38,7 +38,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        subs = realm.objects(Content.self)
+        subs = realm.objects(Content.self).sorted(byKeyPath: "paymentDate", ascending: false)
         tableView.delegate = self
         tableView.tableFooterView = UIView()
         startListeningForConversations()
@@ -75,6 +75,7 @@ class MainViewController: UIViewController {
         imageName = addNewTVC.imageName
         tableView.isHidden = false
         noDataLabel.isHidden = true
+        subs.sorted(byKeyPath: "paymentDate", ascending: false)
         //обновляем таблицу
         tableView.reloadData()
     }
@@ -85,6 +86,15 @@ class MainViewController: UIViewController {
                                    y: (view.height - 300) / 2,
                                    width: view.width - 20,
                                    height: 100)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetail" {
+            guard let indexPath = tableView.indexPathForSelectedRow else { return }
+            let sub = subs[indexPath.row]
+            let vc = segue.destination as! AddNewTVC
+            vc.content = sub
+        }
     }
 }
 
@@ -151,7 +161,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     //удаляем данные из таблицы
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //выбираем объект для удаления
-        let sub = subs[indexPath.section]
+        let sub = subs[indexPath.row]
         let delete = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (contextualAction, view, boolValue) in
             StorageManager.deleteObject(sub)
             tableView.deleteRows(at: [indexPath], with: .automatic)

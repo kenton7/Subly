@@ -19,7 +19,7 @@ class AddNewTVC: UITableViewController {
     public var name = ""
     public var imageName = ""
     private let formatter = DateFormatter()
-    private var content: Content!
+    public var content: Content!
     private let datePicker = UIDatePicker()
     private let currencyPickerView = UIPickerView()
     private let cyclePicker = UIPickerView()
@@ -63,10 +63,20 @@ class AddNewTVC: UITableViewController {
         nameTextField.text = name
         saveButtonOutlet.layer.cornerRadius = 20
         customSubButtonOutlet.layer.cornerRadius = 20
+        setupEditScreen()
         createDatePicker()
         createPickerViewWithCurrencies()
         cyclePickerView()
         notifyMePickerView()
+        
+        //следим пустой текс фиелд или нет
+        amountTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        currencyTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        paymentDateOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        cycleOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        notifyMeOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        typeOfSubOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        
         
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.dismissKeybord(_:)))
                 tap.numberOfTapsRequired = 1
@@ -115,6 +125,34 @@ class AddNewTVC: UITableViewController {
             StorageManager.saveObject(newSub)
             print("ok")
         }
+    }
+    
+    private func setupEditScreen() {
+        if content != nil {
+            setupNavigationBar()
+            guard let data = content?.imageName, let image = UIImage(named: data) else { return }
+            imageViewOutlet.contentMode = .scaleAspectFit
+            imageViewOutlet.image = image
+            nameTextField.text = content?.name
+            paymentDateOutlet.text = content.paymentDate
+            currencyTextField.text = content.currency
+            noteTextField.text = content.note ?? ""
+            cycleOutlet.text = content.cycle
+            notifyMeOutlet.text = content.notifyMe
+            typeOfSubOutlet.text = content.type
+            amountTextField.text = String(content.amount)
+        }
+    }
+    
+    private func setupNavigationBar() {
+        if let topItem = navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        }
+        navigationItem.leftBarButtonItem = nil
+        title = content?.name
+        saveButtonOutlet.setTitle("Сохранить", for: .normal)
+        saveButtonOutlet.alpha = 1.0
+        saveButtonOutlet.isEnabled = true
     }
     
     private func notifyMePickerView() {

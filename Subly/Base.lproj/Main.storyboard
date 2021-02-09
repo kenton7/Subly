@@ -224,7 +224,7 @@
             <objects>
                 <tableViewController id="o3h-3P-e0k" customClass="AddNewTVC" customModule="Subly" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="X9r-kV-evN" customClass="AddNewSubTableView" customModule="Subly" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="742.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -911,6 +911,7 @@
                                     <outlet property="subNameLabel" destination="ufB-6r-ZTw" id="8K3-Rn-2mF"/>
                                     <outlet property="typeOfSub" destination="1yp-LB-3Js" id="vQU-nw-D1J"/>
                                     <outlet property="viewOutlet" destination="NQ1-S2-vDt" id="DhI-Fs-WIA"/>
+                                    <segue destination="o3h-3P-e0k" kind="showDetail" identifier="ShowDetail" id="MbI-Rb-Vpc"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -975,6 +976,9 @@
             <point key="canvasLocation" x="-681" y="778"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="MbI-Rb-Vpc"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape.fill" catalog="system" width="128" height="121"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
