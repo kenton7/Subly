@@ -68,15 +68,14 @@ class MainViewController: UIViewController {
         }
     }
     
-    //принимаем данные обратно в первый сегвей
+    ///принимаем данные обратно в первый сегвей
     @IBAction func unwindSegueToMain(_ segue: UIStoryboardSegue) {
         guard let addNewTVC = segue.source as? AddNewTVC else { return }
         addNewTVC.saveNewSub()
         imageName = addNewTVC.imageName
         tableView.isHidden = false
         noDataLabel.isHidden = true
-        subs.sorted(byKeyPath: "paymentDate", ascending: false)
-        //обновляем таблицу
+        ///обновляем таблицу
         tableView.reloadData()
     }
     
@@ -158,7 +157,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    //удаляем данные из таблицы
+    ///удаляем данные из таблицы
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //выбираем объект для удаления
         let sub = subs[indexPath.row]
