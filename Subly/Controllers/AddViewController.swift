@@ -28,6 +28,7 @@ class AddViewController: UIViewController {
         tableView.dataSource = self
         tableView.frame = self.view.bounds
         tableView.tableFooterView = UIView()
+        self.hideKeyboardWhenTappedAround()
         searchOutlet.delegate = self
         filteredData = data.arrayOfItemTitles
         setupContent()
@@ -118,7 +119,6 @@ class AddViewController: UIViewController {
         subsArray.append(ImagesAndNames(imageName: "puzzleEng", name: "Puzzle English"))
         subsArray.append(ImagesAndNames(imageName: "start", name: "START"))
         subsArray.append(ImagesAndNames(imageName: "sketch", name: "Sketch"))
-        subsArray.append(ImagesAndNames(imageName: "skyEng", name: "SkyEng"))
         subsArray.append(ImagesAndNames(imageName: "soundcloud", name: "SoundCloud"))
         subsArray.append(ImagesAndNames(imageName: "spotify", name: "Spotify"))
         subsArray.append(ImagesAndNames(imageName: "storytel", name: "Storytel"))
@@ -264,6 +264,14 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //self.searchOutlet.searchTextField.endEditing(true)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchOutlet.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchOutlet.endEditing(true)
     }
     
 //    // This method updates filteredData based on the text in the Search Box
