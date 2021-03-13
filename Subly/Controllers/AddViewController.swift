@@ -43,6 +43,14 @@ class AddViewController: UIViewController {
         animateTable()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        currentArray = subsArray
+        searchController.searchBar.searchTextField.text = ""
+        searchController = UISearchController(searchResultsController: nil)
+        tableView.reloadData()
+    }
+    
     ///анимация table view
     private func animateTable() {
         tableView.reloadData()
@@ -273,35 +281,9 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchOutlet.endEditing(true)
     }
-    
-//    // This method updates filteredData based on the text in the Search Box
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        // When there is no text, filteredData is the same as the original data
-//        // When user has entered text into the search box
-//        // Use the filter method to iterate over all items in the data array
-//        // For each item, return true if the item should be included and false if the
-//        // item should NOT be included
-//        filteredData = searchText.isEmpty ? data.arrayOfItemTitles : data.arrayOfItemTitles.filter({(dataString: String) -> Bool in
-//            // If dataItem matches the searchText, return true to include it
-//            return dataString.range(of: searchText, options: .caseInsensitive) != nil
-//        })
-//
-//        tableView.reloadData()
-//    }
 }
 
 // MARK: - UITabBarControllerDelegate
-//extension AddViewController: UITabBarControllerDelegate {
-//
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        let tabBarIndex = tabBarController.selectedIndex
-//        print(tabBarIndex)
-//        if tabBarIndex == 1 {
-//            self.tableView.setContentOffset(.init(x: 0, y: (-tableView.contentInset.top) - 50), animated: true)
-//        }
-//    }
-//}
-
 extension AddViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

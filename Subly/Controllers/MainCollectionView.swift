@@ -161,7 +161,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.viewOutlet.layer.cornerRadius = 20
         cell.layer.addSublayer(gradientLayer)
         
-        cell.amountLabel.text = String(sub.amount)
+        cell.amountLabel.text = sub.amount
         cell.currencyLabel.text = sub.currency
         cell.typeOfSub.text = sub.type
         cell.subNameLabel.text = sub.name
@@ -169,7 +169,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let newStringDate = formatter.string(from: sub.nextPayment ?? Date())
         //cell.daysLeftLabel.text = sub.nextPayment
         cell.daysLeftLabel.text = newStringDate
-        print(sub.nextPayment)
+        print(sub.nextPayment!)
         cell.imageOutlet.layer.cornerRadius = cell.imageOutlet.frame.size.width / 2
         cell.imageOutlet.image = UIImage(named: sub.imageName ?? "questionmark.circle.fill")
         

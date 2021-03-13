@@ -37,7 +37,7 @@ struct Currenices {
 }
 
 class Content: Object {
-    @objc dynamic var amount = 0.0
+    @objc dynamic var amount: String?
     @objc dynamic var currency: String?
     @objc dynamic var note: String?
     @objc dynamic var paymentDate: String?
@@ -49,7 +49,7 @@ class Content: Object {
     @objc dynamic var imageName: String?
     @objc dynamic var nextPayment: Date?
     
-    convenience init(name: String, amount: Double, currency: String, note: String, paymentDate: String, cycle: String, notifyMe: String, trial: Data, type: String, imageName: String, nextPayment: Date) {
+    convenience init(name: String, amount: String, currency: String, note: String, paymentDate: String, cycle: String, notifyMe: String, trial: Data, type: String, imageName: String, nextPayment: Date) {
         //инициализируем значения по умолчанию
         self.init()
         self.name = name
@@ -74,7 +74,13 @@ struct NotifyMe {
     let days = ["Не уведомлять", "В этот же день", "За 1 день", "За 2 дня", "За 3 дня", "За 5 дней", "за 7 дней", "За 10 дней", "За 14 дней"]
 }
 
-struct Type {
+struct TypeOfDate {
     let type = ["День", "Неделя", "Месяц", "Год"]
 }
+
+struct TypeOfSub {
+    let types = ["Индивидуальная", "Семейная", "Студенческая"]
+}
+
+
 

@@ -10,7 +10,6 @@ import UserNotifications
 
 class AddNewTVC: UITableViewController {
     
-    public var amountToDoube: Double?
     public var currency: String?
     public var paymentType: String?
     public var paymentDate: Date?
@@ -24,9 +23,11 @@ class AddNewTVC: UITableViewController {
     private let datePicker = UIDatePicker()
     private let currencyPickerView = UIPickerView()
     private let cyclePicker = UIPickerView()
+    private let subsTypesPickerView = UIPickerView()
     private let currencies = Currenices()
     private let cyclesArray = Cycle()
-    private let type = Type()
+    private let type = TypeOfDate()
+    private let typesOfSubs = TypeOfSub()
     private let notifyModel = NotifyMe()
     private var pickerView = UIPickerView()
     private let notifyMePicker = UIPickerView()
@@ -58,6 +59,7 @@ class AddNewTVC: UITableViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var imageViewOutlet: UIImageView!
     @IBOutlet weak var saveButtonOutlet: UIButton!
+    @IBOutlet weak var productNameOutlet: UILabel!
     
     
     override func viewDidLoad() {
@@ -76,15 +78,13 @@ class AddNewTVC: UITableViewController {
         saveButtonOutlet.setTitle("Вы заполнили не все данные", for: .normal)
         saveButtonOutlet.alpha = 0.5
         nameTextField.text = name
-        saveButtonOutlet.layer.cornerRadius = 20
-        customSubButtonOutlet.layer.cornerRadius = 20
-        setupEditScreen()
-        createDatePicker()
-        createPickerViewWithCurrencies()
-        cyclePickerView()
-        notifyMePickerView()
+        print("name = \(nameTextField.text!)")
+        productNameOutlet.text = nameTextField.text
+//        amountTextField.text = "0.0"
+//        typeOfSubOutlet.text = typesOfSubs.types[0]
+//        currencyTextField.text = currencies.currencies[0]
         
-        //следим пустой текс фиелд или нет
+        //следим пустой текст фиелд или нет
         amountTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         currencyTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         paymentDateOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
@@ -93,6 +93,15 @@ class AddNewTVC: UITableViewController {
         typeOfSubOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         nameTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
+        saveButtonOutlet.layer.cornerRadius = 20
+        customSubButtonOutlet.layer.cornerRadius = 20
+        setupEditScreen()
+        createDatePicker()
+        createPickerViewWithCurrencies()
+        cyclePickerView()
+        createPickerWithSubsTypes()
+        notifyMePickerView()
+        
         
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.dismissKeybord(_:)))
                 tap.numberOfTapsRequired = 1
@@ -100,6 +109,10 @@ class AddNewTVC: UITableViewController {
         
         
         trialButtonOutlet.setTitle("Нет", for: .normal)
+    }
+    
+    private func observersForTextFields() {
+        
     }
     
     @objc private func updatePicker(){
@@ -111,10 +124,8 @@ class AddNewTVC: UITableViewController {
 }
     
     func saveNewSub() {
-        amountToDoube = Double(amountTextField.text!)
-        
         let newSub = Content(name: nameTextField.text!,
-                             amount: amountToDoube!,
+                             amount: amountTextField.text!,
                              currency: currencyTextField.text!,
                              note: noteTextField.text!,
                              paymentDate: paymentDateOutlet.text!,
@@ -140,6 +151,7 @@ class AddNewTVC: UITableViewController {
                 content.notifyMe = newSub.notifyMe
                 content.trial = newSub.trial
                 content.type = newSub.type
+                content.name = newSub.name
             }
         } else {
             //сохраняем в базу
@@ -155,13 +167,14 @@ class AddNewTVC: UITableViewController {
             imageViewOutlet.contentMode = .scaleAspectFit
             imageViewOutlet.image = image
             nameTextField.text = content?.name
+            productNameOutlet.text = content.name
             paymentDateOutlet.text = content.paymentDate
             currencyTextField.text = content.currency
             noteTextField.text = content.note ?? ""
             cycleOutlet.text = content.cycle
             notifyMeOutlet.text = content.notifyMe
             typeOfSubOutlet.text = content.type
-            amountTextField.text = String(content.amount)
+            amountTextField.text = content.amount
         }
     }
     
@@ -173,6 +186,8 @@ class AddNewTVC: UITableViewController {
         title = content?.name
         paymentDateOutlet.text = content.paymentDate
         cycleOutlet.text = content.cycle
+        newDay = content.nextPayment
+        print(newDay!)
         let temp = (cycleOutlet.text?.components(separatedBy: " "))!
         day = Int(temp[0])
         print(day!)
@@ -188,15 +203,32 @@ class AddNewTVC: UITableViewController {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(notifyMePressed))
-        //let done = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(notifyMePressed))
         toolbar.setItems([done], animated: true)
         notifyMeOutlet.inputAccessoryView = toolbar
         notifyMeOutlet.inputView = notifyMePicker
     }
     
     @objc private func notifyMePressed() {
-        let notifyModel = NotifyMe()
         notifyMeOutlet.text = notifyModel.days[notifyMePicker.selectedRow(inComponent: 0)]
+        print(notifyMeOutlet.text!)
+        self.view.endEditing(true)
+    }
+    
+    private func createPickerWithSubsTypes() {
+        subsTypesPickerView.delegate = self
+        subsTypesPickerView.dataSource = self
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(typesSubsPressed))
+        toolbar.setItems([done], animated: true)
+        typeOfSubOutlet.inputAccessoryView = toolbar
+        typeOfSubOutlet.inputView = subsTypesPickerView
+    }
+    
+    @objc private func typesSubsPressed() {
+        typeOfSubOutlet.text = typesOfSubs.types[subsTypesPickerView.selectedRow(inComponent: 0)]
+        textFieldChanged()
+        print(typeOfSubOutlet.text!)
         self.view.endEditing(true)
     }
     
@@ -239,8 +271,6 @@ class AddNewTVC: UITableViewController {
         
         paymentDateOutlet.inputAccessoryView = toolbar
         paymentDateOutlet.inputView = datePicker
-        
-        
     }
     
     @objc private func donePressed() {
@@ -254,11 +284,11 @@ class AddNewTVC: UITableViewController {
     
     @objc private func currencyPressed() {
         currencyTextField.text = currencies.currencies[currencyPickerView.selectedRow(inComponent: 0)]
+        print(currencyTextField.text!)
         self.view.endEditing(true)
     }
     
     @objc private func cyclePressed() {
-        //let type = Type()
         cycleOutlet.text = cyclesArray.cycleDays[cyclePicker.selectedRow(inComponent: 0)] + " " + type.type[cyclePicker.selectedRow(inComponent: 1)]
         let temp = (cycleOutlet.text?.components(separatedBy: " "))!
         day = Int(temp[0])
@@ -289,10 +319,11 @@ class AddNewTVC: UITableViewController {
         default:
             return
         }
-        
+        print(cycleOutlet.text!)
         sendNotification()
         self.view.endEditing(true)
     }
+    
     
     func sendNotification() {
         let notificationContent = UNMutableNotificationContent()
@@ -332,20 +363,38 @@ class AddNewTVC: UITableViewController {
     }
     
     @objc private func textFieldChanged() {
-        if amountTextField.text?.isEmpty == false && currencyTextField.text?.isEmpty == false && paymentDateOutlet.text?.isEmpty == false && cycleOutlet.text?.isEmpty == false && notifyMeOutlet.text?.isEmpty == false && typeOfSubOutlet.text?.isEmpty == false && nameTextField.text?.isEmpty == false && nameTextField.text?.isEmpty == false {
-            saveButtonOutlet.isEnabled = true
-            DispatchQueue.main.async {
+
+        if nameTextField.text!.count > 0 && amountTextField.text!.count > 0 && currencyTextField.text!.count > 0 && paymentDateOutlet.text!.count > 0 && cycleOutlet.text!.count > 0 && notifyMeOutlet.text!.count > 0 && typeOfSubOutlet.text!.count > 0 {
+            print("Everything is filled in")
+                self.saveButtonOutlet.isEnabled = true
                 self.saveButtonOutlet.setTitle("Сохранить", for: .normal)
-                self.saveButtonOutlet.alpha = 1
-            }
+                self.saveButtonOutlet.alpha = 1.0
         } else {
-            saveButtonOutlet.isEnabled = false
-            DispatchQueue.main.async {
-                self.saveButtonOutlet.setTitle("Вы заполнили не все данные", for: .normal)
+            print("Something is empty")
+                self.saveButtonOutlet.isEnabled = false
+                self.saveButtonOutlet.setTitle("Вы не заполнили все поля", for: .normal)
                 self.saveButtonOutlet.alpha = 0.5
-            }
         }
     }
+        
+        
+
+//        if nameTextField.text?.isEmpty == true || amountTextField.text?.isEmpty == true || currencyTextField.text?.isEmpty == true || paymentDateOutlet.text?.isEmpty == true || cycleOutlet.text?.isEmpty == true || notifyMeOutlet.text?.isEmpty == true || typeOfSubOutlet.text?.isEmpty == true {
+//            print("Something is empty")
+//            DispatchQueue.main.async {
+//                self.saveButtonOutlet.isEnabled = false
+//                self.saveButtonOutlet.setTitle("Вы не заполнили все поля", for: .normal)
+//                self.saveButtonOutlet.alpha = 0.5
+//            }
+//        } else {
+//            print("Everything is filled in")
+//            DispatchQueue.main.async {
+//                self.saveButtonOutlet.isEnabled = true
+//                self.saveButtonOutlet.setTitle("Сохранить", for: .normal)
+//                self.saveButtonOutlet.alpha = 1.0
+//            }
+//        }
+   // }
     
     
     
@@ -396,6 +445,8 @@ extension AddNewTVC: UIPickerViewDelegate, UIPickerViewDataSource {
             return cyclesArray.cycleDays.count
         } else if notifyMeOutlet.isFirstResponder {
             return notifyModel.days.count
+        } else if typeOfSubOutlet.isFirstResponder {
+            return typesOfSubs.types.count
         }
         return 0
     }
@@ -407,6 +458,8 @@ extension AddNewTVC: UIPickerViewDelegate, UIPickerViewDataSource {
         } else if cycleOutlet.isFirstResponder {
             return 2
         } else if notifyMeOutlet.isFirstResponder {
+            return 1
+        } else if typeOfSubOutlet.isFirstResponder {
             return 1
         } else {
             return 0
@@ -425,13 +478,14 @@ extension AddNewTVC: UIPickerViewDelegate, UIPickerViewDataSource {
             }
         } else if notifyMeOutlet.isFirstResponder {
             return notifyModel.days[row]
+        } else if typeOfSubOutlet.isFirstResponder {
+            return typesOfSubs.types[row]
         }
         return ""
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        //print("kek")
         if cycleOutlet.isFirstResponder {
             if component == 0 {
                 print("component 0")
