@@ -24,6 +24,7 @@ class MainViewController: UIViewController {
     public var arrayOfSubs = [String]()
     private let gradientLayer = CAGradientLayer()
     private var imageName = ""
+    private var nextDebit = Date()
     
     
     private let noDataLabel: UILabel = {
@@ -41,6 +42,7 @@ class MainViewController: UIViewController {
         subs = realm.objects(Content.self).sorted(byKeyPath: "paymentDate", ascending: false)
         tableView.delegate = self
         tableView.tableFooterView = UIView()
+        
         startListeningForConversations()
     }
     
@@ -109,6 +111,8 @@ class MainViewController: UIViewController {
         imageName = addNewTVC.imageName
         tableView.isHidden = false
         noDataLabel.isHidden = true
+        
+        //nextDebit = addNewTVC.daysLeft
         ///обновляем таблицу
         tableView.reloadData()
     }
@@ -145,6 +149,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as! TableViewCell
         
         let sub = subs[indexPath.row]
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
         
         cell.layer.cornerRadius = 20
         cell.layer.shadowColor = UIColor.white.cgColor
@@ -159,9 +165,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.currencyLabel.text = sub.currency
         cell.typeOfSub.text = sub.type
         cell.subNameLabel.text = sub.name
-        cell.daysLeftLabel.text = sub.paymentDate
+        //cell.daysLeftLabel.text =
+        let newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+        //cell.daysLeftLabel.text = sub.nextPayment
+        cell.daysLeftLabel.text = newStringDate
+        print(sub.nextPayment)
         cell.imageOutlet.layer.cornerRadius = cell.imageOutlet.frame.size.width / 2
-        cell.imageOutlet.image = UIImage(named: sub.imageName!)
+        cell.imageOutlet.image = UIImage(named: sub.imageName ?? "questionmark.circle.fill")
         
         gradientLayer.colors = [UIColor.purple.cgColor, UIColor.link.cgColor]
         return cell
@@ -199,19 +209,36 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             StorageManager.deleteObject(sub)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             
-            if self!.subs.isEmpty {
+            guard let strongSelf = self else { return }
+            
+            if strongSelf.subs.isEmpty {
                 DispatchQueue.main.async {
-                    self!.tableView.isHidden = true
-                    self!.noDataLabel.isHidden = false
+                    strongSelf.tableView.isHidden = true
+                    strongSelf.noDataLabel.isHidden = false
                 }
             } else {
                 DispatchQueue.main.async {
-                    self!.tableView.isHidden = false
-                    self!.noDataLabel.isHidden = true
+                    strongSelf.tableView.isHidden = false
+                    strongSelf.noDataLabel.isHidden = true
                 }
             }
         }
         return UISwipeActionsConfiguration(actions: [delete])
+    }
+}
+
+// MARK: Date
+extension Date {
+    func adding(days: Int) -> Date {
+        return Calendar.current.date(byAdding: .day, value: days, to: self)!
+    }
+    
+    func adding(months: Int) -> Date {
+        return Calendar.current.date(byAdding: .month, value: months, to: self)!
+    }
+    
+    func adding(years: Int) -> Date {
+        return Calendar.current.date(byAdding: .year, value: years, to: self)!
     }
 }
 

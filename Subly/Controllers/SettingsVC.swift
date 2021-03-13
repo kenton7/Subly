@@ -22,7 +22,7 @@ class SettingsVC: UITableViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         self.tableView.rowHeight = 60
-        currencyTextField.text = currencies.currencies[0]
+        currencyTextField.text = (UserDefaults.standard.value(forKey: "currencySelected") as? String ?? currencies.currencies[0])
         
         NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
         createPickerViewWithCurrencies()
@@ -44,13 +44,19 @@ class SettingsVC: UITableViewController {
     }
     
     @objc private func currencyPressed() {
-        currencyTextField.text = currencies.currencies[currencyPickerView.selectedRow(inComponent: 0)]
+        UserDefaults.standard.set(currencies.currencies[currencyPickerView.selectedRow(inComponent: 0)], forKey: "currencySelected")
+        print("Валюта по умолчанию изменена")
+        currencyTextField.text = UserDefaults.standard.string(forKey: "currencySelected")
         self.view.endEditing(true)
     }
     
     @IBAction func notificationsSwitchAction(_ sender: UISwitch) {
-        print("ok")
-        
+        if sender.isOn {
+            UIApplication.shared.registerForRemoteNotifications()
+            print("Уведомления включены")
+        } else {
+            UIApplication.shared.unregisterForRemoteNotifications()
+        }
     }
     @IBAction func tapticSwitchAction(_ sender: UISwitch) {
         print("test")

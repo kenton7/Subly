@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class AddNewTVC: UITableViewController {
     
@@ -29,6 +30,19 @@ class AddNewTVC: UITableViewController {
     private let notifyModel = NotifyMe()
     private var pickerView = UIPickerView()
     private let notifyMePicker = UIPickerView()
+    let appDelegate = UIApplication.shared.delegate as? AppDelegate
+    private var secondsPerOneDay: Double = 86400
+    private let userNotificationCenter = UNUserNotificationCenter.current()
+    private let date = Date()
+    
+    private var userSelectedDailyCycle = 0.0
+    public var daysLeft = Date()
+    public var day: Int?
+    public var dayMonthWeekYear: String?
+    public var newDay: Date?
+    
+    var userDay = ""
+    var newDateString: String?
     
     @IBOutlet weak var trialButtonOutlet: UIButton!
     @IBOutlet weak var amountTextField: UITextField! {
@@ -51,6 +65,7 @@ class AddNewTVC: UITableViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        userNotificationCenter.delegate = self
         tableView.tableFooterView = UIView()
         imageViewOutlet.layer.cornerRadius = imageViewOutlet.frame.size.width / 2
         
@@ -76,6 +91,7 @@ class AddNewTVC: UITableViewController {
         cycleOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         notifyMeOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         typeOfSubOutlet.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        nameTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
         
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.dismissKeybord(_:)))
@@ -106,7 +122,9 @@ class AddNewTVC: UITableViewController {
                              notifyMe: notifyMeOutlet.text!,
                              trial: Data(),
                              type: typeOfSubOutlet.text!,
-                             imageName: imageName)
+                             imageName: imageName,
+                             nextPayment: newDay!)
+        print(newSub.nextPayment!)
         
         
         if content != nil {
@@ -115,6 +133,9 @@ class AddNewTVC: UITableViewController {
                 content.currency = newSub.currency
                 content.note = newSub.note
                 content.paymentDate = newSub.paymentDate
+                //content.paymentDate = paymentDateOutlet.text
+                content.nextPayment = newSub.nextPayment
+                print(content.nextPayment!)
                 content.cycle = newSub.cycle
                 content.notifyMe = newSub.notifyMe
                 content.trial = newSub.trial
@@ -150,6 +171,12 @@ class AddNewTVC: UITableViewController {
         }
         navigationItem.leftBarButtonItem = nil
         title = content?.name
+        paymentDateOutlet.text = content.paymentDate
+        cycleOutlet.text = content.cycle
+        let temp = (cycleOutlet.text?.components(separatedBy: " "))!
+        day = Int(temp[0])
+        print(day!)
+        print(paymentDateOutlet.text!)
         saveButtonOutlet.setTitle("Сохранить", for: .normal)
         saveButtonOutlet.alpha = 1.0
         saveButtonOutlet.isEnabled = true
@@ -178,6 +205,7 @@ class AddNewTVC: UITableViewController {
         cyclePicker.dataSource = self
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
+        
         let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(cyclePressed))
         toolbar.setItems([done], animated: true)
         cycleOutlet.inputAccessoryView = toolbar
@@ -196,7 +224,7 @@ class AddNewTVC: UITableViewController {
     }
     
     private func createDatePicker() {
-        //toolbar
+        ///toolbar
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         
@@ -205,7 +233,7 @@ class AddNewTVC: UITableViewController {
         let loc = Locale(identifier: "ru")
         datePicker.locale = loc
         
-        //done button
+        ///done button
         let done = UIBarButtonItem(title: "Готово", style: .done, target: nil, action: #selector(donePressed))
         toolbar.setItems([done], animated: true)
         
@@ -216,9 +244,11 @@ class AddNewTVC: UITableViewController {
     }
     
     @objc private func donePressed() {
-        formatter.dateStyle = .medium
+        formatter.dateStyle = .short
         formatter.timeStyle = .none
         paymentDateOutlet.text = formatter.string(from: datePicker.date)
+        print(datePicker.date)
+        daysLeft = datePicker.date.adding(days: day ?? 1)
         self.view.endEditing(true)
     }
     
@@ -228,9 +258,60 @@ class AddNewTVC: UITableViewController {
     }
     
     @objc private func cyclePressed() {
-        let type = Type()
+        //let type = Type()
         cycleOutlet.text = cyclesArray.cycleDays[cyclePicker.selectedRow(inComponent: 0)] + " " + type.type[cyclePicker.selectedRow(inComponent: 1)]
+        let temp = (cycleOutlet.text?.components(separatedBy: " "))!
+        day = Int(temp[0])
+        dayMonthWeekYear = temp[1]
+        let aDate = datePicker.date
+        var dateComponent = DateComponents()
+        
+        switch dayMonthWeekYear {
+        case "День":
+            dateComponent.day = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            print(newDay!)
+            print("day = \(day!)")
+        case "Неделя":
+            let oneWeek = 7
+            day! *= oneWeek
+            dateComponent.day = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            print("day = \(day!)")
+        case "Месяц":
+            dateComponent.month = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            print("new day = \(newDay!)")
+        case "Год":
+            dateComponent.year = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            print("one day = \(day!)")
+        default:
+            return
+        }
+        
+        sendNotification()
         self.view.endEditing(true)
+    }
+    
+    func sendNotification() {
+        let notificationContent = UNMutableNotificationContent()
+        
+        notificationContent.title = "test"
+        notificationContent.body = "Ваша подписка закончится совсем скоро"
+        notificationContent.sound = UNNotificationSound.default
+        //print(secondsPerOneDay)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: secondsPerOneDay,
+                                                        repeats: false)
+        let request = UNNotificationRequest(identifier: "notification",
+                                            content: notificationContent,
+                                            trigger: trigger)
+        
+        userNotificationCenter.add(request) { (error) in
+            if let error = error {
+                print("Notification Error: ", error.localizedDescription)
+            }
+        }
     }
     
     @IBAction func customSubPressed(_ sender: UIButton) {
@@ -251,7 +332,7 @@ class AddNewTVC: UITableViewController {
     }
     
     @objc private func textFieldChanged() {
-        if amountTextField.text?.isEmpty == false && currencyTextField.text?.isEmpty == false && paymentDateOutlet.text?.isEmpty == false && cycleOutlet.text?.isEmpty == false && notifyMeOutlet.text?.isEmpty == false && typeOfSubOutlet.text?.isEmpty == false && nameTextField.text?.isEmpty == false {
+        if amountTextField.text?.isEmpty == false && currencyTextField.text?.isEmpty == false && paymentDateOutlet.text?.isEmpty == false && cycleOutlet.text?.isEmpty == false && notifyMeOutlet.text?.isEmpty == false && typeOfSubOutlet.text?.isEmpty == false && nameTextField.text?.isEmpty == false && nameTextField.text?.isEmpty == false {
             saveButtonOutlet.isEnabled = true
             DispatchQueue.main.async {
                 self.saveButtonOutlet.setTitle("Сохранить", for: .normal)
@@ -347,6 +428,65 @@ extension AddNewTVC: UIPickerViewDelegate, UIPickerViewDataSource {
         }
         return ""
     }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        //print("kek")
+        if cycleOutlet.isFirstResponder {
+            if component == 0 {
+                print("component 0")
+                let selectDay = cyclesArray.cycleDays[row]
+                userDay = selectDay
+                UserDefaults.standard.set(userDay, forKey: "userDay")
+                print(userDay)
+                } else if component == 1 {
+                print("component 1")
+                let selectType = (row < type.type.count ? type.type[row].description : nil)
+                
+                switch selectType {
+                case "День":
+                    secondsPerOneDay = (Double(userDay) ?? 1.0) * 86400
+                    UserDefaults.standard.string(forKey: "daysSelected")
+                    print(secondsPerOneDay)
+                case "Неделя":
+                    print("week")
+                    //secondsPerOneDay = 86400.0
+                    secondsPerOneDay = 86400 * ((Double(userDay) ?? 1.0) * 7)
+                    print(secondsPerOneDay)
+                case "Месяц":
+                    print("month")
+                    secondsPerOneDay = 86400 * ((Double(userDay) ?? 1.0) * 30)
+                    UserDefaults.standard.set(true, forKey: "monthSelected")
+                    print("Секунды = \(secondsPerOneDay)")
+                case "Год":
+                    print("year")
+                    secondsPerOneDay = 86400 * ((Double(userDay) ?? 1.0) * 365)
+                    print(secondsPerOneDay)
+                default:
+                    break
+                }
+            }
+        UserDefaults.standard.set(secondsPerOneDay, forKey: "userSelectedDailyCycle")
+        
+//        //let date = Date(timeIntervalSinceNow: 5)
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: userSelectedDailyCycle, repeats: false)
+//        let identifier = "Local Notification"
+//        let content = UNMutableNotificationContent() // Содержимое уведомления
+//
+//        content.title = "TEST"
+//        content.body = "Ваша подписка закончится совсем скоро"
+//        content.sound = UNNotificationSound.default
+//
+//        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+//
+//        userNotificationCenter.add(request) { (error) in
+//            if let error = error {
+//                print("Error \(error.localizedDescription)")
+//            }
+//            print("Уведомление будет показано через \(self.userDay) секунд")
+//            }
+        }
+    }
 }
 
 // MARK: - UITextField
@@ -370,6 +510,16 @@ extension UITextField {
     // Default actions:
     @objc func doneButtonTapped() { self.resignFirstResponder() }
     @objc func cancelButtonTapped() { self.resignFirstResponder() }
+}
+
+extension AddNewTVC: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound])
+    }
 }
 
 

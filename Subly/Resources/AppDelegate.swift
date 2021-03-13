@@ -8,15 +8,17 @@
 import UIKit
 import CoreData
 import RealmSwift
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
+    let notificationCenter = UNUserNotificationCenter.current()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
        
-        let schemaVersion: UInt64 = 9
+        let schemaVersion: UInt64 = 11
         //создаем новую конфигурацию
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
@@ -41,7 +43,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10,
                                                                          weight: .semibold)]
         appearance.setTitleTextAttributes(attributes as [NSAttributedString.Key : Any], for: .normal)
+        
+        ///Уведомления
+        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+        ///запршиваем у юзера разрешение на отправку уведомлений
+        notificationCenter.requestAuthorization(options: options) {
+            (didAllow, error) in
+            if !didAllow {
+                print("User has declined notifications")
+            }
+        }
+        
+        ///трекаем, если юзер изменил доступ к уведомлениям в настройках
+        notificationCenter.getNotificationSettings { (settings) in
+          if settings.authorizationStatus != .authorized {
+            // Notifications not allowed
+          }
+        }
         return true
+    }
+    
+    ///отправка уведомления
+     func scheduleNotification(notificationType: String) {
+        
+        let content = UNMutableNotificationContent() // Содержимое уведомления
+        
+        let date = Date(timeIntervalSinceNow: 5)
+        //let triggerDaily = Calendar.current.dateComponents([.hour,.minute,.second,], from: date)
+        
+        content.title = notificationType
+        content.body = "Ваша подписка закончится совсем скоро"
+        content.sound = UNNotificationSound.default
+        
+        let identifier = "Local Notification"
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5,
+                                                        repeats: false)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+
+        notificationCenter.add(request) { (error) in
+            if let error = error {
+                print("Error \(error.localizedDescription)")
+            }
+        }
+        print("Функция вызвана")
     }
 
     // MARK: UISceneSession Lifecycle

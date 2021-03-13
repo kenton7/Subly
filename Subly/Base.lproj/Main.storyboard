@@ -825,17 +825,17 @@
                                                                 <constraint firstAttribute="height" constant="40" id="9GK-mh-dmL"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Истекает через 1 месяц" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8K-NP-H1K">
-                                                            <rect key="frame" x="5" y="134" width="197.5" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11 сентября" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8K-NP-H1K">
+                                                            <rect key="frame" x="134" y="134" width="97" height="21"/>
                                                             <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="5zJ-ZX-CyC"/>
                                                                 <constraint firstAttribute="height" constant="21" id="DdV-h3-h8l"/>
-                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="174" id="Wv1-gV-IBf"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="269.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MoA-hb-DlV">
@@ -845,7 +845,7 @@
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="72" id="tJm-Do-ygF"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="За 1 месяц" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yp-LB-3Js">
@@ -855,7 +855,7 @@
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="72" id="xSu-P3-QBa"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GCM-gv-2gJ">
@@ -865,7 +865,16 @@
                                                                 <constraint firstAttribute="height" constant="27" id="VlC-e0-nJW"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Новый платёж:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uE2-y5-TvI">
+                                                            <rect key="frame" x="5" y="134.5" width="126" height="20.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="126" id="mor-wE-6Gd"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -874,16 +883,18 @@
                                                         <constraint firstItem="ufB-6r-ZTw" firstAttribute="top" secondItem="Fno-ba-dNR" secondAttribute="bottom" constant="8" symbolic="YES" id="02E-V7-1re"/>
                                                         <constraint firstItem="Fno-ba-dNR" firstAttribute="top" secondItem="NQ1-S2-vDt" secondAttribute="top" constant="9" id="6at-M1-RNu"/>
                                                         <constraint firstItem="MoA-hb-DlV" firstAttribute="leading" secondItem="GCM-gv-2gJ" secondAttribute="trailing" constant="10" id="8eI-ys-vkY"/>
-                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="e8K-NP-H1K" secondAttribute="trailing" constant="20" symbolic="YES" id="BZH-2U-ZeS"/>
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1yp-LB-3Js" secondAttribute="trailing" constant="20" symbolic="YES" id="Hmp-OU-ScZ"/>
                                                         <constraint firstItem="ufB-6r-ZTw" firstAttribute="leading" secondItem="NQ1-S2-vDt" secondAttribute="leading" constant="5" id="IMh-SR-3Di"/>
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ufB-6r-ZTw" secondAttribute="trailing" constant="20" symbolic="YES" id="JMZ-y2-xn7"/>
-                                                        <constraint firstItem="e8K-NP-H1K" firstAttribute="leading" secondItem="NQ1-S2-vDt" secondAttribute="leading" constant="5" id="M52-SW-gff"/>
+                                                        <constraint firstItem="uE2-y5-TvI" firstAttribute="leading" secondItem="NQ1-S2-vDt" secondAttribute="leading" constant="5" id="Nq3-iD-xOW"/>
+                                                        <constraint firstItem="GCM-gv-2gJ" firstAttribute="baseline" secondItem="MoA-hb-DlV" secondAttribute="baseline" id="Qmd-He-Qxp"/>
                                                         <constraint firstItem="1yp-LB-3Js" firstAttribute="leading" secondItem="MoA-hb-DlV" secondAttribute="trailing" constant="8" symbolic="YES" id="WpO-uH-obd"/>
                                                         <constraint firstItem="GCM-gv-2gJ" firstAttribute="leading" secondItem="NQ1-S2-vDt" secondAttribute="leading" constant="5" id="i0k-pt-gjf"/>
                                                         <constraint firstItem="e8K-NP-H1K" firstAttribute="top" secondItem="ufB-6r-ZTw" secondAttribute="bottom" constant="8" symbolic="YES" id="ioP-bG-lcT"/>
                                                         <constraint firstItem="Fno-ba-dNR" firstAttribute="leading" secondItem="NQ1-S2-vDt" secondAttribute="leading" constant="5" id="lfO-Oy-Hab"/>
-                                                        <constraint firstItem="GCM-gv-2gJ" firstAttribute="top" secondItem="e8K-NP-H1K" secondAttribute="bottom" constant="8" symbolic="YES" id="mGy-WP-4F4"/>
+                                                        <constraint firstItem="e8K-NP-H1K" firstAttribute="leading" secondItem="uE2-y5-TvI" secondAttribute="trailing" constant="3" id="sdc-h1-JXw"/>
+                                                        <constraint firstItem="GCM-gv-2gJ" firstAttribute="top" secondItem="uE2-y5-TvI" secondAttribute="bottom" constant="8" symbolic="YES" id="t7w-V3-VN9"/>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="e8K-NP-H1K" secondAttribute="trailing" constant="20" symbolic="YES" id="wbE-fZ-QZM"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="startColor">
@@ -1212,10 +1223,10 @@
         <segue reference="MbI-Rb-Vpc"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="gearshape.fill" catalog="system" width="128" height="121"/>
-        <image name="house.fill" catalog="system" width="128" height="106"/>
-        <image name="music.note" catalog="system" width="97" height="128"/>
-        <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="gearshape.fill" catalog="system" width="32" height="32"/>
+        <image name="house.fill" catalog="system" width="32" height="32"/>
+        <image name="music.note" catalog="system" width="32" height="32"/>
+        <image name="plus.circle.fill" catalog="system" width="32" height="32"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -45,6 +45,7 @@
 		0960157B25C6FBD1002FCD94 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		09B7926225D4415600B11A72 /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		09B7926525D4560200B11A72 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		09B7926825D7FD2E00B11A72 /* Subly.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Subly.entitlements; sourceTree = "<group>"; };
 		09B8151A25C1DECA00AC9D58 /* Subly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Subly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09B8151D25C1DECA00AC9D58 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09B8151F25C1DECA00AC9D58 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -135,6 +136,7 @@
 		09B8151C25C1DECA00AC9D58 /* Subly */ = {
 			isa = PBXGroup;
 			children = (
+				09B7926825D7FD2E00B11A72 /* Subly.entitlements */,
 				095F3A4025C1E80800497BC2 /* Resources */,
 				095F3A3B25C1E53200497BC2 /* Model */,
 				095F3A3625C1E40000497BC2 /* Views */,
@@ -443,6 +445,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Subly/Subly.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 44S95Z526W;
 				INFOPLIST_FILE = Subly/Info.plist;
@@ -463,6 +466,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Subly/Subly.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 44S95Z526W;
 				INFOPLIST_FILE = Subly/Info.plist;

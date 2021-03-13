@@ -24,7 +24,6 @@ class TableViewCell: UITableViewCell {
     public func configure(with model: ContentModel) {
         subNameLabel.text = model.subName
         subNameLabel.font = UIFont.systemFont(ofSize: 21, weight: .semibold)
-        //subNameLabel.font = .systemFont(ofSize: <#T##CGFloat#>, weight: <#T##UIFont.Weight#>)
         
         viewOutlet.layer.cornerRadius = 20.0
             viewOutlet.layer.shadowColor = UIColor.gray.cgColor
