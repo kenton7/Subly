@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import MobileCoreServices
 
 class MainViewController: UIViewController {
     
@@ -19,9 +20,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var daysMonthLabel: UILabel!
     
+    
     private var subs: Results<Content>!
     private var data = [ContentModel]()
-    public var arrayOfSubs = [String]()
+    public var arrayOfSubs = [String?]()
     private let gradientLayer = CAGradientLayer()
     private var imageName = ""
     private var nextDebit = Date()
@@ -41,8 +43,9 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         subs = realm.objects(Content.self).sorted(byKeyPath: "paymentDate", ascending: false)
         tableView.delegate = self
+        tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        
+  
         startListeningForConversations()
     }
     
@@ -89,7 +92,7 @@ class MainViewController: UIViewController {
     
     private func startListeningForConversations() {
     
-        guard !subs.isEmpty else {
+        guard !subs!.isEmpty else {
             self.tableView.isHidden = false
             self.noDataLabel.isHidden = true
             view.addSubview(noDataLabel)
@@ -128,7 +131,7 @@ class MainViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let sub = subs[indexPath.row]
+            let sub = subs![indexPath.row]
             let vc = segue.destination as! AddNewTVC
             vc.content = sub
         }
@@ -137,9 +140,11 @@ class MainViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return subs.count
+        return subs!.count
         //return arrayOfSubs.count
         //return 1
     }
@@ -148,7 +153,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         //let model = data[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as! TableViewCell
         
-        let sub = subs[indexPath.row]
+        let sub = subs![indexPath.row]
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         
@@ -204,14 +209,14 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     ///удаляем данные из таблицы
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //выбираем объект для удаления
-        let sub = subs[indexPath.row]
+        let sub = subs![indexPath.row]
         let delete = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (contextualAction, view, boolValue) in
             StorageManager.deleteObject(sub)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             
             guard let strongSelf = self else { return }
             
-            if strongSelf.subs.isEmpty {
+            if strongSelf.subs!.isEmpty {
                 DispatchQueue.main.async {
                     strongSelf.tableView.isHidden = true
                     strongSelf.noDataLabel.isHidden = false
@@ -253,6 +258,7 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
+
 
 
 

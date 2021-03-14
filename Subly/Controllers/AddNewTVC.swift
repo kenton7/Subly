@@ -78,7 +78,7 @@ class AddNewTVC: UITableViewController {
         saveButtonOutlet.setTitle("Вы заполнили не все данные", for: .normal)
         saveButtonOutlet.alpha = 0.5
         nameTextField.text = name
-        print("name = \(nameTextField.text!)")
+        print("name = \(nameTextField.text)")
         productNameOutlet.text = nameTextField.text
 //        amountTextField.text = "0.0"
 //        typeOfSubOutlet.text = typesOfSubs.types[0]
@@ -124,6 +124,41 @@ class AddNewTVC: UITableViewController {
 }
     
     func saveNewSub() {
+        
+        let temp = (cycleOutlet.text?.components(separatedBy: " "))!
+        day = Int(temp[0])
+        print(temp[1])
+        print(day!)
+        
+        
+        
+        dayMonthWeekYear = temp[1]
+        print(dayMonthWeekYear)
+        formatter.dateFormat = "dd-MM-yyyy"
+        let date = formatter.date(from: paymentDateOutlet.text!)
+        var dateComponent = DateComponents()
+        //let date = formatter.date(from: paymentDateOutlet.text!)
+        print("date = \(date!)")
+        
+                if dayMonthWeekYear == "День" {
+                    dateComponent.day = day
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+                    print(newDay)
+                } else if dayMonthWeekYear == "Неделя" {
+                    let oneWeek = 7
+                    day! *= oneWeek
+                    dateComponent.day = day
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+                } else if dayMonthWeekYear == "Месяц" {
+                    dateComponent.month = day
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+                } else if dayMonthWeekYear == "Год" {
+                    dateComponent.year = day
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+                } else {
+                    print("Error")
+                }
+        
         let newSub = Content(name: nameTextField.text!,
                              amount: amountTextField.text!,
                              currency: currencyTextField.text!,
@@ -187,10 +222,68 @@ class AddNewTVC: UITableViewController {
         paymentDateOutlet.text = content.paymentDate
         cycleOutlet.text = content.cycle
         newDay = content.nextPayment
-        print(newDay!)
+        //print(newDay!)
         let temp = (cycleOutlet.text?.components(separatedBy: " "))!
         day = Int(temp[0])
+        print(temp[1])
         print(day!)
+//
+//
+//
+//        dayMonthWeekYear = temp[1]
+//        print(dayMonthWeekYear)
+//        formatter.dateFormat = "dd-MM-yyyy"
+//        let date = formatter.date(from: paymentDateOutlet.text!)
+//        var dateComponent = DateComponents()
+//        dateComponent.day = day
+//        //let date = formatter.date(from: paymentDateOutlet.text!)
+//        print("date = \(date!)")
+//
+//        if dayMonthWeekYear == "День" {
+//            dateComponent.day = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//        } else if dayMonthWeekYear == "Неделя" {
+//            let oneWeek = 7
+//            day! *= oneWeek
+//            dateComponent.day = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//        } else if dayMonthWeekYear == "Месяц" {
+//            dateComponent.month = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//        } else if dayMonthWeekYear == "Год" {
+//            dateComponent.year = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//        } else {
+//            print("Error")
+//        }
+//
+//        switch dayMonthWeekYear {
+//        case "День":
+//            dateComponent.day = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//            print(newDay!)
+//            print("day = \(day!)")
+//        case "Неделя":
+//            let oneWeek = 7
+//            day! *= oneWeek
+//            dateComponent.day = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//            print("day = \(day!)")
+//        case "Месяц":
+//            dateComponent.month = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//            print("new day = \(newDay!)")
+//        case "Год":
+//            dateComponent.year = day
+//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+//            print("one day = \(day!)")
+//        default:
+//            return
+//        }
+        
+        
+        
+        
         print(paymentDateOutlet.text!)
         saveButtonOutlet.setTitle("Сохранить", for: .normal)
         saveButtonOutlet.alpha = 1.0
@@ -374,7 +467,6 @@ class AddNewTVC: UITableViewController {
                 self.saveButtonOutlet.isEnabled = false
                 self.saveButtonOutlet.setTitle("Вы не заполнили все поля", for: .normal)
                 self.saveButtonOutlet.alpha = 0.5
-        }
     }
         
         
@@ -394,7 +486,7 @@ class AddNewTVC: UITableViewController {
 //                self.saveButtonOutlet.alpha = 1.0
 //            }
 //        }
-   // }
+}
     
     
     
