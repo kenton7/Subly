@@ -12,7 +12,7 @@
         <scene sceneID="eU8-LS-xiG">
             <objects>
                 <tabBarController id="eC5-dA-y0n" customClass="TabBarController" customModule="Subly" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DjN-no-V5w">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DjN-no-V5w" customClass="TabBarView" customModule="Subly" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -31,7 +31,7 @@
         <scene sceneID="QOz-Pi-0Ji">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vek-aO-r6r" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="Подписки" image="house.fill" catalog="system" selectedImage="house.fill" id="DWZ-Y4-Onu"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Подписки" image="icons8-home-32" selectedImage="icons8-home-32" id="DWZ-Y4-Onu"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="6NO-LU-kLK">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
@@ -50,7 +50,9 @@
         <scene sceneID="cGt-FR-U8q">
             <objects>
                 <navigationController id="mlV-3C-lSg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" title="Добавить" image="plus.circle.fill" catalog="system" selectedImage="plus.circle.fill" id="gJo-tt-Phe"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="Добавить" image="icons8-plus-64" selectedImage="icons8-plus-64" id="gJo-tt-Phe">
+                        <inset key="imageInsets" minX="0.0" minY="-25" maxX="0.0" maxY="0.0"/>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="cab-SJ-2fA">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -243,7 +245,7 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O0E-ZM-a5G">
                                                             <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
                                                             <subviews>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FjC-0l-Bpx">
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FjC-0l-Bpx">
                                                                     <rect key="frame" x="172.5" y="8" width="69" height="69"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="69" id="arX-3o-MsV"/>
@@ -821,7 +823,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NQ1-S2-vDt" customClass="Gradient" customModule="Subly" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="374" height="198"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music.note" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Fno-ba-dNR">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music.note" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Fno-ba-dNR">
                                                             <rect key="frame" x="5" y="9.5" width="70" height="68"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="69" id="kGV-uh-EJL"/>
@@ -1294,7 +1296,7 @@
         <scene sceneID="Aew-qP-fsK">
             <objects>
                 <navigationController id="NB7-Py-cLo" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="3" title="Настройки" image="gearshape.fill" catalog="system" selectedImage="gearshape.fill" id="KTD-Hs-2KZ"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="Настройки" image="icons8-settings-32-2" selectedImage="icons8-settings-32-2" id="KTD-Hs-2KZ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="hwF-b8-MZe">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1312,10 +1314,10 @@
         <segue reference="MbI-Rb-Vpc"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="gearshape.fill" catalog="system" width="128" height="121"/>
-        <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="icons8-home-32" width="32" height="32"/>
+        <image name="icons8-plus-64" width="64" height="64"/>
+        <image name="icons8-settings-32-2" width="32" height="32"/>
         <image name="music.note" catalog="system" width="97" height="128"/>
-        <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

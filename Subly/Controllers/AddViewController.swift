@@ -46,8 +46,9 @@ class AddViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         currentArray = subsArray
-        searchController.searchBar.searchTextField.text = ""
-        searchController = UISearchController(searchResultsController: nil)
+        //searchController.searchBar.searchTextField.text = ""
+        //searchController = UISearchController(searchResultsController: nil)
+        animateTable()
         tableView.reloadData()
     }
     

@@ -16,6 +16,9 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let prominentTabBar = self.tabBar as! TabBarView
+            prominentTabBar.prominentButtonCallback = prominentTabTaped
+        
         let firstItemView = self.tabBar.subviews[0]
         let secondItemView = self.tabBar.subviews[1]
         let thirdItemView = self.tabBar.subviews[2]
@@ -28,6 +31,10 @@ class TabBarController: UITabBarController {
         
         self.thirdItemImageView = thirdItemView.subviews.first as? UIImageView
         self.thirdItemImageView.contentMode = .center
+    }
+    
+    func prominentTabTaped() {
+        selectedIndex = (tabBar.items?.count ?? 0)/2
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {

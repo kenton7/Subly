@@ -116,7 +116,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         if subs!.isEmpty {
             DispatchQueue.main.async {
-                self.tableView.setEmptyView(title: "Вы не добавили ни одной подписки.", message: "Нажмите на кнопку «Добавить» внизу", messageImage: UIImage(named: "icons8-hand-down-48")!)
+                self.tableView.setEmptyView(title: "У вас нет ни одной подписки.", message: "Нажмите на кнопку «Добавить» внизу", messageImage: UIImage(named: "icons8-hand-down-48")!)
             }
         } else {
             tableView.restore()
@@ -193,7 +193,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             
             if strongSelf.subs!.isEmpty {
                 DispatchQueue.main.async {
-                    strongSelf.tableView.setEmptyView(title: "Вы не добавили ни одной подписки.", message: "Нажмите на кнопку «Добавить» внизу", messageImage: UIImage(named: "icons8-hand-down-48")!)
+                    strongSelf.tableView.setEmptyView(title: "У Вас нет ни одной подписки.", message: "Нажмите на кнопку «Добавить» внизу", messageImage: UIImage(named: "icons8-hand-down-48")!)
                 }
             } else {
                 DispatchQueue.main.async {
