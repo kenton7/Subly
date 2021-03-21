@@ -15,10 +15,12 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var viewOutlet: UIView!
     @IBOutlet weak var imageOutlet: UIImageView!
     @IBOutlet weak var subNameLabel: UILabel!
-    @IBOutlet weak var daysLeftLabel: UILabel!
+    @IBOutlet weak var nextPaymentLabel: UILabel!
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var typeOfSub: UILabel!
+    @IBOutlet weak var progress: UIProgressView!
+    
     
     
     public func configure(with model: ContentModel) {

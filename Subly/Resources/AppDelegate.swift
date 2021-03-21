@@ -63,30 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    ///отправка уведомления
-     func scheduleNotification(notificationType: String) {
-        
-        let content = UNMutableNotificationContent() // Содержимое уведомления
-        
-        let date = Date(timeIntervalSinceNow: 5)
-        //let triggerDaily = Calendar.current.dateComponents([.hour,.minute,.second,], from: date)
-        
-        content.title = notificationType
-        content.body = "Ваша подписка закончится совсем скоро"
-        content.sound = UNNotificationSound.default
-        
-        let identifier = "Local Notification"
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5,
-                                                        repeats: false)
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
-        notificationCenter.add(request) { (error) in
-            if let error = error {
-                print("Error \(error.localizedDescription)")
-            }
-        }
-        print("Функция вызвана")
-    }
 
     // MARK: UISceneSession Lifecycle
 

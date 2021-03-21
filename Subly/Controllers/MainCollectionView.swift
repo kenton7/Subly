@@ -8,6 +8,7 @@
 import UIKit
 import RealmSwift
 import MobileCoreServices
+import UserNotifications
 
 class MainViewController: UIViewController {
     
@@ -15,10 +16,12 @@ class MainViewController: UIViewController {
     @IBInspectable private var startColor: UIColor?
     @IBInspectable private var endColor: UIColor?
     @IBOutlet weak var subNameOutlet: UILabel!
-    @IBOutlet weak var daysLeftLabel: UILabel!
+    @IBOutlet weak var nextPaymentLabel: UILabel!
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var daysMonthLabel: UILabel!
+    @IBOutlet weak var progress: UIProgressView!
+    
     
     
     private var subs: Results<Content>!
@@ -27,7 +30,32 @@ class MainViewController: UIViewController {
     private let gradientLayer = CAGradientLayer()
     private var imageName = ""
     private var nextDebit = Date()
+    private let formatter = DateFormatter()
+    private let content = Content()
+    private let userNotificationCenter = UNUserNotificationCenter.current()
     
+    let progressBarView = ProgressBarView()
+    var progressValue: Float = 0
+    var timer: Timer?
+    let currentDate = Date()
+    var endDate: Date?
+    var userSetDate: Date?
+    var newDateString: String?
+    var newStringDate: String?
+    let appDelegate = UIApplication.shared.delegate as? AppDelegate
+    
+    var newDay = Date()
+
+//    let progressBarView = ProgressBarView()
+//    var progressValue: Float = 0
+//    var timer: Timer?
+//    let currentDate = Date()
+//    var endDate: Date?
+//    var userSetDate: Date?
+//    private let formatter = DateFormatter()
+//    private let content = Content()
+//    var endTimeInterval = TimeInterval()
+//    var new: Double?
     
 //    private let noDataLabel: UILabel = {
 //        let label = UILabel()
@@ -45,6 +73,17 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        
+        //updateProgress()
+//        let stringDate = formatter.string(from: Date())
+//        userSetDate = formatter.date(from: stringDate)
+//        
+//        endTimeInterval = currentDate.timeIntervalSince(userSetDate!)
+//        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+//        endDate = content.nextPayment ?? Date()
+//        //timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress(with:)), userInfo: nil, repeats: true)
+//        
+//        //endDate = content.nextPayment ?? Date()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,6 +95,42 @@ class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         animateTable()
     }
+    
+//    func updateProgress() {
+//        //let startTimeInterval = Date.timeIntervalSince(userSetDate!)
+//        formatter.dateFormat = "dd-MM-yyyy"
+//        let todaysDate = Date()
+//        let stringDate = formatter.string(from: todaysDate)
+//        print("stringDate \(stringDate)")
+////
+////        newDateString = content.paymentDate ?? stringDate
+////        let stringToDate = formatter.date(from: content.paymentDate ?? stringDate)
+////
+////        let endDateFromStringToDate = formatter.date(from: newStringDate ?? stringDate)
+////        userSetDate = endDateFromStringToDate ?? Date()
+////        print("endDateFromStringToDate \(endDateFromStringToDate)")
+////        endDate = endDateFromStringToDate
+////        print(stringToDate)
+////        let timeInterval = userSetDate?.timeIntervalSince(endDate!)
+////        print("end date = \(endDate)")
+////        print("user's date = \(userSetDate)")
+////        print("timeInterval \(timeInterval)")
+//        guard let firstPayment = content.paymentDate else {
+//            print("first nil")
+//            return
+//        }
+//        guard let nextPayment = content.nextPayment else {
+//            print("next nil")
+//            return
+//        }
+//        let firstPaymentInDate = formatter.date(from: firstPayment)
+//
+//        let timeInterval = firstPaymentInDate?.timeIntervalSince(nextPayment ?? todaysDate)
+//        print("firstPayment \(firstPayment)")
+//        print("firstPaymentInDate \(firstPaymentInDate)")
+//        print("nextPayment \(nextPayment)")
+//        print("timeInterval \(firstPaymentInDate)")
+//    }
     
     ///анимация table view
     private func animateTable() {
@@ -92,7 +167,12 @@ class MainViewController: UIViewController {
     @IBAction func unwindSegueToMain(_ segue: UIStoryboardSegue) {
         guard let addNewTVC = segue.source as? AddNewTVC else { return }
         addNewTVC.saveNewSub()
+        //addNewTVC.scheduleNotification()
+        //addNewTVC.updateProgress()
         imageName = addNewTVC.imageName
+        newDateString = addNewTVC.paymentDateOutlet.text
+        newDay = addNewTVC.newDay!
+        print("newDateString \(newDateString)")
         tableView.isHidden = false
         ///обновляем таблицу
         tableView.reloadData()
@@ -103,10 +183,33 @@ class MainViewController: UIViewController {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
             let sub = subs![indexPath.row]
             let vc = segue.destination as! AddNewTVC
-            vc.content = sub
+            vc.contentModel = sub
         }
     }
+    
+    
+//    @objc func updateProgress() {
+//        if currentDate >= endDate! {
+//            print("current date > end date")
+//            progressBarView.progressLayer.strokeEnd = 1.0
+//            timer?.invalidate()
+//            timer = nil
+//        } else {
+//            print("current date < end date")
+//            let end = Date(timeIntervalSince1970: endTimeInterval)
+//            var endTimeInterval2 = TimeInterval()
+//            let now: Date = Date(timeIntervalSinceNow: 0)
+//            endTimeInterval2 = endDate!.timeIntervalSince(userSetDate!)
+//            let test = Date(timeIntervalSince1970: endTimeInterval2)
+//            let percentage = (now.timeIntervalSince1970 - end.timeIntervalSince1970) * 100 / (test.timeIntervalSince1970 - end.timeIntervalSince1970)
+//            progressValue += Float(percentage)
+//            new = percentage
+//            progressBarView.progressLayer.strokeEnd = CGFloat(progressValue)
+//            print("progress = \(progressBarView.progressLayer.strokeEnd)")
+//        }
+//    }
 }
+    
 
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
@@ -131,6 +234,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         let sub = subs![indexPath.row]
         let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
         formatter.dateStyle = .short
         
         cell.layer.cornerRadius = 20
@@ -146,13 +250,38 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.currencyLabel.text = sub.currency
         cell.typeOfSub.text = sub.type
         cell.subNameLabel.text = sub.name
-        //cell.daysLeftLabel.text =
-        let newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+        newStringDate = formatter.string(from: sub.nextPayment ?? Date())
         //cell.daysLeftLabel.text = sub.nextPayment
-        cell.daysLeftLabel.text = newStringDate
+        cell.nextPaymentLabel.text = newStringDate
         cell.imageOutlet.layer.cornerRadius = cell.imageOutlet.frame.size.width / 2
         cell.imageOutlet.image = UIImage(named: sub.imageName ?? "questionmark.circle.fill")
         
+        ///отправка уведомления
+         func scheduleNotification() {
+            
+            let content = UNMutableNotificationContent() // Содержимое уведомления
+
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+            formatter.dateStyle = .short
+            
+            // Add the content to the notification content
+            content.body = "Test body"
+            print("sub.nextPayment! \(sub.nextPayment!)")
+            let triggerDate = Calendar.current.dateComponents([.day, .month, .year], from: sub.nextPayment!)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
+            
+            let identifier = "Local Notification"
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+
+            userNotificationCenter.add(request) { (error) in
+                if let error = error {
+                    print("Error \(error.localizedDescription)")
+                }
+            }
+            print("Функция вызвана")
+        }
+        scheduleNotification()
+        print("Уведомление будет отправлено \(String(describing: sub.nextPayment!))")
         gradientLayer.colors = [UIColor.purple.cgColor, UIColor.link.cgColor]
         return cell
     }

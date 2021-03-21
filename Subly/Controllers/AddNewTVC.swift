@@ -19,7 +19,7 @@ class AddNewTVC: UITableViewController {
     public var name = ""
     public var imageName = ""
     private let formatter = DateFormatter()
-    public var content: Content!
+    public var contentModel: Content!
     private let datePicker = UIDatePicker()
     private let currencyPickerView = UIPickerView()
     private let cyclePicker = UIPickerView()
@@ -44,6 +44,14 @@ class AddNewTVC: UITableViewController {
     
     var userDay = ""
     var newDateString: String?
+    
+    
+    let progressBarView = ProgressBarView()
+    var progressValue: Float = 0
+    var timer: Timer?
+    let currentDate = Date()
+    var endDate: Date?
+    var userSetDate: Date?
     
     @IBOutlet weak var trialButtonOutlet: UIButton!
     @IBOutlet weak var amountTextField: UITextField! {
@@ -70,8 +78,12 @@ class AddNewTVC: UITableViewController {
         userNotificationCenter.delegate = self
         tableView.tableFooterView = UIView()
         imageViewOutlet.layer.cornerRadius = imageViewOutlet.frame.size.width / 2
-        
         NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
+        print("paymentDateOutlet.text \(paymentDateOutlet.text)")
+    
+        
+        //let timeInterval = currentDate.timeIntervalSince(userSetDate!)
+        //timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         
         imageViewOutlet.image = UIImage(named: imageName)
         saveButtonOutlet.isEnabled = false
@@ -111,10 +123,6 @@ class AddNewTVC: UITableViewController {
         trialButtonOutlet.setTitle("Нет", for: .normal)
     }
     
-    private func observersForTextFields() {
-        
-    }
-    
     @objc private func updatePicker(){
         self.pickerView.reloadAllComponents()
     }
@@ -130,31 +138,30 @@ class AddNewTVC: UITableViewController {
         print(temp[1])
         print(day!)
         
-        
-        
         dayMonthWeekYear = temp[1]
-        print(dayMonthWeekYear)
         formatter.dateFormat = "dd-MM-yyyy"
-        let date = formatter.date(from: paymentDateOutlet.text!)
-        var dateComponent = DateComponents()
+        let date = datePicker.date
         //let date = formatter.date(from: paymentDateOutlet.text!)
-        print("date = \(date!)")
+        var dateComponent = DateComponents()
         
                 if dayMonthWeekYear == "День" {
                     dateComponent.day = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-                    print(newDay)
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    userSetDate = newDay
                 } else if dayMonthWeekYear == "Неделя" {
                     let oneWeek = 7
                     day! *= oneWeek
                     dateComponent.day = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    userSetDate = newDay
                 } else if dayMonthWeekYear == "Месяц" {
                     dateComponent.month = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    userSetDate = newDay
                 } else if dayMonthWeekYear == "Год" {
                     dateComponent.year = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
+                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    userSetDate = newDay
                 } else {
                     print("Error")
                 }
@@ -170,46 +177,48 @@ class AddNewTVC: UITableViewController {
                              type: typeOfSubOutlet.text!,
                              imageName: imageName,
                              nextPayment: newDay!)
-        print(newSub.nextPayment!)
+        print("newSub.nextPayment \(newSub.nextPayment!)")
         
         
-        if content != nil {
+        if contentModel != nil {
             try! realm.write {
-                content.amount = newSub.amount
-                content.currency = newSub.currency
-                content.note = newSub.note
-                content.paymentDate = newSub.paymentDate
+                contentModel.amount = newSub.amount
+                contentModel.currency = newSub.currency
+                contentModel.note = newSub.note
+                contentModel.paymentDate = newSub.paymentDate
                 //content.paymentDate = paymentDateOutlet.text
-                content.nextPayment = newSub.nextPayment
-                print(content.nextPayment!)
-                content.cycle = newSub.cycle
-                content.notifyMe = newSub.notifyMe
-                content.trial = newSub.trial
-                content.type = newSub.type
-                content.name = newSub.name
+                contentModel.nextPayment = newSub.nextPayment
+                print(contentModel.nextPayment!)
+                contentModel.cycle = newSub.cycle
+                contentModel.notifyMe = newSub.notifyMe
+                contentModel.trial = newSub.trial
+                contentModel.type = newSub.type
+                contentModel.name = newSub.name
+                //scheduleNotification()
             }
         } else {
             //сохраняем в базу
+            //scheduleNotification()
             StorageManager.saveObject(newSub)
             print("ok")
         }
     }
     
     private func setupEditScreen() {
-        if content != nil {
+        if contentModel != nil {
             setupNavigationBar()
-            guard let data = content?.imageName, let image = UIImage(named: data) else { return }
+            guard let data = contentModel?.imageName, let image = UIImage(named: data) else { return }
             imageViewOutlet.contentMode = .scaleAspectFit
             imageViewOutlet.image = image
-            nameTextField.text = content?.name
-            productNameOutlet.text = content.name
-            paymentDateOutlet.text = content.paymentDate
-            currencyTextField.text = content.currency
-            noteTextField.text = content.note ?? ""
-            cycleOutlet.text = content.cycle
-            notifyMeOutlet.text = content.notifyMe
-            typeOfSubOutlet.text = content.type
-            amountTextField.text = content.amount
+            nameTextField.text = contentModel?.name
+            productNameOutlet.text = contentModel.name
+            paymentDateOutlet.text = contentModel.paymentDate
+            currencyTextField.text = contentModel.currency
+            noteTextField.text = contentModel.note ?? ""
+            cycleOutlet.text = contentModel.cycle
+            notifyMeOutlet.text = contentModel.notifyMe
+            typeOfSubOutlet.text = contentModel.type
+            amountTextField.text = contentModel.amount
         }
     }
     
@@ -218,71 +227,15 @@ class AddNewTVC: UITableViewController {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         }
         navigationItem.leftBarButtonItem = nil
-        title = content?.name
-        paymentDateOutlet.text = content.paymentDate
-        cycleOutlet.text = content.cycle
-        newDay = content.nextPayment
+        title = contentModel?.name
+        paymentDateOutlet.text = contentModel.paymentDate
+        cycleOutlet.text = contentModel.cycle
+        newDay = contentModel.nextPayment
         //print(newDay!)
         let temp = (cycleOutlet.text?.components(separatedBy: " "))!
         day = Int(temp[0])
         print(temp[1])
         print(day!)
-//
-//
-//
-//        dayMonthWeekYear = temp[1]
-//        print(dayMonthWeekYear)
-//        formatter.dateFormat = "dd-MM-yyyy"
-//        let date = formatter.date(from: paymentDateOutlet.text!)
-//        var dateComponent = DateComponents()
-//        dateComponent.day = day
-//        //let date = formatter.date(from: paymentDateOutlet.text!)
-//        print("date = \(date!)")
-//
-//        if dayMonthWeekYear == "День" {
-//            dateComponent.day = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//        } else if dayMonthWeekYear == "Неделя" {
-//            let oneWeek = 7
-//            day! *= oneWeek
-//            dateComponent.day = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//        } else if dayMonthWeekYear == "Месяц" {
-//            dateComponent.month = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//        } else if dayMonthWeekYear == "Год" {
-//            dateComponent.year = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//        } else {
-//            print("Error")
-//        }
-//
-//        switch dayMonthWeekYear {
-//        case "День":
-//            dateComponent.day = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//            print(newDay!)
-//            print("day = \(day!)")
-//        case "Неделя":
-//            let oneWeek = 7
-//            day! *= oneWeek
-//            dateComponent.day = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//            print("day = \(day!)")
-//        case "Месяц":
-//            dateComponent.month = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//            print("new day = \(newDay!)")
-//        case "Год":
-//            dateComponent.year = day
-//            newDay = Calendar.current.date(byAdding: dateComponent, to: date!)
-//            print("one day = \(day!)")
-//        default:
-//            return
-//        }
-        
-        
-        
         
         print(paymentDateOutlet.text!)
         saveButtonOutlet.setTitle("Сохранить", for: .normal)
@@ -354,7 +307,12 @@ class AddNewTVC: UITableViewController {
         toolbar.sizeToFit()
         
         datePicker.datePickerMode = .date
-        datePicker.preferredDatePickerStyle = .wheels
+        
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
         let loc = Locale(identifier: "ru")
         datePicker.locale = loc
         
@@ -369,6 +327,7 @@ class AddNewTVC: UITableViewController {
     @objc private func donePressed() {
         formatter.dateStyle = .short
         formatter.timeStyle = .none
+        formatter.dateFormat = "dd-MM-yyyy"
         paymentDateOutlet.text = formatter.string(from: datePicker.date)
         print(datePicker.date)
         daysLeft = datePicker.date.adding(days: day ?? 1)
@@ -387,55 +346,38 @@ class AddNewTVC: UITableViewController {
         day = Int(temp[0])
         dayMonthWeekYear = temp[1]
         let aDate = datePicker.date
+        print("aDate \(aDate)")
         var dateComponent = DateComponents()
+        formatter.dateFormat = "dd-MM-yyyy"
         
         switch dayMonthWeekYear {
         case "День":
             dateComponent.day = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
-            print(newDay!)
-            print("day = \(day!)")
+            userSetDate = newDay
+            print("newDay! \(newDay!)")
         case "Неделя":
             let oneWeek = 7
             day! *= oneWeek
             dateComponent.day = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            userSetDate = newDay
             print("day = \(day!)")
         case "Месяц":
             dateComponent.month = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            userSetDate = newDay
             print("new day = \(newDay!)")
         case "Год":
             dateComponent.year = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            userSetDate = newDay
             print("one day = \(day!)")
         default:
             return
         }
         print(cycleOutlet.text!)
-        sendNotification()
         self.view.endEditing(true)
-    }
-    
-    
-    func sendNotification() {
-        let notificationContent = UNMutableNotificationContent()
-        
-        notificationContent.title = "test"
-        notificationContent.body = "Ваша подписка закончится совсем скоро"
-        notificationContent.sound = UNNotificationSound.default
-        //print(secondsPerOneDay)
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: secondsPerOneDay,
-                                                        repeats: false)
-        let request = UNNotificationRequest(identifier: "notification",
-                                            content: notificationContent,
-                                            trigger: trigger)
-        
-        userNotificationCenter.add(request) { (error) in
-            if let error = error {
-                print("Notification Error: ", error.localizedDescription)
-            }
-        }
     }
     
     @IBAction func customSubPressed(_ sender: UIButton) {
@@ -455,6 +397,8 @@ class AddNewTVC: UITableViewController {
         }
     }
     
+    
+    
     @objc private func textFieldChanged() {
 
         if nameTextField.text!.count > 0 && amountTextField.text!.count > 0 && currencyTextField.text!.count > 0 && paymentDateOutlet.text!.count > 0 && cycleOutlet.text!.count > 0 && notifyMeOutlet.text!.count > 0 && typeOfSubOutlet.text!.count > 0 {
@@ -468,24 +412,6 @@ class AddNewTVC: UITableViewController {
                 self.saveButtonOutlet.setTitle("Вы не заполнили все поля", for: .normal)
                 self.saveButtonOutlet.alpha = 0.5
     }
-        
-        
-
-//        if nameTextField.text?.isEmpty == true || amountTextField.text?.isEmpty == true || currencyTextField.text?.isEmpty == true || paymentDateOutlet.text?.isEmpty == true || cycleOutlet.text?.isEmpty == true || notifyMeOutlet.text?.isEmpty == true || typeOfSubOutlet.text?.isEmpty == true {
-//            print("Something is empty")
-//            DispatchQueue.main.async {
-//                self.saveButtonOutlet.isEnabled = false
-//                self.saveButtonOutlet.setTitle("Вы не заполнили все поля", for: .normal)
-//                self.saveButtonOutlet.alpha = 0.5
-//            }
-//        } else {
-//            print("Everything is filled in")
-//            DispatchQueue.main.async {
-//                self.saveButtonOutlet.isEnabled = true
-//                self.saveButtonOutlet.setTitle("Сохранить", for: .normal)
-//                self.saveButtonOutlet.alpha = 1.0
-//            }
-//        }
 }
     
     
