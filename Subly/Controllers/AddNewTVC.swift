@@ -52,6 +52,7 @@ class AddNewTVC: UITableViewController {
     let currentDate = Date()
     var endDate: Date?
     var userSetDate: Date?
+    var temp = [String]()
     
     @IBOutlet weak var trialButtonOutlet: UIButton!
     @IBOutlet weak var amountTextField: UITextField! {
@@ -79,7 +80,8 @@ class AddNewTVC: UITableViewController {
         tableView.tableFooterView = UIView()
         imageViewOutlet.layer.cornerRadius = imageViewOutlet.frame.size.width / 2
         NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
-        print("paymentDateOutlet.text \(paymentDateOutlet.text)")
+        currencyTextField.text = UserDefaults.standard.string(forKey: "currencySelected")
+        print("paymentDateOutlet.text \(String(describing: paymentDateOutlet.text))")
     
         
         //let timeInterval = currentDate.timeIntervalSince(userSetDate!)
@@ -90,7 +92,7 @@ class AddNewTVC: UITableViewController {
         saveButtonOutlet.setTitle("Вы заполнили не все данные", for: .normal)
         saveButtonOutlet.alpha = 0.5
         nameTextField.text = name
-        print("name = \(nameTextField.text)")
+        print("name = \(String(describing: nameTextField.text))")
         productNameOutlet.text = nameTextField.text
 //        amountTextField.text = "0.0"
 //        typeOfSubOutlet.text = typesOfSubs.types[0]
@@ -131,9 +133,11 @@ class AddNewTVC: UITableViewController {
         self.view.endEditing(true)
 }
     
-    func saveNewSub() {
-        
+    public func updatingDatesWith() {
         let temp = (cycleOutlet.text?.components(separatedBy: " "))!
+        //temp = (cycleOutlet.text?.components(separatedBy: " "))!
+        //temp = ["1" , "День"]
+        
         day = Int(temp[0])
         print(temp[1])
         print(day!)
@@ -141,30 +145,78 @@ class AddNewTVC: UITableViewController {
         dayMonthWeekYear = temp[1]
         formatter.dateFormat = "dd-MM-yyyy"
         let date = datePicker.date
+        let currentDate = Date()
+        print("currentDate \(currentDate)")
         //let date = formatter.date(from: paymentDateOutlet.text!)
         var dateComponent = DateComponents()
         
+        //var newStringDate = formatter.string(from: newDay ?? Date())
+        
                 if dayMonthWeekYear == "День" {
+                    UserDefaults.standard.setValue("День", forKey: "day")
                     dateComponent.day = day
                     newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    
+                    if currentDate >= newDay! {
+                        newDay = currentDate
+                        //newDay = newDay!.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+                        newDay = newDay!.adding(days: day!)
+                        print("newDay = \(newDay)")
+                        newDateString = formatter.string(from: date)
+                        print("new = \(String(describing: newDateString))")
+                    }
+                    
                     userSetDate = newDay
                 } else if dayMonthWeekYear == "Неделя" {
+                    UserDefaults.standard.setValue("Неделя", forKey: "week")
                     let oneWeek = 7
                     day! *= oneWeek
                     dateComponent.day = day
                     newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    
+                    if currentDate >= newDay! {
+                        newDay = newDay!.adding(days: day!)
+                        newDateString = formatter.string(from: date)
+                        print("new = \(String(describing: newDateString))")
+                    }
+                    
                     userSetDate = newDay
                 } else if dayMonthWeekYear == "Месяц" {
+                    UserDefaults.standard.setValue("Месяц", forKey: "month")
                     dateComponent.month = day
                     newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    
+                    
+                    if currentDate >= newDay! {
+                        print(currentDate)
+                        print(newDay!)
+                        newDay = newDay?.adding(months: day!)
+                        print(newDay!)
+                        newDateString = formatter.string(from: date)
+                    }
+                    
                     userSetDate = newDay
                 } else if dayMonthWeekYear == "Год" {
+                    UserDefaults.standard.setValue("Год", forKey: "year")
                     dateComponent.year = day
                     newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+                    
+                    if currentDate >= newDay! {
+                        newDay = newDay?.adding(years: day!)
+                        newDateString = formatter.string(from: date)
+                    }
+                    
                     userSetDate = newDay
                 } else {
+                    newDateString = formatter.string(from: newDay ?? Date())
                     print("Error")
                 }
+    }
+    
+    func saveNewSub() {
+        
+        updatingDatesWith()
+        
         
         let newSub = Content(name: nameTextField.text!,
                              amount: amountTextField.text!,
@@ -257,6 +309,8 @@ class AddNewTVC: UITableViewController {
     @objc private func notifyMePressed() {
         notifyMeOutlet.text = notifyModel.days[notifyMePicker.selectedRow(inComponent: 0)]
         print(notifyMeOutlet.text!)
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
         self.view.endEditing(true)
     }
     
@@ -275,6 +329,8 @@ class AddNewTVC: UITableViewController {
         typeOfSubOutlet.text = typesOfSubs.types[subsTypesPickerView.selectedRow(inComponent: 0)]
         textFieldChanged()
         print(typeOfSubOutlet.text!)
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
         self.view.endEditing(true)
     }
     
@@ -331,18 +387,23 @@ class AddNewTVC: UITableViewController {
         paymentDateOutlet.text = formatter.string(from: datePicker.date)
         print(datePicker.date)
         daysLeft = datePicker.date.adding(days: day ?? 1)
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
         self.view.endEditing(true)
     }
     
     @objc private func currencyPressed() {
         currencyTextField.text = currencies.currencies[currencyPickerView.selectedRow(inComponent: 0)]
         print(currencyTextField.text!)
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
         self.view.endEditing(true)
     }
     
     @objc private func cyclePressed() {
         cycleOutlet.text = cyclesArray.cycleDays[cyclePicker.selectedRow(inComponent: 0)] + " " + type.type[cyclePicker.selectedRow(inComponent: 1)]
         let temp = (cycleOutlet.text?.components(separatedBy: " "))!
+        //temp = (cycleOutlet.text?.components(separatedBy: " "))!
         day = Int(temp[0])
         dayMonthWeekYear = temp[1]
         let aDate = datePicker.date
@@ -352,31 +413,44 @@ class AddNewTVC: UITableViewController {
         
         switch dayMonthWeekYear {
         case "День":
+//            UserDefaults.standard.setValue("true", forKey: "daySet")
+//            print(UserDefaults.standard.bool(forKey: "daySet"))
             dateComponent.day = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            UserDefaults.standard.setValue(day, forKey: "day")
+            print(UserDefaults.standard.value(forKey: "day"))
             userSetDate = newDay
+            
             print("newDay! \(newDay!)")
         case "Неделя":
+            //UserDefaults.standard.bool(forKey: "weekSet")
             let oneWeek = 7
             day! *= oneWeek
             dateComponent.day = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            UserDefaults.standard.setValue(day, forKey: "week")
             userSetDate = newDay
             print("day = \(day!)")
         case "Месяц":
+            //UserDefaults.standard.setValue("true", forKey: "monthSet")
             dateComponent.month = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            UserDefaults.standard.setValue(day, forKey: "month")
             userSetDate = newDay
             print("new day = \(newDay!)")
         case "Год":
+            //UserDefaults.standard.bool(forKey: "yearSet")
             dateComponent.year = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
+            UserDefaults.standard.setValue(day, forKey: "year")
             userSetDate = newDay
             print("one day = \(day!)")
         default:
             return
         }
         print(cycleOutlet.text!)
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
         self.view.endEditing(true)
     }
     
@@ -388,11 +462,15 @@ class AddNewTVC: UITableViewController {
         
         DispatchQueue.main.async {
             self.trialButtonOutlet.setTitle("Нет", for: .normal)
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
         }
         
         if trialButtonOutlet.currentTitle == "Нет" {
             DispatchQueue.main.async {
                 self.trialButtonOutlet.setTitle("Да", for: .normal)
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.impactOccurred()
             }
         }
     }

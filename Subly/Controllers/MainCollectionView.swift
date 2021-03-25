@@ -44,6 +44,8 @@ class MainViewController: UIViewController {
     var newStringDate: String?
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     
+    let addNewTVC = AddNewTVC()
+    
     var newDay = Date()
 
 //    let progressBarView = ProgressBarView()
@@ -74,6 +76,8 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         
+        //addNewTVC.updatingDatesWith()
+        
         //updateProgress()
 //        let stringDate = formatter.string(from: Date())
 //        userSetDate = formatter.date(from: stringDate)
@@ -93,7 +97,13 @@ class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //addNewTVC.updatingDates()
         animateTable()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("экран закрыт")
     }
     
 //    func updateProgress() {
@@ -158,21 +168,20 @@ class MainViewController: UIViewController {
     
     private func setupGradient() {
         view.layer.addSublayer(gradientLayer)
-//        if let startColor = startColor, let endColor = endColor {
-//            gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
-//        }
     }
     
     ///принимаем данные обратно в первый сегвей
     @IBAction func unwindSegueToMain(_ segue: UIStoryboardSegue) {
         guard let addNewTVC = segue.source as? AddNewTVC else { return }
         addNewTVC.saveNewSub()
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
         //addNewTVC.scheduleNotification()
         //addNewTVC.updateProgress()
         imageName = addNewTVC.imageName
         newDateString = addNewTVC.paymentDateOutlet.text
         newDay = addNewTVC.newDay!
-        print("newDateString \(newDateString)")
+        print("newDateString \(String(describing: newDateString))")
         tableView.isHidden = false
         ///обновляем таблицу
         tableView.reloadData()
@@ -184,6 +193,8 @@ class MainViewController: UIViewController {
             let sub = subs![indexPath.row]
             let vc = segue.destination as! AddNewTVC
             vc.contentModel = sub
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
         }
     }
     
@@ -237,6 +248,57 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         formatter.dateFormat = "dd-MM-yyyy"
         formatter.dateStyle = .short
         
+    
+        let currentDate = Date()
+        print("currentDate \(currentDate)")
+        
+        if currentDate >= sub.nextPayment! {
+            print("more")
+            if UserDefaults.standard.value(forKey: "day") as! String == "День" {
+                let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+                newStringDate = formatter.string(from: newDate!)
+                cell.nextPaymentLabel.text = newStringDate
+            } else if UserDefaults.standard.value(forKey: "week") as! String == "Неделя" {
+                let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+                newStringDate = formatter.string(from: newDate!)
+                cell.nextPaymentLabel.text = newStringDate
+            } else if UserDefaults.standard.value(forKey: "month") as! String == "Месяц" {
+                let newDate = sub.nextPayment?.adding(months: UserDefaults.standard.value(forKey: "month") as! Int)
+                newStringDate = formatter.string(from: newDate!)
+                cell.nextPaymentLabel.text = newStringDate
+            } else if UserDefaults.standard.value(forKey: "year") as! String == "Год" {
+                let newDate = sub.nextPayment?.adding(years: UserDefaults.standard.value(forKey: "year") as! Int)
+                newStringDate = formatter.string(from: newDate!)
+                cell.nextPaymentLabel.text = newStringDate
+            }
+        } else {
+            newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+            cell.nextPaymentLabel.text = newStringDate
+            print("error")
+        }
+        
+//        if currentDate >= sub.nextPayment! {
+//            let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+//            newStringDate = formatter.string(from: newDate!)
+//            cell.nextPaymentLabel.text = newStringDate
+//            print("more")
+//        } else {
+//            print("less")
+//            newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+//            cell.nextPaymentLabel.text = newStringDate
+//        }
+        
+//        if currentDate >= sub.nextPayment! {
+//            sub.nextPayment = sub.nextPayment!.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+//            newDateString = formatter.string(from: sub.nextPayment!)
+//            cell.nextPaymentLabel.text = newDateString
+//            print("new = \(String(describing: newDateString))")
+//        } else {
+//            print("error")
+//            newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+//            cell.nextPaymentLabel.text = newStringDate
+//        }
+        
         cell.layer.cornerRadius = 20
         cell.layer.shadowColor = UIColor.white.cgColor
         cell.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
@@ -250,11 +312,12 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         cell.currencyLabel.text = sub.currency
         cell.typeOfSub.text = sub.type
         cell.subNameLabel.text = sub.name
-        newStringDate = formatter.string(from: sub.nextPayment ?? Date())
         //cell.daysLeftLabel.text = sub.nextPayment
-        cell.nextPaymentLabel.text = newStringDate
+        //newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+        //cell.nextPaymentLabel.text = newStringDate
         cell.imageOutlet.layer.cornerRadius = cell.imageOutlet.frame.size.width / 2
         cell.imageOutlet.image = UIImage(named: sub.imageName ?? "questionmark.circle.fill")
+        
         
         ///отправка уведомления
          func scheduleNotification() {
@@ -265,7 +328,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             formatter.dateStyle = .short
             
             // Add the content to the notification content
-            content.body = "Test body"
+            content.title = "Оплата подписки приближается"
+            content.body = "Ваша подписка \(String(describing: sub.name)) закачивается совсем скоро!"
             print("sub.nextPayment! \(sub.nextPayment!)")
             let triggerDate = Calendar.current.dateComponents([.day, .month, .year], from: sub.nextPayment!)
             let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
@@ -286,6 +350,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -294,44 +359,51 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         return 220
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .delete
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            //delete
-            //some code
-            tableView.beginUpdates()
-            
-            tableView.deleteRows(at: [indexPath], with: .left)
-            
-            tableView.endUpdates()
-        }
-    }
-    
-    ///удаляем данные из таблицы
+    //удаляем данные из таблицы
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
         //выбираем объект для удаления
-        let sub = subs![indexPath.row]
-        let delete = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (contextualAction, view, boolValue) in
-            StorageManager.deleteObject(sub)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+        //let sub = subs![indexPath.row]
+        let deleteButton = UIContextualAction(style: .destructive, title: "") { [weak self] (contextualAction, view, boolValue) in
+
+            let alertController = UIAlertController(title: "Подписка будет удалена 😢", message: "Вы уверены?", preferredStyle: .alert)
             
             guard let strongSelf = self else { return }
             
-            if strongSelf.subs!.isEmpty {
-                DispatchQueue.main.async {
-                    strongSelf.tableView.setEmptyView(title: "У Вас нет ни одной подписки.", message: "Нажмите на кнопку «Добавить» внизу", messageImage: UIImage(named: "icons8-hand-down-48")!)
+            let deleteAction = UIAlertAction(title: "Удалить", style: .default, handler: { (delete) in
+                
+                let sub = strongSelf.subs![indexPath.row]
+
+                StorageManager.deleteObject(sub)
+
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+
+                if strongSelf.subs!.isEmpty {
+                    DispatchQueue.main.async {
+                        strongSelf.tableView.setEmptyView(title: "У Вас нет ни одной подписки.", message: "Нажмите на кнопку «Добавить» внизу", messageImage: UIImage(named: "icons8-hand-down-48")!)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        strongSelf.tableView.restore()
+                    }
                 }
-            } else {
-                DispatchQueue.main.async {
-                    strongSelf.tableView.restore()
-                }
-            }
+            })
+            
+            deleteAction.setValue(UIColor.red, forKey: "titleTextColor")
+            alertController.addAction(deleteAction)
+
+            let cancelAction = UIAlertAction(title: "Отменить", style: .default, handler: nil)
+            alertController.addAction(cancelAction)
+
+            strongSelf.present(alertController, animated: true, completion: nil)
         }
-        return UISwipeActionsConfiguration(actions: [delete])
+        deleteButton.image = UIImage(named: "icons8-trash-48")
+        
+        //
+        deleteButton.backgroundColor = .systemBackground
+        return UISwipeActionsConfiguration(actions: [deleteButton])
     }
+    
 }
 
 // MARK: Date
@@ -361,6 +433,7 @@ extension UIViewController {
     }
 }
 
+// MARK: - UITableView
 extension UITableView {
     
     func setEmptyView(title: String, message: String, messageImage: UIImage) {
@@ -426,6 +499,7 @@ extension UITableView {
         self.separatorStyle = .singleLine
     }
 }
+
 
 
 

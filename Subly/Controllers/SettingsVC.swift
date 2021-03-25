@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import UserNotifications
 
 class SettingsVC: UITableViewController {
     
     private var currencyPickerView = UIPickerView()
     private var pickerView = UIPickerView()
     private var currencies = Currenices()
+    private let userNotificationCenter = UNUserNotificationCenter.current()
 
     @IBOutlet weak var currencyTextField: UITextField!
     
@@ -52,10 +54,10 @@ class SettingsVC: UITableViewController {
     
     @IBAction func notificationsSwitchAction(_ sender: UISwitch) {
         if sender.isOn {
-            UIApplication.shared.registerForRemoteNotifications()
             print("Уведомления включены")
         } else {
-            UIApplication.shared.unregisterForRemoteNotifications()
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            print("Уведомления выключены")
         }
     }
     @IBAction func tapticSwitchAction(_ sender: UISwitch) {

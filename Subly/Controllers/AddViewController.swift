@@ -52,6 +52,11 @@ class AddViewController: UIViewController {
         tableView.reloadData()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+    }
+    
     ///анимация table view
     private func animateTable() {
         tableView.reloadData()

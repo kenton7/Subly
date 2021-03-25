@@ -44,6 +44,8 @@ class NewSubVC: UIViewController {
             let destinationVC = segue.destination as? AddNewTVC
             destinationVC!.name = productName
             destinationVC!.imageName = imageName
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
         }
     }
     
