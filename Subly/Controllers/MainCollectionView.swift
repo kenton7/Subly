@@ -187,6 +187,17 @@ class MainViewController: UIViewController {
         tableView.reloadData()
     }
     
+    @IBAction func unwindSegueFromCustomSubVC(_ segue: UIStoryboardSegue) {
+        guard let addNewTVC = segue.source as? CustomSubTVC else { return }
+        addNewTVC.saveNewSub()
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        newDateString = addNewTVC.dateTextField.text
+        newDay = addNewTVC.newDay!
+        tableView.isHidden = false
+        tableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
@@ -254,29 +265,60 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         if currentDate >= sub.nextPayment! {
             print("more")
-            if UserDefaults.standard.value(forKey: "day") as! String == "День" {
+            if sub.cycleDayWeekMonthYear == "День" {
                 let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
                 newStringDate = formatter.string(from: newDate!)
+                print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate
-            } else if UserDefaults.standard.value(forKey: "week") as! String == "Неделя" {
+            } else if sub.cycleDayWeekMonthYear == "Неделя" {
                 let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
                 newStringDate = formatter.string(from: newDate!)
+                print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate
-            } else if UserDefaults.standard.value(forKey: "month") as! String == "Месяц" {
+            } else if sub.cycleDayWeekMonthYear == "Месяц" {
                 let newDate = sub.nextPayment?.adding(months: UserDefaults.standard.value(forKey: "month") as! Int)
                 newStringDate = formatter.string(from: newDate!)
+                print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate
-            } else if UserDefaults.standard.value(forKey: "year") as! String == "Год" {
+            } else if sub.cycleDayWeekMonthYear == "Год" {
                 let newDate = sub.nextPayment?.adding(years: UserDefaults.standard.value(forKey: "year") as! Int)
                 newStringDate = formatter.string(from: newDate!)
+                print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate
             }
         } else {
             newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+            print("newStringDate \(newStringDate!)")
             cell.nextPaymentLabel.text = newStringDate
-            print("error")
+            print("less")
         }
         
+//        if currentDate >= sub.nextPayment! {
+//            print("more")
+//            if UserDefaults.standard.value(forKey: "day") as! String == "День" {
+//                let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+//                newStringDate = formatter.string(from: newDate!)
+//                print(newStringDate)
+//                cell.nextPaymentLabel.text = newStringDate
+//            } else if UserDefaults.standard.value(forKey: "week") as! String == "Неделя" {
+//                let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+//                newStringDate = formatter.string(from: newDate!)
+//                cell.nextPaymentLabel.text = newStringDate
+//            } else if UserDefaults.standard.value(forKey: "month") as! String == "Месяц" {
+//                let newDate = sub.nextPayment?.adding(months: UserDefaults.standard.value(forKey: "month") as! Int)
+//                newStringDate = formatter.string(from: newDate!)
+//                cell.nextPaymentLabel.text = newStringDate
+//            } else if UserDefaults.standard.value(forKey: "year") as! String == "Год" {
+//                let newDate = sub.nextPayment?.adding(years: UserDefaults.standard.value(forKey: "year") as! Int)
+//                newStringDate = formatter.string(from: newDate!)
+//                cell.nextPaymentLabel.text = newStringDate
+//            }
+//        } else {
+//            newStringDate = formatter.string(from: sub.nextPayment ?? Date())
+//            cell.nextPaymentLabel.text = newStringDate
+//            print("error")
+//        }
+//
 //        if currentDate >= sub.nextPayment! {
 //            let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
 //            newStringDate = formatter.string(from: newDate!)
@@ -287,7 +329,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 //            newStringDate = formatter.string(from: sub.nextPayment ?? Date())
 //            cell.nextPaymentLabel.text = newStringDate
 //        }
-        
+//
 //        if currentDate >= sub.nextPayment! {
 //            sub.nextPayment = sub.nextPayment!.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
 //            newDateString = formatter.string(from: sub.nextPayment!)

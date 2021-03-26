@@ -30,6 +30,10 @@
 		09B8152825C1DECA00AC9D58 /* Subly.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 09B8152625C1DECA00AC9D58 /* Subly.xcdatamodeld */; };
 		09B8152A25C1DECB00AC9D58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09B8152925C1DECB00AC9D58 /* Assets.xcassets */; };
 		09B8152D25C1DECB00AC9D58 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09B8152B25C1DECB00AC9D58 /* LaunchScreen.storyboard */; };
+		09D65F10260E11240002B994 /* CustomSubVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D65F0F260E11240002B994 /* CustomSubVC.swift */; };
+		09D65F13260E11490002B994 /* CustomSubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D65F12260E11490002B994 /* CustomSubCell.swift */; };
+		09D65F17260E12730002B994 /* CustomSubTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D65F16260E12730002B994 /* CustomSubTVC.swift */; };
+		09D65F1B260E18E60002B994 /* AddCustomSubTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D65F1A260E18E60002B994 /* AddCustomSubTableView.swift */; };
 		EFE4EF886EC7D375666763AB /* Pods_Subly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 772A62D6765EF8B5672CF2E7 /* Pods_Subly.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +64,10 @@
 		09B8152925C1DECB00AC9D58 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		09B8152C25C1DECB00AC9D58 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		09B8152E25C1DECB00AC9D58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		09D65F0F260E11240002B994 /* CustomSubVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSubVC.swift; sourceTree = "<group>"; };
+		09D65F12260E11490002B994 /* CustomSubCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSubCell.swift; sourceTree = "<group>"; };
+		09D65F16260E12730002B994 /* CustomSubTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSubTVC.swift; sourceTree = "<group>"; };
+		09D65F1A260E18E60002B994 /* AddCustomSubTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomSubTableView.swift; sourceTree = "<group>"; };
 		772A62D6765EF8B5672CF2E7 /* Pods_Subly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Subly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97F18F0B9C8F3A1563FC8D3 /* Pods-Subly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Subly.debug.xcconfig"; path = "Target Support Files/Pods-Subly/Pods-Subly.debug.xcconfig"; sourceTree = "<group>"; };
 		F797A065074176AB5DB60357 /* Pods-Subly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Subly.release.xcconfig"; path = "Target Support Files/Pods-Subly/Pods-Subly.release.xcconfig"; sourceTree = "<group>"; };
@@ -83,8 +91,11 @@
 				095F3A7725C31BCA00497BC2 /* MainCollectionView.swift */,
 				095F3A8225C567FA00497BC2 /* AddViewController.swift */,
 				095F3A8825C5848700497BC2 /* NewSubVC.swift */,
+				09D65F0F260E11240002B994 /* CustomSubVC.swift */,
 				0960156E25C59309002FCD94 /* AddNewSubTableView.swift */,
+				09D65F1A260E18E60002B994 /* AddCustomSubTableView.swift */,
 				0960157225C5D3D5002FCD94 /* AddNewTVC.swift */,
+				09D65F16260E12730002B994 /* CustomSubTVC.swift */,
 				09B7926525D4560200B11A72 /* SettingsVC.swift */,
 				0982477B25FE3703003C54A8 /* TabBarController.swift */,
 			);
@@ -97,6 +108,7 @@
 				095F3A7E25C31CA000497BC2 /* TableViewCell.swift */,
 				095F3A8525C56A9C00497BC2 /* AddCell.swift */,
 				095F3A8B25C5894700497BC2 /* NewSubCell.swift */,
+				09D65F12260E11490002B994 /* CustomSubCell.swift */,
 				095F3A8F25C58D1D00497BC2 /* TitleCell.swift */,
 				0982477E25FF3F28003C54A8 /* TabBarView.swift */,
 				0982478125FFD8B7003C54A8 /* ProgressBarView.swift */,
@@ -292,12 +304,14 @@
 			files = (
 				09B7926625D4560200B11A72 /* SettingsVC.swift in Sources */,
 				095F3A9025C58D1D00497BC2 /* TitleCell.swift in Sources */,
+				09D65F10260E11240002B994 /* CustomSubVC.swift in Sources */,
 				09B8152825C1DECA00AC9D58 /* Subly.xcdatamodeld in Sources */,
 				0982477C25FE3703003C54A8 /* TabBarController.swift in Sources */,
 				09B8151E25C1DECA00AC9D58 /* AppDelegate.swift in Sources */,
 				095F3A8325C567FA00497BC2 /* AddViewController.swift in Sources */,
 				0982477F25FF3F28003C54A8 /* TabBarView.swift in Sources */,
 				095F3A4225C1E81800497BC2 /* Extensions.swift in Sources */,
+				09D65F13260E11490002B994 /* CustomSubCell.swift in Sources */,
 				095F3A7F25C31CA000497BC2 /* TableViewCell.swift in Sources */,
 				0982478225FFD8B7003C54A8 /* ProgressBarView.swift in Sources */,
 				095F3A7825C31BCA00497BC2 /* MainCollectionView.swift in Sources */,
@@ -305,11 +319,13 @@
 				095F3A8625C56A9C00497BC2 /* AddCell.swift in Sources */,
 				095F3A3D25C1E54700497BC2 /* ContentModel.swift in Sources */,
 				095F3A8925C5848700497BC2 /* NewSubVC.swift in Sources */,
+				09D65F17260E12730002B994 /* CustomSubTVC.swift in Sources */,
 				0960156F25C59309002FCD94 /* AddNewSubTableView.swift in Sources */,
 				09B8152025C1DECA00AC9D58 /* SceneDelegate.swift in Sources */,
 				0960157C25C6FBD1002FCD94 /* StorageManager.swift in Sources */,
 				0960157325C5D3D5002FCD94 /* AddNewTVC.swift in Sources */,
 				095F3A8C25C5894700497BC2 /* NewSubCell.swift in Sources */,
+				09D65F1B260E18E60002B994 /* AddCustomSubTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

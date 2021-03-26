@@ -48,8 +48,9 @@ class Content: Object {
     @objc dynamic var name: String?
     @objc dynamic var imageName: String?
     @objc dynamic var nextPayment: Date?
+    @objc dynamic var cycleDayWeekMonthYear: String?
     
-    convenience init(name: String, amount: String, currency: String, note: String, paymentDate: String, cycle: String, notifyMe: String, trial: Data, type: String, imageName: String, nextPayment: Date) {
+    convenience init(name: String, amount: String, currency: String, note: String, paymentDate: String, cycle: String, notifyMe: String, trial: Data, type: String, imageName: String, nextPayment: Date, cycleDayWeekMonthYear: String) {
         //инициализируем значения по умолчанию
         self.init()
         self.name = name
@@ -63,6 +64,7 @@ class Content: Object {
         self.type = type
         self.imageName = imageName
         self.nextPayment = nextPayment
+        self.cycleDayWeekMonthYear = cycleDayWeekMonthYear
     }
 }
 
