@@ -262,6 +262,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
         let currentDate = Date()
         print("currentDate \(currentDate)")
+        print("sub.nextPayment \(sub.nextPayment)")
+        print(sub.cycleDayWeekMonthYear)
         
         if currentDate >= sub.nextPayment! {
             print("more")
@@ -358,7 +360,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         //newStringDate = formatter.string(from: sub.nextPayment ?? Date())
         //cell.nextPaymentLabel.text = newStringDate
         cell.imageOutlet.layer.cornerRadius = cell.imageOutlet.frame.size.width / 2
-        cell.imageOutlet.image = UIImage(named: sub.imageName ?? "questionmark.circle.fill")
+        cell.imageOutlet.image = UIImage(named: sub.imageName ?? "icons8-add-image-48")
         
         
         ///отправка уведомления

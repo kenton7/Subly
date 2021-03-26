@@ -7,19 +7,23 @@
 
 import UIKit
 
-class CustomSubTVC: UITableViewController {
+class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
     
     
     @IBOutlet weak var imageViewOutlet: UIImageView!
     @IBOutlet weak var productNameLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var amountTextField: UITextField!
+    @IBOutlet weak var amountTextField: UITextField! {
+        didSet {
+            amountTextField?.addDoneCancelToolbar()
+        }
+    }
     @IBOutlet weak var currencyTextField: UITextField!
     @IBOutlet weak var noteTextField: UITextField!
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var cycleTextField: UITextField!
     @IBOutlet weak var notifyMeTextField: UITextField!
-    @IBOutlet weak var trialTextField: UIButton!
+    @IBOutlet weak var trialButtonOutlet: UIButton!
     @IBOutlet weak var typeTextField: UITextField!
     @IBOutlet weak var saveButtonOutlet: UIButton!
     
@@ -41,8 +45,10 @@ class CustomSubTVC: UITableViewController {
     private let notifyModel = NotifyMe()
     private let notifyMePicker = UIPickerView()
     var userDay = ""
+    public var imageName = ""
     public var daysLeft = Date()
     private var secondsPerOneDay: Double = 86400
+    private var imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,8 +60,9 @@ class CustomSubTVC: UITableViewController {
         imageViewOutlet.layer.cornerRadius = imageViewOutlet.frame.size.width / 2
         NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
         currencyTextField.text = UserDefaults.standard.string(forKey: "currencySelected")
-        imageViewOutlet.image = UIImage(named: "photo.on.rectangle.angled")
-        productNameLabel.text = nameTextField.text
+        productNameLabel.text = ""
+        //imageViewOutlet.image = UIImage(named: "person.crop.circle.badge.plus")
+        //productNameLabel.text = nameTextField.text
         
         saveButtonOutlet.isEnabled = false
         saveButtonOutlet.setTitle("Вы заполнили не все данные", for: .normal)
@@ -128,6 +135,8 @@ class CustomSubTVC: UITableViewController {
         }
         navigationItem.leftBarButtonItem = nil
         title = contentModel?.name
+        productNameLabel.text = contentModel.name
+        nameTextField.text = contentModel.name
         dateTextField.text = contentModel.paymentDate
         cycleTextField.text = contentModel.cycle
         newDay = contentModel.nextPayment
@@ -237,11 +246,12 @@ class CustomSubTVC: UITableViewController {
                              notifyMe: notifyMeTextField.text!,
                              trial: Data(),
                              type: typeTextField.text!,
-                             imageName: "imageName",
+                             imageName: "icons8-add-image-48",
                              nextPayment: newDay!,
                              cycleDayWeekMonthYear: dayMonthWeekYear!)
         print("newSub.nextPayment \(newSub.nextPayment!)")
         print("newSub.cycleDayWeekMonthYear \(newSub.cycleDayWeekMonthYear)")
+        print("imageName \(imageName)")
         
         
         if contentModel != nil {
@@ -427,6 +437,16 @@ class CustomSubTVC: UITableViewController {
         generator.impactOccurred()
         self.view.endEditing(true)
     }
+    
+    @IBAction func selectImage(_ sender: UITapGestureRecognizer) {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.allowsEditing = true
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    
 
     // MARK: - Table view data source
     
@@ -444,11 +464,11 @@ class CustomSubTVC: UITableViewController {
         return view
     }
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return 15
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20
+        return 15
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -554,5 +574,33 @@ extension CustomSubTVC: UIPickerViewDelegate, UIPickerViewDataSource {
         }
     }
 }
+
+// MARK: - UIImagePickerControllerDelegate
+extension CustomSubTVC: UIImagePickerControllerDelegate {
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let selectedPhoto = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        //imageName = selectedPhoto.toString()!
+        imageName = (selectedPhoto.pngData()?.base64EncodedString())!
+        print("imageName \(imageName)")
+        imageViewOutlet.image = selectedPhoto
+        //imageViewOutlet.contentMode = .scaleAspectFit
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: -- UIImage
+extension UIImage {
+    //конвертируем UIImage в String
+    func toString() -> String? {
+        let data: Data? = self.pngData()
+        return data?.base64EncodedString(options: .endLineWithLineFeed)
+    }
+}
+
 
 

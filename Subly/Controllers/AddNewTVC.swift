@@ -232,6 +232,7 @@ class AddNewTVC: UITableViewController {
                              cycleDayWeekMonthYear: dayMonthWeekYear!)
         print("newSub.nextPayment \(newSub.nextPayment!)")
         print("newSub.cycleDayWeekMonthYear \(newSub.cycleDayWeekMonthYear)")
+        print("imageName \(imageName)")
         
         
         if contentModel != nil {

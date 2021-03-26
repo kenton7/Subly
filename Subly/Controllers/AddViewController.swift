@@ -11,6 +11,8 @@ class AddViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchOutlet: UISearchBar!
+    @IBOutlet weak var customSubButtonOutlet: UIButton!
+    
     
     let model = [ContentModel]()
     let data = Items()
@@ -28,6 +30,7 @@ class AddViewController: UIViewController {
         tableView.dataSource = self
         tableView.frame = self.view.bounds
         tableView.tableFooterView = UIView()
+        customSubButtonOutlet.layer.cornerRadius = 20
         self.hideKeyboardWhenTappedAround()
         searchOutlet.delegate = self
         filteredData = data.arrayOfItemTitles
