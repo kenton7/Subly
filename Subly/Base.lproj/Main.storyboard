@@ -1200,7 +1200,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VKY-Vb-G4W">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="VKY-Vb-G4W">
                                                     <rect key="frame" x="345" y="6.5" width="51" height="31"/>
                                                     <color key="onTintColor" systemColor="systemIndigoColor"/>
                                                     <connections>
@@ -1431,6 +1431,7 @@
                     <navigationItem key="navigationItem" title="Настройки" id="1wI-cp-9BA"/>
                     <connections>
                         <outlet property="currencyTextField" destination="2Mh-0d-Lc0" id="A40-Ou-KFB"/>
+                        <outlet property="faceIdSwitchOutlet" destination="VKY-Vb-G4W" id="CQM-X2-ykb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XuR-2p-EWR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

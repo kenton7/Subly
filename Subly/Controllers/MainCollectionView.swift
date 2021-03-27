@@ -266,25 +266,30 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         print("sub.nextPayment \(sub.nextPayment)")
         print(sub.cycleDayWeekMonthYear)
         
+        let day = UserDefaults.standard.integer(forKey: "day")
+        let week = UserDefaults.standard.integer(forKey: "week")
+        let month = UserDefaults.standard.integer(forKey: "month")
+        let year = UserDefaults.standard.integer(forKey: "year")
+        
         if currentDate >= sub.nextPayment! {
             print("more")
             if sub.cycleDayWeekMonthYear == "День" {
-                let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+                let newDate = sub.nextPayment?.adding(days: day)
                 newStringDate = formatter.string(from: newDate!)
                 print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate
             } else if sub.cycleDayWeekMonthYear == "Неделя" {
-                let newDate = sub.nextPayment?.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+                let newDate = sub.nextPayment?.adding(days: week)
                 newStringDate = formatter.string(from: newDate!)
                 print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate
             } else if sub.cycleDayWeekMonthYear == "Месяц" {
-                let newDate = sub.nextPayment?.adding(months: UserDefaults.standard.value(forKey: "month") as! Int)
+                let newDate = sub.nextPayment?.adding(months: month)
                 newStringDate = formatter.string(from: newDate!)
                 print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate
             } else if sub.cycleDayWeekMonthYear == "Год" {
-                let newDate = sub.nextPayment?.adding(years: UserDefaults.standard.value(forKey: "year") as! Int)
+                let newDate = sub.nextPayment?.adding(years: year)
                 newStringDate = formatter.string(from: newDate!)
                 print("newStringDate \(newStringDate!)")
                 cell.nextPaymentLabel.text = newStringDate

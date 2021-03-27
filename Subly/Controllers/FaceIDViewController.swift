@@ -16,6 +16,7 @@ class FaceIDViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        faceIDButtonOutlet.isHidden = true
         navigationController?.navigationBar.isHidden = true
         faceIDButtonOutlet.layer.cornerRadius = 20
         faceIDRequest()
@@ -34,27 +35,21 @@ class FaceIDViewController: UIViewController {
                     DispatchQueue.main.async {
                         guard success, error == nil else {
                             //failed
-                            
                             let alert = UIAlertController(title: "Авторизация не пройдена",
                                                           message: "Пожалуйста, попробуйте снова",
                                                           preferredStyle: .alert)
-//                            alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: { (request) in
-//                                let vc = FaceIDViewController()
-//                                self?.present(vc, animated: true, completion: nil)
-//                            }))
                             alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
+                            self?.faceIDButtonOutlet.isHidden = false
                             self?.present(alert, animated: true, completion: nil)
                             return
                         }
                         //показываем другой экран
                         //success
                         print("success")
-                        //let vc = MainViewController()
-                        //self?.present(vc, animated: true, completion: nil)
+                        self?.faceIDButtonOutlet.isHidden = true
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                         let mainViewController = mainStoryboard.instantiateViewController(identifier: "MainViewController")
                         self?.navigationController?.pushViewController(mainViewController, animated: false)
-                        //self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
                         }
                     }
             } else {
@@ -65,7 +60,11 @@ class FaceIDViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
                 present(alert, animated: true, completion: nil)
             }
-        } else {
+        } else if UserDefaults.standard.bool(forKey: "faceId") == false {
+            faceIDButtonOutlet.isHidden = true
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainViewController = mainStoryboard.instantiateViewController(identifier: "MainViewController")
+            navigationController?.pushViewController(mainViewController, animated: false)
             print("error")
         }
     }

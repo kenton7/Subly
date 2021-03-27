@@ -17,6 +17,7 @@ class SettingsVC: UITableViewController {
     private let userNotificationCenter = UNUserNotificationCenter.current()
 
     @IBOutlet weak var currencyTextField: UITextField!
+    @IBOutlet weak var faceIdSwitchOutlet: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,18 @@ class SettingsVC: UITableViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         self.tableView.rowHeight = 60
+        
+        //faceIdSwitchOutlet.isOn = false
+        
+        if UserDefaults.standard.bool(forKey: "SwitchStatus") {
+            faceIdSwitchOutlet.isOn = true
+            UserDefaults.standard.set(true, forKey: "faceId")
+        } else {
+            faceIdSwitchOutlet.isOn = false
+            UserDefaults.standard.set(false, forKey: "faceId")
+        }
+        
+    
         currencyTextField.text = (UserDefaults.standard.value(forKey: "currencySelected") as? String ?? currencies.currencies[0])
         
         NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
@@ -67,40 +80,14 @@ class SettingsVC: UITableViewController {
     
     @IBAction func faceIDTouchIDSwitch(_ sender: UISwitch) {
         if sender.isOn {
+            faceIdSwitchOutlet.isOn = true
+        UserDefaults.standard.set(true, forKey: "SwitchStatus")
             UserDefaults.standard.set(true, forKey: "faceId")
-            let context = LAContext()
-            var error: NSError? = nil
-            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                                         error: &error) {
-                let reason = "Пожалуйста, авторизуйтесь с помощью Touch ID."
-                context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                                       localizedReason: reason) { [weak self] (success, error) in
-                    DispatchQueue.main.async {
-                        guard success, error == nil else {
-                            //failed
-                            let alert = UIAlertController(title: "Авторизация не пройдена",
-                                                          message: "Пожалуйста, попробуйте снова",
-                                                          preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
-                            self?.present(alert, animated: true, completion: nil)
-                            return
-                        }
-                        //показываем другой экран
-                        //success
-                        let vc = MainViewController()
-                        self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
-                        }
-                    }
-            } else {
-                //can not use
-                let alert = UIAlertController(title: "Ой!",
-                                              message: "Вы не можете использовать эту функцию",
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
-                present(alert, animated: true, completion: nil)
-            }
         } else {
-            print("error")
+            faceIdSwitchOutlet.isOn = false
+        UserDefaults.standard.set(false, forKey: "SwitchStatus")
+            UserDefaults.standard.set(false, forKey: "faceId")
+            print("face id is off")
         }
     }
     

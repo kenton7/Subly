@@ -231,7 +231,7 @@ class AddNewTVC: UITableViewController {
                              nextPayment: newDay!,
                              cycleDayWeekMonthYear: dayMonthWeekYear!)
         print("newSub.nextPayment \(newSub.nextPayment!)")
-        print("newSub.cycleDayWeekMonthYear \(newSub.cycleDayWeekMonthYear)")
+        print("newSub.cycleDayWeekMonthYear \(String(describing: newSub.cycleDayWeekMonthYear))")
         print("imageName \(imageName)")
         
         
@@ -421,8 +421,9 @@ class AddNewTVC: UITableViewController {
 //            print(UserDefaults.standard.bool(forKey: "daySet"))
             dateComponent.day = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
-            UserDefaults.standard.setValue(day, forKey: "day")
-            print(UserDefaults.standard.value(forKey: "day"))
+            UserDefaults.standard.set(day, forKey: "day")
+            //UserDefaults.standard.setValue(day, forKey: "day")
+            print(UserDefaults.standard.value(forKey: "day")!)
             userSetDate = newDay
             
             print("newDay! \(newDay!)")
@@ -432,21 +433,21 @@ class AddNewTVC: UITableViewController {
             day! *= oneWeek
             dateComponent.day = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
-            UserDefaults.standard.setValue(day, forKey: "week")
+            UserDefaults.standard.set(day, forKey: "week")
             userSetDate = newDay
             print("day = \(day!)")
         case "Месяц":
             //UserDefaults.standard.setValue("true", forKey: "monthSet")
             dateComponent.month = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
-            UserDefaults.standard.setValue(day, forKey: "month")
+            UserDefaults.standard.set(day, forKey: "month")
             userSetDate = newDay
             print("new day = \(newDay!)")
         case "Год":
             //UserDefaults.standard.bool(forKey: "yearSet")
             dateComponent.year = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
-            UserDefaults.standard.setValue(day, forKey: "year")
+            UserDefaults.standard.set(day, forKey: "year")
             userSetDate = newDay
             print("one day = \(day!)")
         default:
