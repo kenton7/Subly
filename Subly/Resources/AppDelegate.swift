@@ -9,12 +9,14 @@ import UIKit
 import CoreData
 import RealmSwift
 import UserNotifications
+import LocalAuthentication
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     let notificationCenter = UNUserNotificationCenter.current()
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
        
@@ -44,9 +46,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                          weight: .semibold)]
         appearance.setTitleTextAttributes(attributes as [NSAttributedString.Key : Any], for: .normal)
         
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        
+        if UserDefaults.standard.bool(forKey: "faceId") {
+            print("true")
+            let context = LAContext()
+            var error: NSError? = nil
+            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                         error: &error) {
+                let reason = "Пожалуйста, авторизуйтесь с помощью Touch ID."
+                context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                       localizedReason: reason) { [weak self] (success, error) in
+                    DispatchQueue.main.async {
+                        guard success, error == nil else {
+                            //failed
+                            
+                            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                            let mainViewController = mainStoryboard.instantiateViewController(identifier: "FirstViewController")
+                            let navigationController = UINavigationController(rootViewController: mainViewController)
+                            self!.window?.rootViewController = navigationController
+                            self!.window?.makeKeyAndVisible()
+                            
+                            let alert = UIAlertController(title: "Авторизация не пройдена",
+                                                          message: "Пожалуйста, попробуйте снова",
+                                                          preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
+                            //self?.present(alert, animated: true, completion: nil)
+                            return
+                        }
+                        //показываем другой экран
+                        //success
+                        
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let mainViewController = mainStoryboard.instantiateViewController(identifier: "MainViewController")
+                        let navigationController = UINavigationController(rootViewController: mainViewController)
+                        self!.window?.rootViewController = navigationController
+                        self!.window?.makeKeyAndVisible()
+                        }
+                    }
+            } else {
+                //can not use
+                let alert = UIAlertController(title: "Ой!",
+                                              message: "Вы не можете использовать эту функцию",
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
+                //present(alert, animated: true, completion: nil)
+            }
+        } else {
+            print("error")
+        }
+        
         ///Уведомления
         let options: UNAuthorizationOptions = [.alert, .sound, .badge]
-        ///запршиваем у юзера разрешение на отправку уведомлений
+        ///запрашиваем у юзера разрешение на отправку уведомлений
         notificationCenter.requestAuthorization(options: options) {
             (didAllow, error) in
             if !didAllow {

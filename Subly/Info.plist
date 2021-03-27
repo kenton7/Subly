@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Пожалуйста, разрешите доступ, чтобы авторизовываться с Face ID</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Разрешите доступ фото, чтобы иметь возможность добавлять своё фото к подпискам</string>
 	<key>CFBundleDevelopmentRegion</key>

@@ -7,6 +7,7 @@
 
 import UIKit
 import UserNotifications
+import LocalAuthentication
 
 class SettingsVC: UITableViewController {
     
@@ -65,7 +66,42 @@ class SettingsVC: UITableViewController {
     }
     
     @IBAction func faceIDTouchIDSwitch(_ sender: UISwitch) {
-        print("face")
+        if sender.isOn {
+            UserDefaults.standard.set(true, forKey: "faceId")
+            let context = LAContext()
+            var error: NSError? = nil
+            if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                         error: &error) {
+                let reason = "Пожалуйста, авторизуйтесь с помощью Touch ID."
+                context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                       localizedReason: reason) { [weak self] (success, error) in
+                    DispatchQueue.main.async {
+                        guard success, error == nil else {
+                            //failed
+                            let alert = UIAlertController(title: "Авторизация не пройдена",
+                                                          message: "Пожалуйста, попробуйте снова",
+                                                          preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
+                            self?.present(alert, animated: true, completion: nil)
+                            return
+                        }
+                        //показываем другой экран
+                        //success
+                        let vc = MainViewController()
+                        self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+                        }
+                    }
+            } else {
+                //can not use
+                let alert = UIAlertController(title: "Ой!",
+                                              message: "Вы не можете использовать эту функцию",
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
+                present(alert, animated: true, completion: nil)
+            }
+        } else {
+            print("error")
+        }
     }
     
     // MARK: - Table view data source
