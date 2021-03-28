@@ -39,10 +39,29 @@ class AddViewController: UIViewController {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         definesPresentationContext = true
+        
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
         animateTable()
     }
     
@@ -55,31 +74,26 @@ class AddViewController: UIViewController {
         tableView.reloadData()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-    }
-    
     ///анимация table view
     private func animateTable() {
         tableView.reloadData()
-            
+        
         let cells = tableView.visibleCells
         let tableHeight: CGFloat = tableView.bounds.size.height
-            
+        
         for i in cells {
             let cell: UITableViewCell = i as UITableViewCell
             cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
         }
-            
+        
         var index = 0
-            
+        
         for a in cells {
             let cell: UITableViewCell = a as UITableViewCell
             UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, animations: {
                 cell.transform = CGAffineTransform(translationX: 0, y: 0);
             }, completion: nil)
-                
+            
             index += 1
         }
     }
@@ -171,37 +185,37 @@ class AddViewController: UIViewController {
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-
-    if(velocity.y>0) {
-        UIView.animate(withDuration: 1.0, delay: 0, options: UIView.AnimationOptions(), animations: {
-            self.navigationController?.setNavigationBarHidden(true, animated: true)
-            print("Hide")
-        }, completion: nil)
-
-    } else {
-        UIView.animate(withDuration: 1.0, delay: 0, options: UIView.AnimationOptions(), animations: {
-            self.navigationController?.setNavigationBarHidden(false, animated: true)
-            print("Unhide")
-        }, completion: nil)
-      }
-   }
+        
+        if(velocity.y>0) {
+            UIView.animate(withDuration: 1.0, delay: 0, options: UIView.AnimationOptions(), animations: {
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
+                print("Hide")
+            }, completion: nil)
+            
+        } else {
+            UIView.animate(withDuration: 1.0, delay: 0, options: UIView.AnimationOptions(), animations: {
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
+                print("Unhide")
+            }, completion: nil)
+        }
+    }
     
-//    func dismissAlert() {
-//
-//        let bounds = view.bounds
-//        let smallFrame = view.frame.insetBy(dx: view.frame.size.width / 4, dy: view.frame.size.height / 4)
-//        let finalFrame = smallFrame.offsetBy(dx: 0, dy: bounds.size.height)
-//
-//
-//        UIView.animateKeyframes(withDuration: 4, delay: 0, options: .calculationModeCubic, animations: {
-//            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
-//                self.view.frame = smallFrame
-//            }
-//            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
-//                self.view.frame = finalFrame
-//            }
-//        }, completion: nil)
-//    }
+    //    func dismissAlert() {
+    //
+    //        let bounds = view.bounds
+    //        let smallFrame = view.frame.insetBy(dx: view.frame.size.width / 4, dy: view.frame.size.height / 4)
+    //        let finalFrame = smallFrame.offsetBy(dx: 0, dy: bounds.size.height)
+    //
+    //
+    //        UIView.animateKeyframes(withDuration: 4, delay: 0, options: .calculationModeCubic, animations: {
+    //            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
+    //                self.view.frame = smallFrame
+    //            }
+    //            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+    //                self.view.frame = finalFrame
+    //            }
+    //        }, completion: nil)
+    //    }
     
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
         //dismissAlert()
@@ -216,6 +230,15 @@ class AddViewController: UIViewController {
                 let selectedRow = tableView.indexPathForSelectedRow!.section
                 vc.productName = currentArray[selectedRow].name
                 vc.imageName = currentArray[selectedRow].imageName
+                if UserDefaults.standard.bool(forKey: "hapticOn") {
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                    UserDefaults.standard.set(true, forKey: "haptic")
+                    print("haptic is on")
+                } else {
+                    UserDefaults.standard.set(false, forKey: "haptic")
+                    print("haptic is off")
+                }
             }
         }
     }
@@ -312,8 +335,8 @@ extension AddViewController: UISearchResultsUpdating, UISearchBarDelegate {
         if let searchText = searchController.searchBar.text {
             filteredData = searchText.isEmpty ? data.arrayOfItemTitles : data.arrayOfItemTitles.filter({(dataString: String) -> Bool in
                 return dataString.range(of: searchText, options: .caseInsensitive) != nil
-                })
-                tableView.reloadData()
-            }
+            })
+            tableView.reloadData()
+        }
     }
 }

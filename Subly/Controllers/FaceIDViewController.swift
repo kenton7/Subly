@@ -8,6 +8,12 @@
 import UIKit
 import LocalAuthentication
 
+enum BiometricType {
+    case none
+    case touchID
+    case faceID
+}
+
 class FaceIDViewController: UIViewController {
     
     @IBOutlet weak var faceIDButtonOutlet: UIButton!
@@ -19,6 +25,7 @@ class FaceIDViewController: UIViewController {
         faceIDButtonOutlet.isHidden = true
         navigationController?.navigationBar.isHidden = true
         faceIDButtonOutlet.layer.cornerRadius = 20
+        
         faceIDRequest()
     }
     
@@ -66,6 +73,20 @@ class FaceIDViewController: UIViewController {
             let mainViewController = mainStoryboard.instantiateViewController(identifier: "MainViewController")
             navigationController?.pushViewController(mainViewController, animated: false)
             print("error")
+        }
+    }
+    
+    func biometricType() -> BiometricType {
+        let context = LAContext()
+        let _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        
+        switch context.biometryType {
+        case .none:
+            return .none
+        case .touchID:
+            return .touchID
+        case .faceID:
+            return .faceID
         }
     }
     

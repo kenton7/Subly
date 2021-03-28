@@ -55,7 +55,7 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
         
         tableView.delegate = self
         tableView.dataSource = self
-
+        
         tableView.tableFooterView = UIView()
         imageViewOutlet.layer.cornerRadius = imageViewOutlet.frame.size.width / 2
         NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
@@ -77,8 +77,17 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
         nameTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.dismissKeybord(_:)))
-                tap.numberOfTapsRequired = 1
-                self.view.addGestureRecognizer(tap)
+        tap.numberOfTapsRequired = 1
+        self.view.addGestureRecognizer(tap)
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
         
         setupEditScreen()
         createDatePicker()
@@ -86,6 +95,19 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
         cyclePickerView()
         createPickerWithSubsTypes()
         notifyMePickerView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
     }
     
     @objc private func updatePicker(){
@@ -97,19 +119,19 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
     }
     
     @objc private func textFieldChanged() {
-
+        
         if nameTextField.text!.count > 0 && amountTextField.text!.count > 0 && currencyTextField.text!.count > 0 && dateTextField.text!.count > 0 && cycleTextField.text!.count > 0 && notifyMeTextField.text!.count > 0 && typeTextField.text!.count > 0 {
             print("Everything is filled in")
-                self.saveButtonOutlet.isEnabled = true
-                self.saveButtonOutlet.setTitle("Сохранить", for: .normal)
-                self.saveButtonOutlet.alpha = 1.0
+            self.saveButtonOutlet.isEnabled = true
+            self.saveButtonOutlet.setTitle("Сохранить", for: .normal)
+            self.saveButtonOutlet.alpha = 1.0
         } else {
             print("Something is empty")
-                self.saveButtonOutlet.isEnabled = false
-                self.saveButtonOutlet.setTitle("Вы не заполнили все поля", for: .normal)
-                self.saveButtonOutlet.alpha = 0.5
+            self.saveButtonOutlet.isEnabled = false
+            self.saveButtonOutlet.setTitle("Вы не заполнили все поля", for: .normal)
+            self.saveButtonOutlet.alpha = 0.5
+        }
     }
-}
     
     private func setupEditScreen() {
         if contentModel != nil {
@@ -171,65 +193,65 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
         
         //var newStringDate = formatter.string(from: newDay ?? Date())
         
-                if dayMonthWeekYear == "День" {
-                    UserDefaults.standard.setValue("День", forKey: "day")
-                    dateComponent.day = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
-                    
-                    if currentDate >= newDay! {
-                        newDay = currentDate
-                        //newDay = newDay!.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
-                        newDay = newDay!.adding(days: day!)
-                        print("newDay = \(newDay)")
-                        newDateString = formatter.string(from: date)
-                        print("new = \(String(describing: newDateString))")
-                    }
-                    
-                    //userSetDate = newDay
-                } else if dayMonthWeekYear == "Неделя" {
-                    UserDefaults.standard.setValue("Неделя", forKey: "week")
-                    let oneWeek = 7
-                    day! *= oneWeek
-                    dateComponent.day = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
-                    
-                    if currentDate >= newDay! {
-                        newDay = newDay!.adding(days: day!)
-                        newDateString = formatter.string(from: date)
-                        print("new = \(String(describing: newDateString))")
-                    }
-                    
-                    //userSetDate = newDay
-                } else if dayMonthWeekYear == "Месяц" {
-                    UserDefaults.standard.setValue("Месяц", forKey: "month")
-                    dateComponent.month = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
-                    
-                    
-                    if currentDate >= newDay! {
-                        print(currentDate)
-                        print(newDay!)
-                        newDay = newDay?.adding(months: day!)
-                        print(newDay!)
-                        newDateString = formatter.string(from: date)
-                    }
-                    
-                    //userSetDate = newDay
-                } else if dayMonthWeekYear == "Год" {
-                    UserDefaults.standard.setValue("Год", forKey: "year")
-                    dateComponent.year = day
-                    newDay = Calendar.current.date(byAdding: dateComponent, to: date)
-                    
-                    if currentDate >= newDay! {
-                        newDay = newDay?.adding(years: day!)
-                        newDateString = formatter.string(from: date)
-                    }
-                    
-                    //userSetDate = newDay
-                } else {
-                    newDateString = formatter.string(from: newDay ?? Date())
-                    print("Error")
-                }
+        if dayMonthWeekYear == "День" {
+            UserDefaults.standard.setValue("День", forKey: "day")
+            dateComponent.day = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+            
+            if currentDate >= newDay! {
+                newDay = currentDate
+                //newDay = newDay!.adding(days: UserDefaults.standard.value(forKey: "day") as! Int)
+                newDay = newDay!.adding(days: day!)
+                print("newDay = \(newDay)")
+                newDateString = formatter.string(from: date)
+                print("new = \(String(describing: newDateString))")
+            }
+            
+            //userSetDate = newDay
+        } else if dayMonthWeekYear == "Неделя" {
+            UserDefaults.standard.setValue("Неделя", forKey: "week")
+            let oneWeek = 7
+            day! *= oneWeek
+            dateComponent.day = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+            
+            if currentDate >= newDay! {
+                newDay = newDay!.adding(days: day!)
+                newDateString = formatter.string(from: date)
+                print("new = \(String(describing: newDateString))")
+            }
+            
+            //userSetDate = newDay
+        } else if dayMonthWeekYear == "Месяц" {
+            UserDefaults.standard.setValue("Месяц", forKey: "month")
+            dateComponent.month = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+            
+            
+            if currentDate >= newDay! {
+                print(currentDate)
+                print(newDay!)
+                newDay = newDay?.adding(months: day!)
+                print(newDay!)
+                newDateString = formatter.string(from: date)
+            }
+            
+            //userSetDate = newDay
+        } else if dayMonthWeekYear == "Год" {
+            UserDefaults.standard.setValue("Год", forKey: "year")
+            dateComponent.year = day
+            newDay = Calendar.current.date(byAdding: dateComponent, to: date)
+            
+            if currentDate >= newDay! {
+                newDay = newDay?.adding(years: day!)
+                newDateString = formatter.string(from: date)
+            }
+            
+            //userSetDate = newDay
+        } else {
+            newDateString = formatter.string(from: newDay ?? Date())
+            print("Error")
+        }
     }
     
     func saveNewSub() {
@@ -293,8 +315,11 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
     @objc private func notifyMePressed() {
         notifyMeTextField.text = notifyModel.days[notifyMePicker.selectedRow(inComponent: 0)]
         print(notifyMeTextField.text!)
+        guard UserDefaults.standard.bool(forKey: "SwitchStatus") else { return }
+        
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
+        
         self.view.endEditing(true)
     }
     
@@ -313,6 +338,8 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
         typeTextField.text = typesOfSubs.types[subsTypesPickerView.selectedRow(inComponent: 0)]
         textFieldChanged()
         print(typeTextField.text!)
+        guard UserDefaults.standard.bool(forKey: "SwitchStatus") else { return }
+        
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         self.view.endEditing(true)
@@ -371,6 +398,8 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
         dateTextField.text = formatter.string(from: datePicker.date)
         print(datePicker.date)
         daysLeft = datePicker.date.adding(days: day ?? 1)
+        guard UserDefaults.standard.bool(forKey: "SwitchStatus") else { return }
+        
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         self.view.endEditing(true)
@@ -379,6 +408,8 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
     @objc private func currencyPressed() {
         currencyTextField.text = currencies.currencies[currencyPickerView.selectedRow(inComponent: 0)]
         print(currencyTextField.text!)
+        guard UserDefaults.standard.bool(forKey: "SwitchStatus") else { return }
+        
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         self.view.endEditing(true)
@@ -397,8 +428,8 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
         
         switch dayMonthWeekYear {
         case "День":
-//            UserDefaults.standard.setValue("true", forKey: "daySet")
-//            print(UserDefaults.standard.bool(forKey: "daySet"))
+            //            UserDefaults.standard.setValue("true", forKey: "daySet")
+            //            print(UserDefaults.standard.bool(forKey: "daySet"))
             dateComponent.day = day
             newDay = Calendar.current.date(byAdding: dateComponent, to: aDate)
             UserDefaults.standard.setValue(day, forKey: "day")
@@ -433,6 +464,8 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
             return
         }
         print(cycleTextField.text!)
+        guard UserDefaults.standard.bool(forKey: "SwitchStatus") else { return }
+        
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
         self.view.endEditing(true)
@@ -447,7 +480,7 @@ class CustomSubTVC: UITableViewController, UINavigationControllerDelegate {
     }
     
     
-
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -543,7 +576,7 @@ extension CustomSubTVC: UIPickerViewDelegate, UIPickerViewDataSource {
                 userDay = selectDay
                 UserDefaults.standard.set(userDay, forKey: "userDay")
                 print(userDay)
-                } else if component == 1 {
+            } else if component == 1 {
                 print("component 1")
                 let selectType = (row < type.type.count ? type.type[row].description : nil)
                 
@@ -570,7 +603,7 @@ extension CustomSubTVC: UIPickerViewDelegate, UIPickerViewDataSource {
                     break
                 }
             }
-        UserDefaults.standard.set(secondsPerOneDay, forKey: "userSelectedDailyCycle")
+            UserDefaults.standard.set(secondsPerOneDay, forKey: "userSelectedDailyCycle")
         }
     }
 }

@@ -12,7 +12,28 @@ class CustomSubVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
     }
 
 }

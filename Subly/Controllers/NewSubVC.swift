@@ -26,14 +26,37 @@ class NewSubVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(productName)
+        
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
+        
         //subNameLabel.font = .systemFont(ofSize: 21, weight: .semibold)
         //tableView.delegate = self
         //tableView.dataSource = self
-//        tableView.tableFooterView = UIView()
+        //        tableView.tableFooterView = UIView()
         navigationController?.navigationBar.tintColor = .systemBackground
         navigationController?.navigationItem.rightBarButtonItem?.title = "Добавить"
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
+    }
     
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
         guard let vc = segue.source as? AddNewTVC else { return }
@@ -44,8 +67,15 @@ class NewSubVC: UIViewController {
             let destinationVC = segue.destination as? AddNewTVC
             destinationVC!.name = productName
             destinationVC!.imageName = imageName
-            let generator = UIImpactFeedbackGenerator(style: .medium)
-            generator.impactOccurred()
+            if UserDefaults.standard.bool(forKey: "hapticOn") {
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.impactOccurred()
+                UserDefaults.standard.set(true, forKey: "haptic")
+                print("haptic is on")
+            } else {
+                UserDefaults.standard.set(false, forKey: "haptic")
+                print("haptic is off")
+            }
         }
     }
     
@@ -57,9 +87,9 @@ class NewSubVC: UIViewController {
 
 extension NewSubVC: UITableViewDelegate, UITableViewDataSource {
     
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return arrayOfField.arrayOfFields.count
-//    }
+    //    func numberOfSections(in tableView: UITableView) -> Int {
+    //        return arrayOfField.arrayOfFields.count
+    //    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1

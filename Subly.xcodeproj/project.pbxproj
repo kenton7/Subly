@@ -22,6 +22,7 @@
 		0982477C25FE3703003C54A8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0982477B25FE3703003C54A8 /* TabBarController.swift */; };
 		0982477F25FF3F28003C54A8 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0982477E25FF3F28003C54A8 /* TabBarView.swift */; };
 		0982478225FFD8B7003C54A8 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0982478125FFD8B7003C54A8 /* ProgressBarView.swift */; };
+		098254E7260FACCC00A75F03 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 098254E6260FACCC00A75F03 /* CloudKit.framework */; };
 		09B7926325D4415600B11A72 /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7926225D4415600B11A72 /* Gradient.swift */; };
 		09B7926625D4560200B11A72 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7926525D4560200B11A72 /* SettingsVC.swift */; };
 		09B8151E25C1DECA00AC9D58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B8151D25C1DECA00AC9D58 /* AppDelegate.swift */; };
@@ -54,6 +55,7 @@
 		0982477B25FE3703003C54A8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		0982477E25FF3F28003C54A8 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		0982478125FFD8B7003C54A8 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		098254E6260FACCC00A75F03 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		09B7926225D4415600B11A72 /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		09B7926525D4560200B11A72 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		09B7926825D7FD2E00B11A72 /* Subly.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Subly.entitlements; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFE4EF886EC7D375666763AB /* Pods_Subly.framework in Frameworks */,
+				098254E7260FACCC00A75F03 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +180,7 @@
 		3EA722495EA66464874718CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				098254E6260FACCC00A75F03 /* CloudKit.framework */,
 				772A62D6765EF8B5672CF2E7 /* Pods_Subly.framework */,
 			);
 			name = Frameworks;

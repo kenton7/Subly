@@ -9,6 +9,7 @@ import UIKit
 import UserNotifications
 import LocalAuthentication
 
+
 class SettingsVC: UITableViewController {
     
     private var currencyPickerView = UIPickerView()
@@ -18,6 +19,13 @@ class SettingsVC: UITableViewController {
 
     @IBOutlet weak var currencyTextField: UITextField!
     @IBOutlet weak var faceIdSwitchOutlet: UISwitch!
+    @IBOutlet weak var hapticSwitchOutlet: UISwitch!
+    @IBOutlet weak var iCloudSwitchOutlet: UISwitch!
+    @IBOutlet weak var notificationsSwitchOutlet: UISwitch!
+    @IBOutlet weak var renewSubSwitchOutlet: UISwitch!
+    @IBOutlet weak var biometricPictureOutlet: UIImageView!
+    @IBOutlet weak var biometricNameLabelOutlet: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,14 +35,33 @@ class SettingsVC: UITableViewController {
         tableView.tableFooterView = UIView()
         self.tableView.rowHeight = 60
         
-        //faceIdSwitchOutlet.isOn = false
+        switch self.biometricType() {
+        case .faceID:
+            biometricPictureOutlet.image = UIImage(named: "icons8-face-id-96")
+            biometricNameLabelOutlet.text = "Вход по FaceID"
+        default:
+            biometricPictureOutlet.image = UIImage(named: "icons8-touch-id-96")
+            biometricNameLabelOutlet.text = "Вход по TouchID"
+        }
         
         if UserDefaults.standard.bool(forKey: "SwitchStatus") {
             faceIdSwitchOutlet.isOn = true
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
             UserDefaults.standard.set(true, forKey: "faceId")
         } else {
             faceIdSwitchOutlet.isOn = false
             UserDefaults.standard.set(false, forKey: "faceId")
+        }
+        
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            hapticSwitchOutlet.isOn = true
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            hapticSwitchOutlet.isOn = false
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
         }
         
     
@@ -42,6 +69,32 @@ class SettingsVC: UITableViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(updatePicker), name: UITextField.textDidBeginEditingNotification, object: nil)
         createPickerViewWithCurrencies()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if UserDefaults.standard.bool(forKey: "hapticOn") {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
+    }
+    
+    func biometricType() -> BiometricType {
+        let context = LAContext()
+        let _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        switch context.biometryType {
+        case .none:
+            return .none
+        case .touchID:
+            return .touchID
+        case .faceID:
+            return .faceID
+        }
     }
     
     private func createPickerViewWithCurrencies() {
@@ -75,17 +128,29 @@ class SettingsVC: UITableViewController {
         }
     }
     @IBAction func tapticSwitchAction(_ sender: UISwitch) {
-        print("test")
+        if sender.isOn {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            hapticSwitchOutlet.isOn = true
+            UserDefaults.standard.set(true, forKey: "hapticOn")
+            UserDefaults.standard.set(true, forKey: "haptic")
+            print("haptic is on")
+        } else {
+            hapticSwitchOutlet.isOn = false
+            UserDefaults.standard.set(false, forKey: "hapticOn")
+            UserDefaults.standard.set(false, forKey: "haptic")
+            print("haptic is off")
+        }
     }
     
     @IBAction func faceIDTouchIDSwitch(_ sender: UISwitch) {
         if sender.isOn {
             faceIdSwitchOutlet.isOn = true
-        UserDefaults.standard.set(true, forKey: "SwitchStatus")
+            UserDefaults.standard.set(true, forKey: "SwitchStatus")
             UserDefaults.standard.set(true, forKey: "faceId")
         } else {
             faceIdSwitchOutlet.isOn = false
-        UserDefaults.standard.set(false, forKey: "SwitchStatus")
+            UserDefaults.standard.set(false, forKey: "SwitchStatus")
             UserDefaults.standard.set(false, forKey: "faceId")
             print("face id is off")
         }
@@ -103,11 +168,11 @@ class SettingsVC: UITableViewController {
         return view
     }
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 30
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20
+        return 5
     }
     
 //    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
